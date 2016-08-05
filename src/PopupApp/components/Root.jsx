@@ -1,0 +1,59 @@
+import React from 'react';
+import logo from '../../common/icons/tc-32.png';
+const styleHeading = { padding: '0px' };
+const styleTitle = { padding: '10px 15px 10px 15px' };
+const styleLogo = { padding: '3px 15px 4px 5px' };
+
+export default class PopupApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onSubmitPattern = this.onSubmitPattern.bind(this);
+    this.goToOptions = this.goToOptions.bind(this);
+    this.currentDN = '';
+  }
+  componentWillMount() {
+    chrome.tabs.getSelected(null, tab => {
+      this.currentDN = tab.url.split('/')[2];
+    });
+  }
+  onSubmitPattern(e) {
+    const { addPattern } = this.props;
+    e.preventDefault();
+    addPattern(this.refs.patternInput.value.trim());
+    this.refs.patternInput.value = '';
+  }
+  goToOptions(e) {
+    e.preventDefault();
+    chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
+  }
+  render() {
+    return (
+      <div id="PopupApp" className="panel panel-default" style={{ width: '400px' }}>
+        <div className="panel-heading" style={styleHeading}>
+          <img src={logo} className="img-responsive pull-left" style={styleLogo} alt="" />
+
+          <h3 className="panel-title" style={styleTitle}>Thought Crime</h3>
+
+        </div>
+        <div className="panel-body">
+          <form onSubmit={this.onSubmitPattern}>
+            <div className="input-group">
+              <input
+                type="text" className="form-control" name="patternInput" ref="patternInput"
+                value={this.currentDN}
+              />
+              <span className="input-group-btn">
+                <input type="submit" className="btn btn-default" value="Add" />
+              </span>
+
+            </div>
+
+          </form>
+          <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
+            Options
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
