@@ -3,7 +3,8 @@ const CommonsPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 module.exports = {
   entry: {
     PopupApp: './src/PopupApp.js',
-    OptionsApp: './src/OptionsApp.js'
+    OptionsApp: './src/OptionsApp.js',
+    background: './src/background.js'
   },
   output: {
     path: './build',
@@ -22,7 +23,7 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: ['es2015', 'react']
+        presets: ['latest', 'react']
       }
     }, {
       test: /\.(png|jpg)$/,
