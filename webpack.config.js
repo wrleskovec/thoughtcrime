@@ -23,7 +23,8 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: ['latest', 'react']
+        presets: ['latest', 'react'],
+        plugins: ['transform-runtime']
       }
     }, {
       test: /\.(png|jpg)$/,

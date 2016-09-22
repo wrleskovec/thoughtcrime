@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import logo from '../img/tc-32.png';
-import { addPattern } from '../actions/common.js';
+import { addSite } from '../actions/common.js';
 const styleHeading = { padding: '0px' };
 const styleTitle = { padding: '10px 15px 10px 15px' };
 const styleLogo = { padding: '3px 15px 4px 5px' };
@@ -19,9 +19,9 @@ class PopupApp extends React.Component {
     });
   }
   onSubmitPattern(e) {
-    const { addPattern } = this.props;
+    const { addSite } = this.props;
     e.preventDefault();
-    addPattern(this.refs.patternInput.value.trim());
+    addSite(this.refs.patternInput.value.trim());
     this.refs.patternInput.value = '';
   }
   goToOptions(e) {
@@ -62,11 +62,14 @@ class PopupApp extends React.Component {
 
 export default connect(
   state => (
-    { patterns: state.block }
+    {
+      sites: state.sites,
+      message: state.message
+    }
   ),
   dispatch => (
     {
-      addPattern: pattern => dispatch(addPattern(pattern))
+      addSite: site => dispatch(addSite(site))
     }
   )
 )(PopupApp);

@@ -1,10 +1,14 @@
 import update from 'react/lib/update';
 
-export default function reducer(state = { block: [] }, action) {
+export default function reducer(state = { sites: [], message: '' }, action) {
   switch (action.type) {
-    case 'ADD_PATTERN':
+    case 'ADD_SITE_SUCCEEDED':
       return update(state, {
-        block: { $push: [action.pattern] }
+        message: { $set: action.message }
+      });
+    case 'ADD_SITE_FAILED':
+      return update(state, {
+        message: { $set: action.e }
       });
     default:
       return state;

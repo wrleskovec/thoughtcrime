@@ -2,23 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PatternList from '../components/PatternList.js';
 
-import { addPattern } from '../actions/common.js';
+import { addSite, fetchSites } from '../actions/common.js';
 
 class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
   }
+  componentWillMount() {
+    const { fetchSites } = this.props;
+    fetchSites();
+  }
   onSubmitPattern(e) {
-    const { addPattern } = this.props;
+    const { addSite } = this.props;
     e.preventDefault();
-    addPattern(this.refs.patternInput.value.trim());
+    addSite(this.refs.patternInput.value.trim());
     this.refs.patternInput.value = '';
   }
+
   render() {
     let listOfPatterns;
-    if (this.props.patterns) {
-      listOfPatterns = <PatternList patterns={this.props.patterns} />;
+    if (this.props.sites) {
+      listOfPatterns = <PatternList sites={this.props.sites} />;
     } else {
       listOfPatterns = {};
     }
@@ -39,6 +44,8 @@ class OptionsApp extends React.Component {
                 </div>
 
               </form>
+              <div className="alert alert-warning" role="alert">
+              </div>
             </div>
             <div className="col-md-6">
               {listOfPatterns}
@@ -52,11 +59,15 @@ class OptionsApp extends React.Component {
 
 export default connect(
   state => (
-    { patterns: state.block }
+    {
+      sites: state.sites,
+      message: state.message
+    }
   ),
   dispatch => (
     {
-      addPattern: pattern => dispatch(addPattern(pattern))
+      addSite: site => dispatch(addSite(site)),
+      fetchSites: () => dispatch(fetchSites())
     }
   )
 )(OptionsApp);

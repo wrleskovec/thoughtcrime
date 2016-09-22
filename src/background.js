@@ -1,29 +1,31 @@
+import wurl from 'wurl';
+import BlockList from './blockList.js';
 
-function blockPageLoad(tabId) {
+const BL = new BlockList();
+BL.init();
+const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
+
+function loadFilteredPage(tabId, url) {
   chrome.tabs.update(tabId, {
-    url: chrome.extension.getURL('blocked.html')
+    url
   });
 }
 
-function urlCheck(tabId, url, acl) {
-  const aclName = `reduxPersist:${acl || 'block'}`;
-  const ruleset = JSON.parse(localStorage.getItem(aclName));
-  console.log(ruleset);
-  if (ruleset.length > 0) {
-    ruleset.forEach((rule) => {
-      const ruleRegex = new RegExp(rule, 'i');
-      if (ruleRegex.test(url)) {
-        blockPageLoad(tabId);
-      }
-    });
+function urlCheck(details) {
+  const protocol = wurl('protocol', details.url);
+  if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
+    const site = wurl('hostname', details.url);
+    BL.checkSite(site)
+      .then(record => {
+        if (record.action === 'block') {
+          loadFilteredPage(details.tabId, BLOCKED_PAGE);
+        }
+      });
   }
+  return {};
 }
 
-
-function beforeRequestCheck(details) {
-  urlCheck(details.tabId, details.url);
-}
-
-chrome.webRequest.onBeforeRequest.addListener(beforeRequestCheck,
-  { urls: ['<all_urls>'], types: ['main_frame'] },
-  ['blocking']);
+chrome.webRequest.onBeforeRequest.addListener(urlCheck, {
+  urls: ['<all_urls>'],
+  types: ['main_frame']
+});

@@ -1,11 +1,12 @@
 import React from 'react';
 
-export default function PatternList({ patterns }) {
+export default function PatternList({ sites }) {
   let count = 0;
+  console.log(sites);
   return (
     <ul className="list-group">
-      {patterns.map(p => (
-        <li className="list-group-item" key={count++}>{p}</li>
+      {sites.map(p => (
+        <li className="list-group-item" key={count++}>{p.site}</li>
       ))}
     </ul>
   );
