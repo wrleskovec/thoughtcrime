@@ -14,7 +14,7 @@ function loadFilteredPage(tabId, url) {
 function urlCheck(details) {
   const protocol = wurl('protocol', details.url);
   if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
-    const site = wurl('hostname', details.url);
+    const site = wurl('domain', details.url);
     BL.checkSite(site)
       .then(record => {
         if (record.action === 'block') {

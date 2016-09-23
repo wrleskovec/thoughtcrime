@@ -1,9 +1,14 @@
 import db from 'db.js';
 
+let instance = null;
+
 export default class BlockList {
   constructor() {
-    this.idb = {};
-    this.currentPromise = undefined;
+    if (!instance) {
+      instance = this;
+      this.idb = null;
+    }
+    return instance;
   }
 
   init() {
@@ -122,5 +127,14 @@ export default class BlockList {
         console.log(sites);
         return sites;
       });
+  }
+  updateTime(site) {
+    return this.getRecord(site)
+      .then(record =>
+        this.idb.sites.update({
+          site,
+          timeSpent: record.timeSpent + 1
+        })
+      );
   }
 }
