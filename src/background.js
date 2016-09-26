@@ -1,8 +1,11 @@
 import wurl from 'wurl';
 import BlockList from './blockList.js';
+import Timer from './timer.js';
 
 const BL = new BlockList();
 BL.init();
+const siteTimer = new Timer();
+siteTimer.init();
 const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
 
 function loadFilteredPage(tabId, url) {
