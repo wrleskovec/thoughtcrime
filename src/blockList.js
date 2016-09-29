@@ -51,30 +51,22 @@ class BlockList {
         }
       }
     })
-      .then(d => {
-        this.idb = d;
-      });
+    .then(d => {
+      this.idb = d;
+      return this.getDayRecord(this.date)
+        .then(day => {
+          console.log('Maybe?');
+          this.dailyRecord = day;
+        })
+        .catch(() => this.addDayRecord(this.date)
+          .then(record => {
+            console.log(record);
+            this.dailyRecord = record;
+          })
+        );
+    });
   }
-  open() {
-    return db.open({
-      server: 'ThoughtCrime',
-      version: 1
-    })
-      .then(d => {
-        this.idb = d;
-        return this.fetchDaily(this.date)
-          .then(day => {
-            if (!day) {
-              return this.addDayRecord(this.date)
-                .then(record => {
-                  this.dailyRecord = record;
-                });
-            }
-            this.dailyRecord = day;
-            return day;
-          });
-      });
-  }
+
   getRecord(site) {
     return this.idb.sites.get(site)
       .then(result => {
@@ -90,6 +82,7 @@ class BlockList {
     });
   }
   addSiteRecord(site) {
+    console.log(site);
     return this.idb.sites.add({
       site,
       visits: 1,
@@ -103,14 +96,8 @@ class BlockList {
       day,
       visits: {},
       timeSpent: {}
-    });
-  }
-  updateDailyRecord() {
-    return this.idb.dailyRecords.update({
-      day: this.date,
-      visits: this.dailyRecord.visits,
-      timeSpent: this.dailyRecord.timeSpent
-    });
+    })
+    .then(r => r[0]);
   }
   addSite(site) {
     return this.getRecord(site)
@@ -144,25 +131,28 @@ class BlockList {
       });
   }
   // Timer DB Methods
-  fetchDaily(date) {
-    return this.idb.dailyRecords.get(date);
-  }
-  incrementSiteVisit(record) {
+  updateSiteRecord(record, timeSpent) {
     return this.idb.sites.update({
       site: record.site,
       visits: record.visits + 1,
-      action: record.action
-    })
-      .then(r => r[0]);
+      action: record.action,
+      timeSpent: record.timeSpent + timeSpent
+    });
   }
-  incrementVisit(site) {
-    return this.getRecord(site)
-      .then(record => this.incrementSiteVisit(record))
-      .then(() => {
-        this.dailyRecord.visits[site] += 1;
-        // NEED TO DO updateDailyRecord combined with reconciling timeSpent
-        return this.updateDailyRecord();
-      });
+  reconcileRecords(site, seconds) {
+    const { visits, timeSpent } = this.dailyRecord;
+    visits[site] = visits[site] + 1 || 1;
+    timeSpent[site] = timeSpent[site] + seconds || seconds;
+    return this.idb.dailyRecords.update(this.dailyRecord)
+      .then(() => this.getRecord(site))
+      .then(record => this.idb.sites.update({
+        site,
+        visits: record.visits + 1,
+        timeSpent: record.timeSpent + seconds,
+        action: record.action,
+        advAction: record.advAction
+      }))
+      .catch(() => this.addSiteRecord(site));
   }
 
   fetchSites() {

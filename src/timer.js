@@ -10,21 +10,17 @@ export default class Timer {
     this.dbCounter = 0;
     this.intervalId = null;
     this.currentDate = moment().format('DD-MM-YYYY');
-    this.dailyRecord = null;
   }
   init() {
-  // retrieving daily record cache
-    BL.fetchDaily(this.currentDate)
-      .then(today => {
-        this.dailyRecord = today || {};
-      });
       // checking if window is unfocused
     chrome.windows.onFocusChanged.addListener(() => {
       if (chrome.windows.WINDOW_ID_NONE) {
         this.windowFocus = false;
-        this.addCounter();
+        if (this.currentSite !== null) {
+          this.stopInterval();
+          BL.reconcileRecords(this.currentSite, this.counter);
+        }
         this.currentSite = null;
-        this.stopInterval();
       } else {
         this.windowFocus = true;
       }
@@ -41,9 +37,12 @@ export default class Timer {
         } else if (wurl('domain', tab.url) === this.currentSite) {
           console.log('SAME SITE');
         } else {
-          this.addCounter();
-          this.currentSite = wurl('domain', tab.url);
+          if (this.currentSite !== null) {
+            this.stopInterval();
+            BL.reconcileRecords(this.currentSite, this.counter);
+          }
           console.log('DIFF SITE');
+          this.currentSite = wurl('domain', tab.url);
           this.startInterval();
         }
       });
@@ -52,23 +51,16 @@ export default class Timer {
       if (!tab.url) {
         console.log('Not a valid url');
       } else {
-        this.currentSite = wurl('domain', tab.url);
-        console.log(this.currentSite);
-        this.startInterval();
+        const tabSite = wurl('domain', tab.url);
+        if (tabSite !== this.currentSite) {
+          this.currentSite = tabSite;
+          console.log(this.currentSite);
+          this.startInterval();
+        }
       }
     });
   }
 
-  addCounter() {
-    if (this.counter > 0) {
-      if (this.dailyRecord[this.currentSite]) {
-        this.dailyRecord[this.currentSite].timeSpent += this.counter;
-      } else {
-        this.dailyRecord[this.currentSite] = { timeSpent: this.counter, visits: 1 };
-      }
-      this.counter = 0;
-    }
-  }
   stopInterval() {
     clearInterval(this.intervalId);
   }

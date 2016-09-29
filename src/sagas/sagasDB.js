@@ -1,13 +1,10 @@
 import { call, put } from 'redux-saga/effects';
 import { takeEvery } from 'redux-saga';
-import BlockList from '../blockList.js';
+import BL from '../blockList.js';
 
 function* addSite(action) {
+  console.log('WHYYYYYY');
   try {
-    console.log('something happened');
-    const BL = new BlockList();
-    yield call([BL, BL.open]);
-    console.log('it got this far yay!');
     const message = yield call([BL, BL.addSite], action.site);
     yield put({ type: 'ADD_SITE_SUCCEEDED', message });
   } catch (e) {
@@ -18,9 +15,7 @@ function* addSite(action) {
 function* fetchSites() {
   console.log('Hmmmmmm');
   try {
-    const BL = new BlockList();
-    yield call([BL, BL.open]);
-    const sites = yield call([BL, BL.fetchSites]);
+    const sites = yield call(BL.fetchSites);
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
   } catch (e) {
     yield put({ type: 'SITE_FETCH_UNSUCCESSFUL', e });
