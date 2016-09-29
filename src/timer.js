@@ -6,8 +6,8 @@ export default class Timer {
   constructor() {
     this.currentSite = null;
     this.windowFocus = true;
-    this.counter = 0;
-    this.dbCounter = 0;
+    this.counter = 1;
+    this.dbCounter = 1;
     this.intervalId = null;
     this.currentDate = moment().format('DD-MM-YYYY');
   }
@@ -52,7 +52,7 @@ export default class Timer {
         console.log('Not a valid url');
       } else {
         const tabSite = wurl('domain', tab.url);
-        if (tabSite !== this.currentSite) {
+        if (tabSite !== this.currentSite && tabSite !== undefined) {
           this.currentSite = tabSite;
           console.log(this.currentSite);
           this.startInterval();
@@ -65,10 +65,12 @@ export default class Timer {
     clearInterval(this.intervalId);
   }
   startInterval() {
-    this.counter = 0;
+    this.counter = 1;
+    this.dbCounter = 1;
     if (!(this.intervalId === null)) clearInterval(this.intervalId);
     this.intervalId = setInterval(() => {
       this.counter = this.counter += 1;
+      this.dbCounter = this.dbCounter += 1;
       console.log(moment().second(this.counter).format('HH : mm : ss'));
     }, 1000);
   }

@@ -83,7 +83,7 @@ class BlockList {
   }
   addSiteRecord(site) {
     console.log(site);
-    return this.idb.sites.add({
+    return this.idb.sites.update({
       site,
       visits: 1,
       timeSpent: 0,
@@ -119,15 +119,6 @@ class BlockList {
           action: 'block',
           advAction: {}
         });
-      });
-  }
-  // WebRequest Check
-  checkSite(site) {
-    return this.getRecord(site)
-      .then(record => record)
-      .catch(err => {
-        console.log(err);
-        return this.addSiteRecord(site);
       });
   }
   // Timer DB Methods

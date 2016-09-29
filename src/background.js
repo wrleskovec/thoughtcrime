@@ -19,11 +19,14 @@ function urlCheck(details) {
   const protocol = wurl('protocol', details.url);
   if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
     const site = wurl('domain', details.url);
-    BL.checkSite(site)
+    BL.getRecord(site)
       .then(record => {
         if (record.action === 'block') {
           loadFilteredPage(details.tabId, BLOCKED_PAGE);
         }
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
   return {};
