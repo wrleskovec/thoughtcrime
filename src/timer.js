@@ -74,7 +74,7 @@ export default class Timer {
     this.intervalId = setInterval(() => {
       this.counter = this.counter += 1;
       this.dbCounter = this.dbCounter += 1;
-      console.log(moment().second(this.counter).format('HH : mm : ss'));
+      console.log(moment(0).second(this.counter).format('HH : mm : ss'));
     }, 1000);
   }
 }
