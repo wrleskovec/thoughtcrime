@@ -145,7 +145,7 @@ class BlockList {
       }))
       .catch(() => this.addSiteRecord(site));
   }
-
+// consider renaming
   fetchSites() {
     return this.idb.sites.query()
       .all()

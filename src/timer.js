@@ -52,7 +52,10 @@ export default class Timer {
         console.log('Not a valid url');
       } else {
         const tabSite = wurl('domain', tab.url);
-        if (tabSite !== this.currentSite && tabSite !== undefined) {
+        const protocol = wurl('protocol', tab.url);
+        const validUrl = tabSite !== this.currentSite && tabSite !== undefined &&
+          protocol !== 'chrome' && protocol !== 'chrome-extension';
+        if (validUrl) {
           this.currentSite = tabSite;
           console.log(this.currentSite);
           this.startInterval();
