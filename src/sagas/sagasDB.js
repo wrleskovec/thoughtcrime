@@ -16,7 +16,7 @@ function* fetchSites() {
   console.log('Hmmmmmm');
   console.log(BL.idb);
   try {
-    const sites = yield call(BL.fetchSites);
+    const sites = yield call([BL, BL.fetchSites]);
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
     console.log('woo?');
   } catch (e) {
