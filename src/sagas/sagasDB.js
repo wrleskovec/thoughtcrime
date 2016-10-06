@@ -18,7 +18,9 @@ function* fetchSites() {
   try {
     const sites = yield call(BL.fetchSites);
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
+    console.log('woo?');
   } catch (e) {
+    console.log(e);
     yield put({ type: 'SITE_FETCH_UNSUCCESSFUL', e });
   }
 }
