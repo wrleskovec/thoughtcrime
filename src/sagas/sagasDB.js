@@ -14,6 +14,7 @@ function* addSite(action) {
 }
 function* fetchSites() {
   console.log('Hmmmmmm');
+  console.log(BL.idb);
   try {
     const sites = yield call(BL.fetchSites);
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
