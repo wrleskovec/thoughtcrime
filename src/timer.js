@@ -23,6 +23,7 @@ export default class Timer {
         this.currentSite = null;
       } else {
         this.windowFocus = true;
+        console.log('kill me google');
       }
     });
     // checking if window closed
@@ -74,7 +75,7 @@ export default class Timer {
     this.intervalId = setInterval(() => {
       this.counter = this.counter += 1;
       this.dbCounter = this.dbCounter += 1;
-      console.log(moment(0).second(this.counter).format('HH : mm : ss'));
+      console.log(moment().second(this.counter).format('HH : mm : ss'));
     }, 1000);
   }
 }
