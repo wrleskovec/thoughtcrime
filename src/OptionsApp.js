@@ -15,11 +15,10 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 BL.init().then(() => {
   sagaMiddleware.run(optionsSagas);
+  render(
+    <Provider store={store}>
+      <OptionsApp />
+    </Provider>,
+    document.getElementById('OptionsApp')
+  );
 });
-
-render(
-  <Provider store={store}>
-    <OptionsApp />
-  </Provider>,
-  document.getElementById('OptionsApp')
-);
