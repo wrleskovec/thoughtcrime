@@ -31,11 +31,11 @@ webpackJsonp([0],{
 	
 	var _optionsSagas2 = _interopRequireDefault(_optionsSagas);
 	
-	__webpack_require__(319);
+	__webpack_require__(426);
 	
-	__webpack_require__(328);
+	__webpack_require__(435);
 	
-	__webpack_require__(330);
+	__webpack_require__(437);
 	
 	var _blockList = __webpack_require__(301);
 	

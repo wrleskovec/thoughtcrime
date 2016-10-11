@@ -26,6 +26,19 @@ export default class Timer {
         console.log('kill me google');
       }
     });
+    chrome.windows.getAll({ populate: true }, (windows) => {
+      windows.forEach((win) => {
+        win.tabs.forEach((tab) => {
+          chrome.tabs.executeScript(tab.id, { file: 'content.js' });
+        });
+      });
+    });
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      console.log('I dunno');
+      console.log(request.focus);
+      console.log(sender.tab.url);
+      sendResponse('you suck');
+    });
     // checking if window closed
     chrome.windows.onRemoved.addListener(() => {
       //
