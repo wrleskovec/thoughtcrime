@@ -1,8 +1,6 @@
 function sendFocus(focus){
   console.log('doing something');
-    chrome.runtime.sendMessage({focus:focus}, (response) => {
-      console.log(response);
-    });
+    chrome.runtime.sendMessage({focus:focus});
 }
 
 window.addEventListener('focus',function(){
