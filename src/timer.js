@@ -53,6 +53,15 @@ export default class Timer {
         }
       }
     });
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      const tabSite = wurl('domain', tab.url);
+      const validUrl = tabSite !== this.currentSite && this.isValidProtocol(tab.url);
+      if (validUrl) {
+        this.currentSite = tabSite;
+        this.currentTab = tab.id;
+        this.startInterval();
+      }
+    });
   }
   //   chrome.windows.onRemoved.addListener(() => {
   //     //
@@ -75,25 +84,10 @@ export default class Timer {
   //       }
   //     });
   //   });
-  //   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  //     if (!tab.url) {
-  //       console.log('Not a valid url');
-  //     } else {
-  //       const tabSite = wurl('domain', tab.url);
-  //       const protocol = wurl('protocol', tab.url);
-  //       const validUrl = tabSite !== this.currentSite && tabSite !== undefined &&
-  //         protocol !== 'chrome' && protocol !== 'chrome-extension';
-  //       if (validUrl) {
-  //         this.currentSite = tabSite;
-  //         console.log(this.currentSite);
-  //         this.startInterval();
-  //       }
-  //     }
-  //   });
-  // }
+
   isValidProtocol(url) {
     const protocol = wurl('protocol', url);
-    return protocol !== 'chrome' && protocol !== 'chrome-extension';
+    return protocol === 'http' || protocol === 'https' || protocol === 'ftp';
   }
   saveRecords() {
     clearInterval(this.intervalId);
@@ -115,11 +109,12 @@ export default class Timer {
       } else {
         this.counter = this.counter += 1;
         this.dbCounter = this.dbCounter += 1;
-        if (this.dbCounter % 60) {
+        if (this.dbCounter % 60 === 0) {
           BL.reconcileRecords(this.currentSite, this.dbCounter);
           this.dbCounter = 0;
         }
-        console.log(moment().second(this.counter).format('HH : mm : ss'));
+        console.log(this.currentSite);
+        console.log(this.dbCounter);
       }
     }, 1000);
   }
