@@ -2,9 +2,8 @@ import wurl from 'wurl';
 import BL from './blockList.js';
 import Timer from './timer.js';
 
-const siteTimer = new Timer();
 BL.init().then(() => {
-  siteTimer.init();
+  Timer.init();
 });
 
 const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';

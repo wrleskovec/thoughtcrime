@@ -11,3 +11,7 @@ window.addEventListener('focus',function(){
 window.addEventListener('blur',function(){
     sendFocus('blur');
 },false);
+
+window.setTimeout(() => {
+  console.log('okay.....');
+}, 5000);

@@ -2,7 +2,7 @@ import moment from 'moment';
 import BL from './blockList.js';
 import wurl from 'wurl';
 
-export default class Timer {
+class Timer {
   constructor() {
     this.currentSite = null;
     this.currentTab = null;
@@ -39,7 +39,7 @@ export default class Timer {
       const senderSite = wurl('domain', sender.tab.url);
       if (senderSite !== null) {
         if (request.focus === 'focus' && senderSite !== this.currentSite
-         && sender.tab.id !== this.currentTab) {
+         && sender.tab.id !== this.currentTab && this.isValidProtocol(senderSite)) {
           if (this.currentSite !== null) {
             this.saveRecords();
           }
@@ -56,6 +56,7 @@ export default class Timer {
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       const tabSite = wurl('domain', tab.url);
       const validUrl = tabSite !== this.currentSite && this.isValidProtocol(tab.url);
+      console.log(`${tabSite}: ${validUrl}`);
       if (validUrl) {
         this.currentSite = tabSite;
         this.currentTab = tab.id;
@@ -87,7 +88,9 @@ export default class Timer {
 
   isValidProtocol(url) {
     const protocol = wurl('protocol', url);
-    return protocol === 'http' || protocol === 'https' || protocol === 'ftp';
+    return (
+      protocol === 'http' || protocol === 'https' || protocol === 'ftp'
+    );
   }
   saveRecords() {
     clearInterval(this.intervalId);
@@ -95,6 +98,7 @@ export default class Timer {
     BL.reconcileRecords(this.currentSite, this.dbCounter);
   }
   startInterval() {
+    clearInterval(this.intervalId);
     this.counter = 1;
     this.dbCounter = 1;
     this.intervalId = setInterval(() => {
@@ -113,9 +117,15 @@ export default class Timer {
           BL.reconcileRecords(this.currentSite, this.dbCounter);
           this.dbCounter = 0;
         }
-        console.log(this.currentSite);
-        console.log(this.dbCounter);
       }
     }, 1000);
   }
 }
+const proxyTimer = new Proxy(new Timer(), {
+  set(target, key, value) {
+    console.log(`${key}: ${value}`);
+    target[key] = value;
+    return true;
+  }
+});
+export default proxyTimer;
