@@ -6,6 +6,7 @@ class Timer {
   constructor() {
     this.currentSite = null;
     this.currentTab = null;
+    this.popup = false;
 //    this.windowFocus = true;
     this.counter = 1;
     this.dbCounter = 1;
@@ -35,22 +36,31 @@ class Timer {
         });
       });
     });
-    chrome.runtime.onMessage.addListener((request, sender) => {
-      const senderSite = wurl('domain', sender.tab.url);
-      if (senderSite !== null) {
-        if (request.focus === 'focus' && senderSite !== this.currentSite
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.focus) {
+        const senderSite = wurl('domain', sender.tab.url);
+        if (request.focus === 'focus' && senderSite !== this.currentSite && senderSite != null
          && sender.tab.id !== this.currentTab && this.isValidProtocol(senderSite)) {
+          this.popup = false;
           if (this.currentSite !== null) {
             this.saveRecords();
           }
           this.currentTab = sender.tab.id;
           this.currentSite = senderSite;
           this.startInterval();
-        } else if (request.focus === 'blur' && sender.tab.id === this.currentTab) {
+        } else if (request.focus === 'blur' && sender.tab.id === this.currentTab && senderSite != null
+          && !this.popup) {
+          console.log('wow');
           this.saveRecords();
           this.currentSite = null;
           this.currentTab = null;
         }
+      }
+      if (request.timer === 'popup') {
+        this.popup = true;
+        console.log('background response');
+        console.log(sender);
+        sendResponse({ seconds: this.counter });
       }
     });
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {

@@ -1,17 +1,14 @@
 function sendFocus(focus){
-  console.log('doing something');
-    chrome.runtime.sendMessage({focus:focus});
+  chrome.runtime.sendMessage({focus:focus});
 }
 sendFocus('focus');
 
-window.addEventListener('focus',function(){
-    sendFocus('focus');
+window.addEventListener('focus', () => {
+  sendFocus('focus');
 },false);
 
-window.addEventListener('blur',function(){
+window.addEventListener('blur', () => {
+  setTimeout(() => {
     sendFocus('blur');
+  }, 100);
 },false);
-
-window.setTimeout(() => {
-  console.log('okay.....');
-}, 5000);

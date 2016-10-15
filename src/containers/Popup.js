@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import wurl from 'wurl';
 import logo from '../img/tc-32.png';
 import { addSite } from '../actions/common.js';
+import { getTimer } from '../actions/popup.js';
+import Timer from '../components/Timer.js';
 const styleHeading = { padding: '0px' };
 const styleTitle = { padding: '10px 15px 10px 15px' };
 const styleLogo = { padding: '3px 15px 4px 5px' };
@@ -13,10 +15,12 @@ class PopupApp extends React.Component {
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
     this.goToOptions = this.goToOptions.bind(this);
     this.state = {
-      currentDN: ''
+      currentDN: '',
     };
   }
   componentWillMount() {
+    const { getTimer } = this.props;
+    getTimer();
     chrome.tabs.getSelected(null, tab => {
       this.setState({ currentDN: wurl('domain', tab.url) });
     });
@@ -32,7 +36,13 @@ class PopupApp extends React.Component {
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
   }
   render() {
-    console.log('kay');
+    console.log(`Timer: ${this.props.timer}`);
+    let timerComponent;
+    if (this.props.timer) {
+      timerComponent = <Timer timer={this.props.timer} />;
+    } else {
+      timerComponent = '';
+    }
     return (
       <div id="PopupApp" className="panel panel-default" style={{ width: '400px' }}>
         <div className="panel-heading" style={styleHeading}>
@@ -55,6 +65,7 @@ class PopupApp extends React.Component {
             </div>
 
           </form>
+          {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
             Options
           </button>
@@ -68,12 +79,14 @@ export default connect(
   state => (
     {
       sites: state.sites,
-      message: state.message
+      message: state.message,
+      timer: state.timer
     }
   ),
   dispatch => (
     {
-      addSite: site => dispatch(addSite(site))
+      addSite: site => dispatch(addSite(site)),
+      getTimer: () => dispatch(getTimer())
     }
   )
 )(PopupApp);
