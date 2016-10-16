@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PatternList from '../components/PatternList.js';
+import SiteTable from '../components/SiteTable.js';
 
 import { addSite, fetchSites } from '../actions/common.js';
 
@@ -23,7 +23,7 @@ class OptionsApp extends React.Component {
   render() {
     let listOfPatterns;
     if (this.props.sites) {
-      listOfPatterns = <PatternList sites={this.props.sites} />;
+      listOfPatterns = <SiteTable sites={this.props.sites} />;
     } else {
       listOfPatterns = {};
     }

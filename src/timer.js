@@ -48,12 +48,13 @@ class Timer {
           this.currentTab = sender.tab.id;
           this.currentSite = senderSite;
           this.startInterval();
-        } else if (request.focus === 'blur' && sender.tab.id === this.currentTab && senderSite != null
-          && !this.popup) {
-          console.log('wow');
-          this.saveRecords();
-          this.currentSite = null;
-          this.currentTab = null;
+        } else if (request.focus === 'blur') {
+          if (sender.tab.id === this.currentTab && senderSite != null && !this.popup) {
+            console.log('wow');
+            this.saveRecords();
+            this.currentSite = null;
+            this.currentTab = null;
+          }
         }
       }
       if (request.timer === 'popup') {
