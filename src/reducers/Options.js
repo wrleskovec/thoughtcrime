@@ -1,6 +1,7 @@
 import update from 'react/lib/update';
+import BL from '../blockList.js';
 
-export default function reducer(state = { sites: [], message: '' }, action) {
+export default function reducer(state = { sites: BL.fetchTodayStats(), message: '' }, action) {
   switch (action.type) {
     case 'ADD_SITE_SUCCEEDED':
       return update(state, {

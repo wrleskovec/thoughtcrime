@@ -10,8 +10,6 @@ class OptionsApp extends React.Component {
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
   }
   componentWillMount() {
-    const { fetchSites } = this.props;
-    fetchSites();
   }
   onSubmitPattern(e) {
     const { addSite } = this.props;
@@ -21,6 +19,7 @@ class OptionsApp extends React.Component {
   }
 
   render() {
+    console.log(this.props.sites);
     let listOfPatterns;
     if (this.props.sites) {
       listOfPatterns = <SiteTable sites={this.props.sites} />;

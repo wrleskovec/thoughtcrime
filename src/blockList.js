@@ -37,7 +37,7 @@ class BlockList {
           },
           indexes: {
             regex: {},
-            application: {}
+            filter: {}
           },
         },
         dailyRecords: {
@@ -45,8 +45,7 @@ class BlockList {
             keyPath: 'day'
           },
           indexes: {
-            visits: {},
-            timeSpent: {}
+            sites: []
           }
         }
       }
@@ -94,8 +93,7 @@ class BlockList {
   addDayRecord(day) {
     return this.idb.dailyRecords.add({
       day,
-      visits: {},
-      timeSpent: {}
+      sites: []
     })
     .then(r => r[0]);
   }
@@ -131,9 +129,18 @@ class BlockList {
     });
   }
   reconcileRecords(site, seconds) {
-    const { visits, timeSpent } = this.dailyRecord;
-    visits[site] = visits[site] + 1 || 1;
-    timeSpent[site] = timeSpent[site] + seconds || seconds;
+    const cacheIndex = this.dailyRecord.sites.findIndex(record => record.site === site);
+    if (cacheIndex !== -1) {
+      const siteRecord = this.dailyRecord.sites[cacheIndex];
+      siteRecord.visits += 1;
+      siteRecord.timeSpent += seconds;
+    } else {
+      this.dailyRecord.sites.push({
+        site,
+        visits: 1,
+        timeSpent: seconds
+      });
+    }
     return this.idb.dailyRecords.update(this.dailyRecord)
       .then(() => this.getRecord(site))
       .then(record => this.idb.sites.update({
@@ -154,6 +161,9 @@ class BlockList {
         console.log(sites);
         return sites;
       });
+  }
+  fetchTodayStats() {
+    return this.dailyRecord.sites;
   }
 
 }

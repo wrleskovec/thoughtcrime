@@ -11,9 +11,10 @@ import 'jquery/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import BL from './blockList.js';
 
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+
 BL.init().then(() => {
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(reducer, applyMiddleware(sagaMiddleware));
   sagaMiddleware.run(optionsSagas);
   render(
     <Provider store={store}>
