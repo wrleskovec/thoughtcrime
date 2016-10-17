@@ -9,14 +9,17 @@ export default class SiteTable extends React.Component {
     this.state = {
       sites: props.sites
     };
+    this.sortSites = this.sortSites.bind(this);
   }
-  // sortSites(sortBy) {
-  //   const sortObj = this.props.sites[sortBy];
-  //   this.setState({
-  //     sites: Object.keys(sortObj).sort((a, b) => sortObj[a] - sortObj[b])
-  //   });
-  // }
+  sortSites(sortBy) {
+    const sites = this.state.sites;
+    const sortedSites = sites.sort((a, b) => sites[a][sortBy] - sites[b][sortBy]);
+    this.setState({
+      sites: sortedSites
+    });
+  }
   render() {
+    this.sortSites('timeSpent');
     return (
       <Table
         rowsCount={this.state.sites.length}
