@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SiteTable from '../components/SiteTable.js';
+import InputBar from '../components/InputBar.js';
 
 import { addSite, fetchSites } from '../actions/common.js';
 
@@ -19,35 +20,15 @@ class OptionsApp extends React.Component {
   }
 
   render() {
-    console.log(this.props.sites);
-    let listOfPatterns;
-    if (this.props.sites) {
-      listOfPatterns = <SiteTable sites={this.props.sites} />;
-    } else {
-      listOfPatterns = {};
-    }
     return (
       <div id="OptionsApp">
         <div className="container">
           <div className="row">
             <div className="col-md-4">
-              <form onSubmit={this.onSubmitPattern}>
-                <div className="input-group">
-                  <input
-                    type="text" className="form-control" name="patternInput" ref="patternInput"
-                  />
-                  <span className="input-group-btn">
-                    <input type="submit" className="btn btn-default" value="Add" />
-                  </span>
-
-                </div>
-
-              </form>
-              <div className="alert alert-warning" role="alert">
-              </div>
+              <InputBar onSubmitPattern={this.onSubmitPattern} />
             </div>
             <div className="col-md-6">
-              {listOfPatterns}
+              <SiteTable sites={this.props.sites} />
             </div>
           </div>
         </div>

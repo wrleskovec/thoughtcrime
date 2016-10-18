@@ -6,46 +6,42 @@ import moment from 'moment';
 export default class SiteTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      sites: props.sites
-    };
     this.sortSites = this.sortSites.bind(this);
+    this.state = {
+      sites: this.sortSites(props.sites, 'timeSpent')
+    };
   }
-  sortSites(sortBy) {
-    const sites = this.state.sites;
-    const sortedSites = sites.sort((a, b) => sites[a][sortBy] - sites[b][sortBy]);
-    this.setState({
-      sites: sortedSites
-    });
+  sortSites(sites, sortBy) {
+    return sites.sort((a, b) => b[sortBy] - a[sortBy]);
   }
   render() {
-    this.sortSites('timeSpent');
+    const topTen = this.state.sites.slice(0, 10);
     return (
       <Table
-        rowsCount={this.state.sites.length}
+        rowsCount={10}
         rowHeight={30}
         headerHeight={30}
-        width={320}
+        width={340}
         height={332}
       >
         <Column
           header="Site"
           cell={c => (
             <Cell>
-              {this.state.sites[c.rowIndex].site}
+              {topTen[c.rowIndex].site}
             </Cell>
           )}
-          fixed="true"
           width={200}
         />
         <Column
+          columnKey="number"
           header="Visits"
           cell={c => (
             <Cell>
-              {this.state.sites[c.rowIndex].visits}
+              {topTen[c.rowIndex].visits}
             </Cell>
           )}
-          width={50}
+          width={60}
         />
         <Column
           header="Time"
@@ -56,7 +52,7 @@ export default class SiteTable extends React.Component {
                 .format('H:mm:ss')}
             </Cell>
           )}
-          width={70}
+          width={80}
         />
       </Table>
     );
