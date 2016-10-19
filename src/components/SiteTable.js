@@ -15,14 +15,15 @@ export default class SiteTable extends React.Component {
     return sites.sort((a, b) => b[sortBy] - a[sortBy]);
   }
   render() {
-    const topTen = this.state.sites.slice(0, 10);
+    const itemCount = (this.state.sites.length < 10) ? this.state.sites.length : 10;
+    const topTen = this.state.sites.slice(0, itemCount);
     return (
       <Table
         rowsCount={10}
         rowHeight={30}
         headerHeight={30}
-        width={340}
-        height={332}
+        width={600}
+        height={(itemCount + 1) * 30 + 2}
       >
         <Column
           header="Site"
@@ -41,7 +42,7 @@ export default class SiteTable extends React.Component {
               {topTen[c.rowIndex].visits}
             </Cell>
           )}
-          width={60}
+          width={200}
         />
         <Column
           header="Time"
@@ -52,7 +53,7 @@ export default class SiteTable extends React.Component {
                 .format('H:mm:ss')}
             </Cell>
           )}
-          width={80}
+          width={200}
         />
       </Table>
     );
