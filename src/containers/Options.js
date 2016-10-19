@@ -21,7 +21,7 @@ class OptionsApp extends React.Component {
               <InputBar addSite={this.props.addSite} />
             </div>
             <div className="col-md-6">
-              <SiteTable sites={this.props.sites} />
+              <SiteTable sites={this.props.sites} maxEntry={10} />
             </div>
           </div>
         </div>
