@@ -5,6 +5,7 @@ import logo from '../img/tc-32.png';
 import { addSite } from '../actions/common.js';
 import { getTimer } from '../actions/popup.js';
 import Timer from '../components/Timer.js';
+import InputBar from '../components/InputBar.js';
 const styleHeading = { padding: '0px' };
 const styleTitle = { padding: '10px 15px 10px 15px' };
 const styleLogo = { padding: '3px 15px 4px 5px' };
@@ -12,25 +13,19 @@ const styleLogo = { padding: '3px 15px 4px 5px' };
 class PopupApp extends React.Component {
   constructor(props) {
     super(props);
-    this.onSubmitPattern = this.onSubmitPattern.bind(this);
     this.goToOptions = this.goToOptions.bind(this);
     this.state = {
-      currentDN: '',
+      currentValue: '',
     };
   }
   componentWillMount() {
     const { getTimer } = this.props;
     getTimer();
     chrome.tabs.getSelected(null, tab => {
-      this.setState({ currentDN: wurl('domain', tab.url) });
+      this.setState({ currentValue: wurl('domain', tab.url) });
     });
   }
-  onSubmitPattern(e) {
-    const { addSite } = this.props;
-    e.preventDefault();
-    addSite(this.refs.patternInput.value.trim());
-    this.setState({ currentDN: '' });
-  }
+
   goToOptions(e) {
     e.preventDefault();
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
@@ -52,19 +47,9 @@ class PopupApp extends React.Component {
 
         </div>
         <div className="panel-body">
-          <form onSubmit={this.onSubmitPattern}>
-            <div className="input-group">
-              <input
-                type="text" className="form-control" name="patternInput" ref="patternInput"
-                value={this.state.currentDN}
-              />
-              <span className="input-group-btn">
-                <input type="submit" className="btn btn-default" value="Add" />
-              </span>
-
-            </div>
-
-          </form>
+          <InputBar
+            addSite={this.props.addSite} currentValue={this.state.currentValue}
+          />
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
             Options

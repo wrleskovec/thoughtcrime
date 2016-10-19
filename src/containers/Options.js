@@ -8,15 +8,8 @@ import { addSite, fetchSites } from '../actions/common.js';
 class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
-    this.onSubmitPattern = this.onSubmitPattern.bind(this);
   }
   componentWillMount() {
-  }
-  onSubmitPattern(e) {
-    const { addSite } = this.props;
-    e.preventDefault();
-    addSite(this.refs.patternInput.value.trim());
-    this.refs.patternInput.value = '';
   }
 
   render() {
@@ -25,7 +18,7 @@ class OptionsApp extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-md-4">
-              <InputBar onSubmitPattern={this.onSubmitPattern} />
+              <InputBar addSite={this.props.addSite} />
             </div>
             <div className="col-md-6">
               <SiteTable sites={this.props.sites} />
