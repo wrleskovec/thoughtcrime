@@ -24,7 +24,7 @@ module.exports = {
       loader: 'babel',
       query: {
         presets: ['latest', 'react'],
-        plugins: ['transform-runtime']
+        plugins: ['transform-runtime', 'transform-react-inline-elements']
       }
     }, {
       test: /\.(png|jpg)$/,
