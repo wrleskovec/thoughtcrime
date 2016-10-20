@@ -1,41 +1,61 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import 'fixed-data-table/dist/fixed-data-table.css';
-import moment from 'moment';
+import SortableHeader from './SortableHeader.js';
 
 export default class SiteTable extends React.Component {
   constructor(props) {
     super(props);
     // Default to Descending Order on timeSpent
     console.log(props);
+    this.onHeaderClick = this.onHeaderClick.bind(this);
     this.state = {
       sortBy: 'timeSpent',
       order: 1,
-      sites: this.sortSites(props.sites, 'timeSpent', 1)
+      sites: this.sortProps(props.sites, 'timeSpent', 1)
     };
   }
-  sortSites(sites, sortBy, order) {
-    return sites.sort((a, b) => order * (b[sortBy] - a[sortBy]));
+  onHeaderClick(column) {
+    const order = (column === this.state.sortBy) ? -this.state.order : this.state.order;
+    this.setState({
+      sortBy: column,
+      order,
+      sites: this.sortProps(this.props.sites, column, order)
+    });
   }
+  sortProps(sites, sortBy, order) {
+    return sites.sort((a, b) => {
+      if (a[sortBy] < b[sortBy]) {
+        return order * 1;
+      }
+      if (a[sortBy] > b[sortBy]) {
+        return order * -1;
+      }
+      return 0;
+    });
+  }
+
   render() {
-    const itemCount = (this.state.sites.length < 10) ? this.state.sites.length : 10;
+    const { maxEntry } = this.props;
+    const itemCount = (this.state.sites.length < maxEntry) ? this.state.sites.length : maxEntry;
     let columnCount = 0;
     const finishedColumns = [];
     let finishedTable;
     if (!itemCount) {
       finishedTable = <div>Nothing to Show</div>;
     } else {
-      const { sites } = this.state.sites;
+      const sites = this.state.sites;
       const topTen = sites.slice(0, itemCount);
       for (const column in sites[0]) {
         if (sites[0].hasOwnProperty(column)) {
           columnCount += 1;
           finishedColumns.push(
             <Column
-              header={column}
+              header=<SortableHeader column={column} onHeaderClick={this.onHeaderClick} />
+              key={column}
               cell={c => (
                 <Cell>
-                  {topTen[c.rowIndex].site}
+                  {topTen[c.rowIndex][column]}
                 </Cell>
               )}
               width={200}
@@ -57,43 +77,6 @@ export default class SiteTable extends React.Component {
     }
     return (
       finishedTable
-      // <Table
-      //   rowsCount={10}
-      //   rowHeight={30}
-      //   headerHeight={30}
-      //   width={600}
-      //   height={(itemCount + 1) * 30 + 2}
-      // >
-      //   <Column
-      //     header="Site"
-      //     cell={c => (
-      //       <Cell>
-      //         {topTen[c.rowIndex].site}
-      //       </Cell>
-      //     )}
-      //     width={200}
-      //   />
-      //   <Column
-      //     header="Visits"
-      //     cell={c => (
-      //       <Cell>
-      //         {topTen[c.rowIndex].visits}
-      //       </Cell>
-      //     )}
-      //     width={200}
-      //   />
-      //   <Column
-      //     header="Time"
-      //     cell={c => (
-      //       <Cell>
-      //         {moment('2015-01-01').startOf('day')
-      //           .seconds(this.state.sites[c.rowIndex].timeSpent)
-      //           .format('H:mm:ss')}
-      //       </Cell>
-      //     )}
-      //     width={200}
-      //   />
-      // </Table>
     );
   }
 }
