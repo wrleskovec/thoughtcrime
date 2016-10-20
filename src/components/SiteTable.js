@@ -7,6 +7,7 @@ export default class SiteTable extends React.Component {
   constructor(props) {
     super(props);
     // Default to Descending Order on timeSpent
+    console.log(props);
     this.state = {
       sortBy: 'timeSpent',
       order: 1,
