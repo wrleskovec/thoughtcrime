@@ -16,7 +16,7 @@ export default class SiteTable extends React.Component {
     };
   }
   onHeaderClick(column) {
-    const order = (column === this.state.sortBy) ? -this.state.order : this.state.order;
+    const order = (column === this.state.sortBy) ? -this.state.order : 1;
     this.setState({
       sortBy: column,
       order,
