@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SiteTable from '../components/SiteTable.js';
 import InputBar from '../components/InputBar.js';
+import logo from '../img/thoughtcrime.svg';
 
 import { addSite, fetchSites } from '../actions/common.js';
 
@@ -15,15 +16,39 @@ class OptionsApp extends React.Component {
   render() {
     return (
       <div id="OptionsApp">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-md-4">
-              <InputBar addSite={this.props.addSite} />
+            <div className="col-md-2">
+              <img src={logo} alt="" className="img-responsive center-block" height="128" width="128" />
             </div>
-            <div className="col-md-6">
-              <SiteTable sites={this.props.sites} maxEntry={10} />
+            <div className="col-md-10 offset-md-2">
+              <div className="page-header text-center">
+                <h1>ThoughtCrime - <small>Dashboard</small></h1>
+              </div>
+
             </div>
           </div>
+          <div className="row">
+            <div className="col-md-2 sidebar">
+              <ul className="nav nav-sidebar nav-pills nav-stacked">
+                <li role="presentation" className="active"><a href="#">Dashboard</a></li>
+                <li role="presentation"><a href="#">Statistics</a></li>
+                <li role="presentation"><a href="#">Filtering</a></li>
+                <li role="presentation"><a href="#">Settings</a></li>
+              </ul>
+            </div>
+            <div className="col-md-10 offset-md-2 main">
+              <div className="row">
+                <div className="col-md-4">
+                  <InputBar addSite={this.props.addSite} />
+                </div>
+                <div className="col-md-6">
+                  <SiteTable sites={this.props.sites} maxEntry={10} />
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     );
