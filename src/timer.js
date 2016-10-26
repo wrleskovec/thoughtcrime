@@ -106,7 +106,7 @@ class Timer {
   saveRecords() {
     clearInterval(this.intervalId);
     this.intervalId = null;
-    BL.reconcileRecords(this.currentSite, this.dbCounter);
+    BL.reconcileRecords(this.currentSite, this.dbCounter, 1);
   }
   startInterval() {
     clearInterval(this.intervalId);
@@ -125,7 +125,7 @@ class Timer {
         this.counter = this.counter += 1;
         this.dbCounter = this.dbCounter += 1;
         if (this.dbCounter % 60 === 0) {
-          BL.reconcileRecords(this.currentSite, this.dbCounter);
+          BL.reconcileRecords(this.currentSite, this.dbCounter, 0);
           this.dbCounter = 0;
         }
       }

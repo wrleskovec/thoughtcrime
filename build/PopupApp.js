@@ -4,54 +4,54 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	var _jsx2 = __webpack_require__(1);
-	
+
 	var _jsx3 = _interopRequireDefault(_jsx2);
-	
+
 	var _react = __webpack_require__(58);
-	
+
 	var _react2 = _interopRequireDefault(_react);
-	
+
 	var _reactDom = __webpack_require__(90);
-	
+
 	var _redux = __webpack_require__(227);
-	
+
 	var _reactRedux = __webpack_require__(240);
-	
+
 	var _reduxSaga = __webpack_require__(249);
-	
+
 	var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
-	
+
 	var _Popup = __webpack_require__(495);
-	
+
 	var _Popup2 = _interopRequireDefault(_Popup);
-	
+
 	var _Popup3 = __webpack_require__(496);
-	
+
 	var _Popup4 = _interopRequireDefault(_Popup3);
-	
+
 	var _popupSagas = __webpack_require__(501);
-	
+
 	var _popupSagas2 = _interopRequireDefault(_popupSagas);
-	
+
 	__webpack_require__(485);
-	
+
 	__webpack_require__(492);
-	
+
 	__webpack_require__(494);
-	
+
 	var _blockList = __webpack_require__(263);
-	
+
 	var _blockList2 = _interopRequireDefault(_blockList);
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
+
 	_blockList2.default.init();
 	var sagaMiddleware = (0, _reduxSaga2.default)();
 	var store = (0, _redux.createStore)(_Popup2.default, (0, _redux.applyMiddleware)(sagaMiddleware));
 	sagaMiddleware.run(_popupSagas2.default);
-	
+
 	(0, _reactDom.render)((0, _jsx3.default)(_reactRedux.Provider, {
 	  store: store
 	}, void 0, (0, _jsx3.default)(_Popup4.default, {})), document.getElementById('PopupApp'));
@@ -62,22 +62,22 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = reducer;
-	
+
 	var _update = __webpack_require__(262);
-	
+
 	var _update2 = _interopRequireDefault(_update);
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
+
 	function reducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? { sites: [], message: '', timer: null } : arguments[0];
 	  var action = arguments[1];
-	
+
 	  switch (action.type) {
 	    case 'ADD_SITE_SUCCEEDED':
 	      return (0, _update2.default)(state, {
@@ -102,89 +102,89 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
+
 	var _jsx2 = __webpack_require__(1);
-	
+
 	var _jsx3 = _interopRequireDefault(_jsx2);
-	
+
 	var _getPrototypeOf = __webpack_require__(406);
-	
+
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
+
 	var _classCallCheck2 = __webpack_require__(292);
-	
+
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
+
 	var _createClass2 = __webpack_require__(293);
-	
+
 	var _createClass3 = _interopRequireDefault(_createClass2);
-	
+
 	var _possibleConstructorReturn2 = __webpack_require__(410);
-	
+
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
+
 	var _inherits2 = __webpack_require__(414);
-	
+
 	var _inherits3 = _interopRequireDefault(_inherits2);
-	
+
 	var _react = __webpack_require__(58);
-	
+
 	var _react2 = _interopRequireDefault(_react);
-	
+
 	var _reactRedux = __webpack_require__(240);
-	
+
 	var _wurl = __webpack_require__(497);
-	
+
 	var _wurl2 = _interopRequireDefault(_wurl);
-	
+
 	var _tc = __webpack_require__(498);
-	
+
 	var _tc2 = _interopRequireDefault(_tc);
-	
+
 	var _common = __webpack_require__(478);
-	
+
 	var _popup = __webpack_require__(499);
-	
+
 	var _Timer = __webpack_require__(500);
-	
+
 	var _Timer2 = _interopRequireDefault(_Timer);
-	
+
 	var _InputBar = __webpack_require__(477);
-	
+
 	var _InputBar2 = _interopRequireDefault(_InputBar);
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
+
 	var styleHeading = { padding: '0px' };
 	var styleTitle = { padding: '10px 15px 10px 15px' };
 	var styleLogo = { padding: '3px 15px 4px 5px' };
-	
+
 	var PopupApp = function (_React$Component) {
 	  (0, _inherits3.default)(PopupApp, _React$Component);
-	
+
 	  function PopupApp(props) {
 	    (0, _classCallCheck3.default)(this, PopupApp);
-	
+
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (PopupApp.__proto__ || (0, _getPrototypeOf2.default)(PopupApp)).call(this, props));
-	
+
 	    _this.goToOptions = _this.goToOptions.bind(_this);
 	    _this.state = {
 	      currentValue: ''
 	    };
 	    return _this;
 	  }
-	
+
 	  (0, _createClass3.default)(PopupApp, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      var _this2 = this;
-	
+
 	      var getTimer = this.props.getTimer;
-	
+
 	      getTimer();
 	      chrome.tabs.getSelected(null, function (tab) {
 	        _this2.setState({ currentValue: (0, _wurl2.default)('domain', tab.url) });
@@ -237,7 +237,7 @@ webpackJsonp([1],{
 	  }]);
 	  return PopupApp;
 	}(_react2.default.Component);
-	
+
 	exports.default = (0, _reactRedux.connect)(function (state) {
 	  return {
 	    sites: state.sites,
@@ -268,7 +268,7 @@ webpackJsonp([1],{
 /***/ function(module, exports) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -285,53 +285,53 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
+
 	var _jsx2 = __webpack_require__(1);
-	
+
 	var _jsx3 = _interopRequireDefault(_jsx2);
-	
+
 	var _getPrototypeOf = __webpack_require__(406);
-	
+
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
+
 	var _classCallCheck2 = __webpack_require__(292);
-	
+
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
+
 	var _createClass2 = __webpack_require__(293);
-	
+
 	var _createClass3 = _interopRequireDefault(_createClass2);
-	
+
 	var _possibleConstructorReturn2 = __webpack_require__(410);
-	
+
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
+
 	var _inherits2 = __webpack_require__(414);
-	
+
 	var _inherits3 = _interopRequireDefault(_inherits2);
-	
+
 	var _react = __webpack_require__(58);
-	
+
 	var _react2 = _interopRequireDefault(_react);
-	
+
 	var _moment = __webpack_require__(298);
-	
+
 	var _moment2 = _interopRequireDefault(_moment);
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
+
 	var Timer = function (_React$Component) {
 	  (0, _inherits3.default)(Timer, _React$Component);
-	
+
 	  function Timer(props) {
 	    (0, _classCallCheck3.default)(this, Timer);
-	
+
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Timer.__proto__ || (0, _getPrototypeOf2.default)(Timer)).call(this, props));
-	
+
 	    console.log('In Timer: ' + props.timer);
 	    _this.state = {
 	      seconds: props.timer || 0
@@ -340,7 +340,7 @@ webpackJsonp([1],{
 	    _this.interval = setInterval(_this.incrementTimer, 1000);
 	    return _this;
 	  }
-	
+
 	  (0, _createClass3.default)(Timer, [{
 	    key: 'incrementTimer',
 	    value: function incrementTimer() {
@@ -353,13 +353,13 @@ webpackJsonp([1],{
 	    value: function render() {
 	      console.log(this.state.seconds);
 	      var spanTimer = (0, _moment2.default)('2015-01-01').startOf('day').seconds(this.state.seconds).format('H:mm:ss');
-	
+
 	      return (0, _jsx3.default)('span', {}, void 0, spanTimer);
 	    }
 	  }]);
 	  return Timer;
 	}(_react2.default.Component);
-	
+
 	exports.default = Timer;
 
 /***/ },
@@ -368,31 +368,31 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
+
 	var _regenerator = __webpack_require__(480);
-	
+
 	var _regenerator2 = _interopRequireDefault(_regenerator);
-	
+
 	var _promise = __webpack_require__(264);
-	
+
 	var _promise2 = _interopRequireDefault(_promise);
-	
+
 	exports.default = popupSagas;
-	
+
 	var _effects = __webpack_require__(483);
-	
+
 	var _sagasDB = __webpack_require__(484);
-	
+
 	var _reduxSaga = __webpack_require__(249);
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
+
 	var _marked = [getTimer, getTimerSaga, popupSagas].map(_regenerator2.default.mark);
-	
+
 	function sendTimerMessage() {
 	  return new _promise2.default(function (resolve, reject) {
 	    chrome.runtime.sendMessage({ timer: 'popup' }, function (response) {
@@ -400,7 +400,7 @@ webpackJsonp([1],{
 	    });
 	  });
 	}
-	
+
 	function getTimer() {
 	  var timer;
 	  return _regenerator2.default.wrap(function getTimer$(_context) {
@@ -410,24 +410,24 @@ webpackJsonp([1],{
 	          _context.prev = 0;
 	          _context.next = 3;
 	          return (0, _effects.call)(sendTimerMessage);
-	
+
 	        case 3:
 	          timer = _context.sent;
-	
+
 	          console.log(timer);
 	          _context.next = 7;
 	          return (0, _effects.put)({ type: 'RECIEVE_TIMER', timer: timer });
-	
+
 	        case 7:
 	          _context.next = 12;
 	          break;
-	
+
 	        case 9:
 	          _context.prev = 9;
 	          _context.t0 = _context['catch'](0);
-	
+
 	          console.error(_context.t0);
-	
+
 	        case 12:
 	        case 'end':
 	          return _context.stop();
@@ -441,7 +441,7 @@ webpackJsonp([1],{
 	      switch (_context2.prev = _context2.next) {
 	        case 0:
 	          return _context2.delegateYield((0, _reduxSaga.takeLatest)('GET_TIMER', getTimer), 't0', 1);
-	
+
 	        case 1:
 	        case 'end':
 	          return _context2.stop();
@@ -456,11 +456,11 @@ webpackJsonp([1],{
 	        case 0:
 	          _context3.next = 2;
 	          return (0, _effects.fork)(_sagasDB.addSiteSaga);
-	
+
 	        case 2:
 	          _context3.next = 4;
 	          return (0, _effects.fork)(getTimerSaga);
-	
+
 	        case 4:
 	        case 'end':
 	          return _context3.stop();

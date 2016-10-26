@@ -128,11 +128,11 @@ class BlockList {
       timeSpent: record.timeSpent + timeSpent
     });
   }
-  reconcileRecords(site, seconds) {
+  reconcileRecords(site, seconds, visits) {
     const cacheIndex = this.dailyRecord.sites.findIndex(record => record.site === site);
     if (cacheIndex !== -1) {
       const siteRecord = this.dailyRecord.sites[cacheIndex];
-      siteRecord.visits += 1;
+      siteRecord.visits += visits;
       siteRecord.timeSpent += seconds;
     } else {
       this.dailyRecord.sites.push({

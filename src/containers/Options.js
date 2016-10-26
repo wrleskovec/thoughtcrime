@@ -25,7 +25,6 @@ class OptionsApp extends React.Component {
               <div className="page-header text-center">
                 <h1>ThoughtCrime - <small>Dashboard</small></h1>
               </div>
-
             </div>
           </div>
           <div className="row">
@@ -37,18 +36,27 @@ class OptionsApp extends React.Component {
                 <li role="presentation"><a href="#">Settings</a></li>
               </ul>
             </div>
-            <div className="col-md-10 offset-md-2 main">
+            <div className="col-md-10 main">
               <div className="row">
-                <div className="col-md-4">
-                  <InputBar addSite={this.props.addSite} />
+                <div className="col-md-4 panel panel-default">
+                  <div className="panel-heading">
+                    <h3 className="panel-title">Add Pattern</h3>
+                  </div>
+                  <div className="panel-body">
+                    <InputBar addSite={this.props.addSite} />
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <SiteTable sites={this.props.sites} maxEntry={10} />
+                <div className="col-md-7 panel panel-default">
+                  <div className="panel-heading">
+                    <h3 className="panel-title">Add Pattern</h3>
+                  </div>
+                  <div className="panel-body">
+                    <SiteTable sites={this.props.sites} maxEntry={10} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     );
