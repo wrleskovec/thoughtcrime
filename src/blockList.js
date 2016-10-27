@@ -130,6 +130,7 @@ class BlockList {
   }
   reconcileRecords(site, seconds, visits) {
     const cacheIndex = this.dailyRecord.sites.findIndex(record => record.site === site);
+    console.log(cacheIndex);
     if (cacheIndex !== -1) {
       const siteRecord = this.dailyRecord.sites[cacheIndex];
       siteRecord.visits += visits;

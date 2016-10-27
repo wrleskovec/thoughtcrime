@@ -1,19 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SiteTable from '../components/SiteTable.js';
-import InputBar from '../components/InputBar.js';
 import logo from '../img/thoughtcrime.svg';
+import menuOptions from './options/AllOptions.js';
 
 import { addSite, fetchSites } from '../actions/common.js';
 
 class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectedPage: 'Dash'
+    };
+    this.onMenuClick = this.onMenuClick.bind(this);
   }
-  componentWillMount() {
+  onMenuClick(id) {
+    return e => {
+      this.setState({ selectedPage: id });
+    };
   }
 
+
   render() {
+    const Content = menuOptions[this.state.selectedPage];
     return (
       <div id="OptionsApp">
         <div className="container-fluid">
@@ -23,38 +31,29 @@ class OptionsApp extends React.Component {
             </div>
             <div className="col-md-10 offset-md-2">
               <div className="page-header text-center">
-                <h1>ThoughtCrime - <small>Dashboard</small></h1>
+                <h1>ThoughtCrime - <small>{this.state.selectedPage}</small></h1>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-md-2 sidebar">
               <ul className="nav nav-sidebar nav-pills nav-stacked">
-                <li role="presentation" className="active"><a href="#">Dashboard</a></li>
-                <li role="presentation"><a href="#">Statistics</a></li>
-                <li role="presentation"><a href="#">Filtering</a></li>
-                <li role="presentation"><a href="#">Settings</a></li>
+                {Object.keys(menuOptions).map(item => {
+                  const active = (this.state.selectedPage === item) ? 'active' : '';
+                  return (
+                    <li
+                      id={item}
+                      key={item}
+                      role="presentation" className={active} onClick={this.onMenuClick(item)}
+                    >
+                      <a href="#">{item}</a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <div className="col-md-10 main">
-              <div className="row">
-                <div className="col-md-4 panel panel-default">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Add Pattern</h3>
-                  </div>
-                  <div className="panel-body">
-                    <InputBar addSite={this.props.addSite} />
-                  </div>
-                </div>
-                <div className="col-md-7 panel panel-default">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Add Pattern</h3>
-                  </div>
-                  <div className="panel-body">
-                    <SiteTable sites={this.props.sites} maxEntry={10} />
-                  </div>
-                </div>
-              </div>
+              <Content />
             </div>
           </div>
         </div>
