@@ -164,6 +164,7 @@ class BlockList {
       });
   }
   fetchTodayStats() {
+    console.log(this.dailyRecord.sites);
     return this.dailyRecord.sites.map(record => ({
       site: record.site,
       timeSpent: (

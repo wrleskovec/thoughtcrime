@@ -1,7 +1,12 @@
 import update from 'react/lib/update';
 import BL from '../blockList.js';
 
-export default function reducer(state = { sites: BL.fetchTodayStats(), message: '' }, action) {
+function reducer(state = {
+  dailySites: BL.fetchTodayStats(),
+  sites: [],
+  message: '',
+  modalID: null
+}, action) {
   switch (action.type) {
     case 'ADD_SITE_SUCCEEDED':
       return update(state, {
@@ -19,7 +24,13 @@ export default function reducer(state = { sites: BL.fetchTodayStats(), message: 
       return update(state, {
         sites: { $set: action.sites }
       });
+    case 'OPEN_MODAL':
+      return update(state, {
+        modalID: { $set: action.modalID }
+      });
     default:
       return state;
   }
 }
+
+export default reducer;

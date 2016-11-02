@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SiteTable from '../../components/SiteTable.js';
 import InputBar from '../../components/InputBar.js';
 
-import { addSite, fetchSites } from '../../actions/common.js';
+import { addSite } from '../../actions/common.js';
 
 class Dash extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Dash extends React.Component {
             <h3 className="panel-title">Daily Statistics</h3>
           </div>
           <div className="panel-body">
-            <SiteTable sites={this.props.sites} maxEntry={10} />
+            <SiteTable sites={this.props.dailySites} maxEntry={10} />
           </div>
         </div>
       </div>
@@ -37,14 +37,13 @@ class Dash extends React.Component {
 export default connect(
   state => (
     {
-      sites: state.sites,
+      dailySites: state.dailySites,
       message: state.message
     }
   ),
   dispatch => (
     {
-      addSite: site => dispatch(addSite(site)),
-      fetchSites: () => dispatch(fetchSites())
+      addSite: site => dispatch(addSite(site))
     }
   )
 )(Dash);

@@ -1,34 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SiteTable from '../../components/SiteTable.js';
-import InputBar from '../../components/InputBar.js';
-
-import { addSite, fetchSites } from '../../actions/common.js';
+import { editRecord, openModal } from '../../actions/options.js';
+import { fetchSites } from '../../actions/common.js';
+import SearchSiteDB from '../../components/SearchSiteDB.js';
 
 class Filtering extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentWillMount() {
+    fetchSites();
+  }
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-4 panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Add Pattern</h3>
-          </div>
-          <div className="panel-body">
-            <InputBar addSite={this.props.addSite} />
-          </div>
-        </div>
-        <div className="col-md-7 panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Add Pattern</h3>
-          </div>
-          <div className="panel-body">
-            <SiteTable sites={this.props.sites} maxEntry={10} />
-          </div>
-        </div>
+      <div className="col-md-10 panel panel-default">
+        <div className="panel-heading">Lookup Record</div>
+        <div className="panel-body">SearchBox goes HERE</div>
+        <SearchSiteDB openModal={openModal} sites={this.props.sites || []} />
       </div>
     );
   }
@@ -43,8 +32,9 @@ export default connect(
   ),
   dispatch => (
     {
-      addSite: site => dispatch(addSite(site)),
-      fetchSites: () => dispatch(fetchSites())
+      fetchSites: () => dispatch(fetchSites()),
+      editRecord: record => dispatch(editRecord(record)),
+      openModal: modalID => dispatch(openModal(modalID))
     }
   )
 )(Filtering);
