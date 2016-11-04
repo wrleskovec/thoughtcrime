@@ -9,6 +9,7 @@ class Filtering extends React.Component {
     super(props);
   }
   componentWillMount() {
+    console.log('React is bullshit');
     fetchSites();
   }
 

@@ -8,24 +8,20 @@ export default class InputBar extends React.Component {
   onSubmitPattern(e) {
     e.preventDefault();
     this.props.addSite(this.refs.patternInput.value.trim());
-    this.setState({ currentValue: '' });
+    this.refs.patternInput.value = '';
   }
   render() {
     return (
       <div id="InputBar">
         <form onSubmit={this.onSubmitPattern}>
-          <div className="input-group">
+          <div className="form-group">
             <input
               type="text"
               className="form-control"
-              name="patternInput" ref="patternInput" value={this.props.currentValue || ''}
+              name="patternInput" ref="patternInput" defaultValue={this.props.currentValue || ''}
             />
-            <span className="input-group-btn">
-              <input type="submit" className="btn btn-default" value="Add" />
-            </span>
-
           </div>
-
+          <input type="submit" className="btn btn-default" value="Add" />
         </form>
         <div className="alert alert-warning" role="alert">
         </div>

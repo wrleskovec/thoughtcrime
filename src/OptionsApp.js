@@ -7,8 +7,6 @@ import reducer from './reducers/Options.js';
 import OptionsApp from './containers/Options.js';
 import optionsSagas from './sagas/optionsSagas.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'jquery/jquery.min.js';
-import 'bootstrap/dist/js/bootstrap.min.js';
 import BL from './blockList.js';
 
 

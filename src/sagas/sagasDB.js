@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { takeEvery } from 'redux-saga';
+import { takeLatest } from 'redux-saga';
 import BL from '../blockList.js';
 
 function* addSite(action) {
@@ -16,7 +16,7 @@ function* fetchSites() {
   console.log('Hmmmmmm');
   console.log(BL.idb);
   try {
-    const sites = BL.fetchSites();
+    const sites = yield call([BL, BL.fetchSites]);
     console.log(sites);
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
     console.log('woo?');
@@ -26,11 +26,9 @@ function* fetchSites() {
   }
 }
 export function* addSiteSaga() {
-  yield* takeEvery('ADD_SITE', addSite);
+  yield* takeLatest('ADD_SITE', addSite);
 }
 
 export function* fetchSitesSaga() {
-  console.log('weird right?');
-  yield* takeEvery('SITE_FETCH_REQUESTED', fetchSites);
-  console.log('mega weird');
+  yield* takeLatest('SITE_FETCH_REQUESTED', fetchSites);
 }
