@@ -6,7 +6,9 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers/Options.js';
 import OptionsApp from './containers/Options.js';
 import optionsSagas from './sagas/optionsSagas.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'jquery/jquery.js';
+import 'bootstrap/dist/js/bootstrap.js';
 import BL from './blockList.js';
 
 
