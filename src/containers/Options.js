@@ -1,11 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import logo from '../img/thoughtcrime.svg';
 import menuOptions from './options/AllOptions.js';
 
-import { addSite, fetchSites } from '../actions/common.js';
-
-class OptionsApp extends React.Component {
+export default class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,18 +58,3 @@ class OptionsApp extends React.Component {
     );
   }
 }
-
-export default connect(
-  state => (
-    {
-      sites: state.sites,
-      message: state.message
-    }
-  ),
-  dispatch => (
-    {
-      addSite: site => dispatch(addSite(site)),
-      fetchSites: () => dispatch(fetchSites())
-    }
-  )
-)(OptionsApp);
