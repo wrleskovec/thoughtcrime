@@ -39,7 +39,7 @@ class Timer {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.focus) {
         const senderSite = wurl('domain', sender.tab.url);
-        if (request.focus === 'focus' && senderSite !== this.currentSite && senderSite != null
+        if (request.focus === 'focus' && senderSite !== this.currentSite && senderSite
          && sender.tab.id !== this.currentTab && this.isValidProtocol(senderSite)) {
           this.popup = false;
           if (this.currentSite !== null) {
@@ -49,7 +49,7 @@ class Timer {
           this.currentSite = senderSite;
           this.startInterval();
         } else if (request.focus === 'blur') {
-          if (sender.tab.id === this.currentTab && senderSite != null && !this.popup) {
+          if (sender.tab.id === this.currentTab && senderSite && !this.popup) {
             console.log('wow');
             this.saveRecords();
             this.currentSite = null;

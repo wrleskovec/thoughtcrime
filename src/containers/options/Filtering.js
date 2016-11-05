@@ -7,6 +7,7 @@ import SearchSiteDB from '../../components/SearchSiteDB.js';
 class Filtering extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
   }
   componentWillMount() {
     console.log('React is bullshit');
@@ -33,7 +34,7 @@ export default connect(
   ),
   dispatch => (
     {
-      fetchSites: () => dispatch(fetchSites()),
+      fetchSites: action => dispatch(fetchSites(action)),
       editRecord: record => dispatch(editRecord(record)),
       openModal: modalID => dispatch(openModal(modalID))
     }
