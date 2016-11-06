@@ -9,9 +9,9 @@ BL.init().then(() => {
 const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
 
 function loadFilteredPage(tabId, url) {
-  chrome.tabs.update(tabId, {
-    url
-  });
+  setTimeout(() => {
+    chrome.tabs.update(tabId, { url });
+  }, 500);
 }
 
 function urlCheck(details) {
@@ -21,6 +21,7 @@ function urlCheck(details) {
     BL.getRecord(site)
       .then(record => {
         if (record.action === 'block') {
+          console.log('HMMMMMMMMM');
           loadFilteredPage(details.tabId, BLOCKED_PAGE);
         }
       })

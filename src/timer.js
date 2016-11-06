@@ -134,7 +134,7 @@ class Timer {
 }
 const proxyTimer = new Proxy(new Timer(), {
   set(target, key, value) {
-    console.log(`${key}: ${value}`);
+    // console.log(`${key}: ${value}`);
     target[key] = value;
     return true;
   }

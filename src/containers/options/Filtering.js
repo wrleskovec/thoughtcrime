@@ -14,11 +14,13 @@ class Filtering extends React.Component {
   }
 
   render() {
+    console.log(this.props.sites);
+    const loaded = this.props.sites[0] != null;
     return (
       <div className="col-md-10 panel panel-default">
         <div className="panel-heading">Lookup Record</div>
         <div className="panel-body">SearchBox goes HERE</div>
-        <SearchSiteDB openModal={openModal} sites={this.props.sites || []} />
+        {loaded && <SearchSiteDB openModal={openModal} sites={this.props.sites} />}
       </div>
     );
   }
