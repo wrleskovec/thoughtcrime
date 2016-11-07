@@ -15,7 +15,7 @@ class PopupApp extends React.Component {
     super(props);
     this.goToOptions = this.goToOptions.bind(this);
     this.state = {
-      currentValue: '',
+      currentValue: undefined,
     };
   }
   componentWillMount() {
@@ -47,9 +47,10 @@ class PopupApp extends React.Component {
 
         </div>
         <div className="panel-body">
-          <InputBar
-            addSite={this.props.addSite} currentValue={this.state.currentValue}
-          />
+          {this.state.currentValue &&
+            <InputBar
+              addSite={this.props.addSite} currentValue={this.state.currentValue}
+            />}
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
             Options

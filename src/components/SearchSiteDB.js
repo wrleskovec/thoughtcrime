@@ -45,8 +45,8 @@ export default class SearchSiteDB extends React.Component {
 
   render() {
     return (
-      <table className="table">
-        <thead>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-inverse">
           <tr>
             <th>#</th>
             <th onClick={this.onHeaderClick('site')}>Site</th>
@@ -56,9 +56,12 @@ export default class SearchSiteDB extends React.Component {
             <th>AdvAction</th>
           </tr>
         </thead>
-        {this.state.records.map((record, index, array) => (
-          <SiteDBRow id={index} openModal={this.props.openModal} {...record} />
-        ))}
+        <tbody>
+          {this.state.records.map((record, index, array) => (
+            <SiteDBRow id={index} openModal={this.props.openModal} {...record} />
+          ))}
+        </tbody>
+
       </table>
     );
   }

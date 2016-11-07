@@ -11,6 +11,7 @@ export default class InputBar extends React.Component {
     this.refs.patternInput.value = '';
   }
   render() {
+    console.log(`currentValue: ${this.props.currentValue}`);
     return (
       <div id="InputBar">
         <form onSubmit={this.onSubmitPattern}>
