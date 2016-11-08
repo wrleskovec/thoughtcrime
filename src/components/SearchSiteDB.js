@@ -55,7 +55,13 @@ export default class SearchSiteDB extends React.Component {
     for (let i = 0; i < numOfPages; i++) {
       pages.push(<li key={i}><a key={`page${i}`} id={`page${i}`} href="#">{i + 1}</a></li>);
     }
-    const pagination = <ul className="pagination" onClick={this.onPageClick}>{pages}</ul>;
+    const pagination = (
+      <nav className="tablePagination" aria-label="...">
+        <ul className="pagination" onClick={this.onPageClick}>
+          {pages}
+        </ul>
+      </nav>
+    );
     const offset = pageN * PAGE_LIMIT;
     const currentPage = records.slice(offset, offset + PAGE_LIMIT);
 

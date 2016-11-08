@@ -8,13 +8,13 @@ export default function SiteDBRow(props) {
   return (
     <tr id={`datarow-${id + offset}`} key={id + offset} >
       <th scope="row">{id + offset + 1}</th>
-      <td>{site}</td>
-      <td>{visits}</td>
-      <td>{moment('2015-01-01').startOf('day')
+      <td className="dataCell">{site}</td>
+      <td className="dataCell">{visits}</td>
+      <td className="dataCell">{moment('2015-01-01').startOf('day')
             .seconds(timeSpent)
             .format('H:mm:ss')}</td>
-      <td>{action}</td>
-      <td>{JSON.stringify(advAction)}</td>
+      <td className="dataCell">{action}</td>
+      <td className="dataCell">{JSON.stringify(advAction)}</td>
     </tr>
   );
 }
