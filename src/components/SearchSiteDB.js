@@ -1,5 +1,8 @@
 import React from 'react';
 import SiteDBRow from './SiteDBRow.js';
+import Pagination from './Pagination';
+
+const PAGE_ITEMS = 12;
 
 export default class SearchSiteDB extends React.Component {
   constructor(props) {
@@ -18,12 +21,21 @@ export default class SearchSiteDB extends React.Component {
       sortBy: 'action',
       order: 1,
       records,
-      pageN: 0
+      pageN: 0,
     };
   }
   onPageClick(e) {
-    const pageN = parseInt(e.target.id.slice(4));
-    this.setState({ pageN });
+    const { pageN, records } = this.state;
+    const id = e.target.id;
+    const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
+
+    if (id === 'pagePrev' && pageN > 0) {
+      this.setState({ pageN: pageN - 1 });
+    } else if (id === 'pageNext' && pageN < numOfPages) {
+      this.setState({ pageN: pageN + 1 });
+    } else if (id.indexOf('page') > -1) {
+      this.setState({ pageN: parseInt(id.slice(4), 10) });
+    }
   }
   onHeaderClick(header) {
     return e => {
@@ -48,22 +60,11 @@ export default class SearchSiteDB extends React.Component {
   }
 
   render() {
-    const PAGE_LIMIT = 12;
     const { pageN, records } = this.state;
-    const numOfPages = Math.ceil(records.length / PAGE_LIMIT);
-    const pages = [];
-    for (let i = 0; i < numOfPages; i++) {
-      pages.push(<li key={i}><a key={`page${i}`} id={`page${i}`} href="#">{i + 1}</a></li>);
-    }
-    const pagination = (
-      <nav className="tablePagination" aria-label="...">
-        <ul className="pagination" onClick={this.onPageClick}>
-          {pages}
-        </ul>
-      </nav>
-    );
-    const offset = pageN * PAGE_LIMIT;
-    const currentPage = records.slice(offset, offset + PAGE_LIMIT);
+    const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
+
+    const offset = pageN * PAGE_ITEMS;
+    const currentPage = records.slice(offset, offset + PAGE_ITEMS);
 
     return (
       <div id="searchSiteDB">
@@ -87,7 +88,7 @@ export default class SearchSiteDB extends React.Component {
             ))}
           </tbody>
         </table>
-        {pagination}
+        <Pagination onPageClick={this.onPageClick} pageN={pageN} numOfPages={numOfPages} />
       </div>
     );
   }
