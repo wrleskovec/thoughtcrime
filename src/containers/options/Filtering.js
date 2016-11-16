@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { editRecord, openModal } from '../../actions/options.js';
 import { fetchSites } from '../../actions/common.js';
 import SearchSiteDB from '../../components/SearchSiteDB.js';
+import SearchRecordsBox from '../../components/SearchRecordsBox';
 
 class Filtering extends React.Component {
   constructor(props) {
@@ -19,7 +20,9 @@ class Filtering extends React.Component {
     return (
       <div className="col-md-10 panel panel-default">
         <div className="panel-heading">Lookup Record</div>
-        <div className="panel-body">SearchBox goes HERE</div>
+        <div className="panel-body">
+          <SearchRecordsBox />
+        </div>
         {loaded && <SearchSiteDB openModal={openModal} sites={this.props.sites} />}
       </div>
     );

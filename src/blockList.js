@@ -156,7 +156,7 @@ class BlockList {
 // consider renaming
   fetchSites() {
     return this.idb.sites.query()
-      .all()
+      .filter('action', 'block')
       .execute()
       .then(sites => {
         console.log(sites);
