@@ -11,23 +11,17 @@ export default class SearchSiteDB extends React.Component {
     console.log(props);
     this.onHeaderClick = this.onHeaderClick.bind(this);
     this.onPageClick = this.onPageClick.bind(this);
-    let records;
-    if (props.sites && props.sites.length > 1) {
-      records = this.sortProps(props.sites, 'action', 1);
-    } else {
-      records = [];
-    }
     this.state = {
       sortBy: 'action',
       order: 1,
-      records,
       pageN: 0,
     };
   }
   onPageClick(e) {
-    const { pageN, records } = this.state;
+    const { pageN } = this.state;
+    const { sites } = this.props;
     const id = e.target.id;
-    const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
+    const numOfPages = Math.ceil(sites.length / PAGE_ITEMS);
 
     if (id === 'pagePrev' && pageN > 0) {
       this.setState({ pageN: pageN - 1 });
@@ -60,7 +54,15 @@ export default class SearchSiteDB extends React.Component {
   }
 
   render() {
-    const { pageN, records } = this.state;
+    const { sites, openModal } = this.props;
+    const { pageN, sortBy } = this.state;
+    let records;
+    if (sites && sites.length > 0) {
+      records = this.sortProps(sites, sortBy, 1);
+    } else {
+      records = [];
+    }
+
     const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
 
     const offset = pageN * PAGE_ITEMS;
@@ -82,7 +84,7 @@ export default class SearchSiteDB extends React.Component {
           <tbody>
             {currentPage.map((record, index, array) => (
               <SiteDBRow
-                id={index} openModal={this.props.openModal}
+                id={index} openModal={openModal}
                 offset={offset} {...record}
               />
             ))}

@@ -55,6 +55,7 @@ class BlockList {
       return this.getDayRecord(this.date)
         .then(day => {
           console.log('Maybe?');
+          console.log(this.idb);
           this.dailyRecord = day;
         })
         .catch(() => this.addDayRecord(this.date)
@@ -156,12 +157,8 @@ class BlockList {
 // consider renaming
   fetchSites() {
     return this.idb.sites.query()
-      .filter('action', 'block')
-      .execute()
-      .then(sites => {
-        console.log(sites);
-        return sites;
-      });
+      .all()
+      .execute();
   }
   fetchTodayStats() {
     console.log(this.dailyRecord.sites);

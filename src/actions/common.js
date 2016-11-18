@@ -6,6 +6,6 @@ export function addSite(site) {
 }
 export function fetchSites() {
   return {
-    type: 'SITE_FETCH'
+    type: 'SITE_FETCH',
   };
 }

@@ -1,9 +1,20 @@
 import update from 'react/lib/update';
 import BL from '../blockList.js';
+import Fuse from 'fuse.js';
+
+const fuseOptions = {
+  shouldSort: true,
+  threshold: 0.1,
+  location: 0,
+  distance: 1000,
+  maxPatternLength: 32,
+  keys: ['site']
+};
 
 function reducer(state = {
   dailySites: BL.fetchTodayStats(),
   sites: [],
+  sortedSites: [],
   message: '',
   modalID: null
 }, action) {
@@ -22,8 +33,17 @@ function reducer(state = {
       });
     case 'SITE_FETCH_SUCCESSFUL':
       return update(state, {
-        sites: { $set: action.sites }
+        sites: { $set: action.sites },
+        sortedSites: { $set: action.sites }
       });
+    case 'SITE_SORT': {
+      const fuse = new Fuse(state.sites, fuseOptions);
+      const results = fuse.search(action.filter);
+      return update(state, {
+        sortedSites: { $set: results }
+      });
+    }
+
     case 'OPEN_MODAL':
       return update(state, {
         modalID: { $set: action.modalID }

@@ -10,3 +10,9 @@ export function openModal(modalId) {
     modalId
   };
 }
+export function sortSites(filter) {
+  return {
+    type: 'SITE_SORT',
+    filter
+  };
+}
