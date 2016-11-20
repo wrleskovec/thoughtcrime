@@ -12,11 +12,13 @@ const fuseOptions = {
 };
 
 function reducer(state = {
-  dailySites: BL.fetchTodayStats(),
+  dailySites: BL.fetchDailySites(),
   sites: [],
-  sortedSites: [],
+  searchedSites: [],
   message: '',
-  modalID: null
+  modalObj: null,
+  sortBy: 'action',
+  order: 'DESCENDING'
 }, action) {
   switch (action.type) {
     case 'ADD_SITE_SUCCEEDED':
@@ -34,19 +36,23 @@ function reducer(state = {
     case 'SITE_FETCH_SUCCESSFUL':
       return update(state, {
         sites: { $set: action.sites },
-        sortedSites: { $set: action.sites }
+        searchedSites: { $set: action.sites }
       });
-    case 'SITE_SORT': {
+    case 'SITE_SEARCH': {
+      if (action.filter === '') {
+        return update(state, {
+          searchedSites: { $set: state.sites }
+        });
+      }
       const fuse = new Fuse(state.sites, fuseOptions);
       const results = fuse.search(action.filter);
       return update(state, {
-        sortedSites: { $set: results }
+        searchedSites: { $set: results }
       });
     }
-
     case 'OPEN_MODAL':
       return update(state, {
-        modalID: { $set: action.modalID }
+        modalObj: { $set: action.modalObj }
       });
     default:
       return state;

@@ -6,9 +6,9 @@ export default class SearchRecordsBox extends React.Component {
     this.searchSites = this.searchSites.bind(this);
   }
   searchSites() {
-    const { sortSites } = this.props;
+    const { searchSites } = this.props;
     console.log(this.refs.findSites.value);
-    sortSites(this.refs.findSites.value);
+    searchSites(this.refs.findSites.value);
   }
   render() {
     return (

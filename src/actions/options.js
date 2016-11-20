@@ -4,15 +4,27 @@ export function editRecord(record) {
     record
   };
 }
-export function openModal(modalId) {
+export function openModal(modalObj) {
   return {
     type: 'OPEN_MODAL',
-    modalId
+    modalObj
   };
 }
-export function sortSites(filter) {
+export function searchSites(filter) {
+  return {
+    type: 'SITE_SEARCH',
+    filter
+  };
+}
+export function sortSites(sortBy, order) {
   return {
     type: 'SITE_SORT',
-    filter
+    sortBy,
+    order
+  };
+}
+export function fetchDailySites() {
+  return {
+    type: 'FETCH_DAILY_SITES'
   };
 }

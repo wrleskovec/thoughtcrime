@@ -15,6 +15,7 @@ export default class SearchSiteDB extends React.Component {
       sortBy: 'action',
       order: 1,
       pageN: 0,
+      records: props.sites
     };
   }
   onPageClick(e) {
@@ -55,6 +56,7 @@ export default class SearchSiteDB extends React.Component {
 
   render() {
     const { sites, openModal } = this.props;
+    console.log(sites);
     const { pageN, sortBy } = this.state;
     let records;
     if (sites && sites.length > 0) {
@@ -85,7 +87,7 @@ export default class SearchSiteDB extends React.Component {
             {currentPage.map((record, index, array) => (
               <SiteDBRow
                 id={index} openModal={openModal}
-                offset={offset} {...record}
+                offset={offset} record={record}
               />
             ))}
           </tbody>

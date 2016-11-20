@@ -37,8 +37,8 @@ class Dash extends React.Component {
 export default connect(
   state => (
     {
-      dailySites: state.dailySites,
-      message: state.message
+      dailySites: state.Dash.dailySites,
+      message: state.Dash.message
     }
   ),
   dispatch => (
