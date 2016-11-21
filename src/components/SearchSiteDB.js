@@ -32,6 +32,7 @@ export default class SearchSiteDB extends React.Component {
   onHeaderClick(header) {
     const { sortSites } = this.props;
     return e => {
+      console.log(header);
       sortSites(header);
     };
   }
