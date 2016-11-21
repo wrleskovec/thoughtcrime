@@ -7,12 +7,14 @@ export default class SortableHeader extends React.Component {
     this.onHeaderClick = this.onHeaderClick.bind(this);
   }
   onHeaderClick(e) {
-    this.props.onHeaderClick(this.props.column);
+    console.log(this.refs.column);
+    this.props.onHeaderClick(this.refs.column.innerText);
   }
   render() {
+    const { column } = this.props;
     return (
       <Cell>
-        <a onClick={this.onHeaderClick}>{this.props.column}</a>
+        <a ref={column} onClick={this.onHeaderClick}>{column}</a>
       </Cell>
     );
   }
