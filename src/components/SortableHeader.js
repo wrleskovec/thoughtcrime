@@ -2,20 +2,18 @@ import React from 'react';
 import { Cell } from 'fixed-data-table';
 
 export default class SortableHeader extends React.Component {
-  // test
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.onHeaderClick = this.onHeaderClick.bind(this);
   }
-  handleClick(e) {
-    console.log(this.refs.column);
-    this.props.onHeaderClick(this.refs.column.innerText);
+  onHeaderClick(e) {
+    e.preventDefault();
+    this.props.onHeaderClick(this.props.column);
   }
   render() {
-    const { column } = this.props;
     return (
       <Cell>
-        <a ref={column} onClick={this.handleClick}>{column}</a>
+        <a onClick={this.onHeaderClick}>{this.props.column}</a>
       </Cell>
     );
   }
