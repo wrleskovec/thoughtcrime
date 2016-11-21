@@ -7,9 +7,14 @@ export default class EditModal extends React.Component {
 
   render() {
     console.log(this.props);
-    const { site, action, advAction } = this.props;
+    const { site, action, advAction, modalClicked } = this.props;
+    let showStatus = 'display: none';
+    if (modalClicked) showStatus = 'display: block';
     return (
-      <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div
+        className="modal fade" id="myModal" style={showStatus}
+        tabIndex="-1" role="dialog" aria-labelledby="myModalLabel"
+      >
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">

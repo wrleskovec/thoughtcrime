@@ -20,7 +20,6 @@ class Filtering extends React.Component {
     const { sortSites, searchSites, openModal } = this.props;
     const loaded = searchedSites[0] != null;
     const modalClicked = modalObj !== null;
-    if (modalClicked) $('#myModal').modal('show');
     return (
       <div className="col-md-10 panel panel-default">
         {modalClicked && <EditModal {...modalObj} />}
@@ -31,7 +30,7 @@ class Filtering extends React.Component {
         {loaded &&
           <SearchSiteDB
             openModal={openModal} sortBy={sortBy} order={order}
-            sortSites={sortSites} sites={searchedSites}
+            sortSites={sortSites} sites={searchedSites} modalClicked={modalClicked}
           />
         }
       </div>
