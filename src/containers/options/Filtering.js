@@ -19,7 +19,9 @@ class Filtering extends React.Component {
     const { modalObj, searchedSites, sortBy, order } = this.props;
     const { sortSites, searchSites, openModal } = this.props;
     const loaded = searchedSites[0] != null;
+    console.log(modalObj);
     const modalClicked = modalObj !== null;
+    console.log(modalClicked);
     return (
       <div className="col-md-10 panel panel-default">
         {modalClicked && <EditModal {...modalObj} />}
