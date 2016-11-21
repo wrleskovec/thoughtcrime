@@ -42,7 +42,7 @@ function Filtering(state = {
     }
     case 'SITE_SORT': {
       if (action.sortBy === state.sortBy) {
-        const order = (state.sortBy === 'DESCENDING') ? 'ASCENDING' : 'DESCENDING';
+        const order = (state.order === 'DESCENDING') ? 'ASCENDING' : 'DESCENDING';
         return update(state, {
           order: { $set: order }
         });
