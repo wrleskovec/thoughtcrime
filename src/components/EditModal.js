@@ -13,7 +13,7 @@ export default class EditModal extends React.Component {
     console.log(showStatus);
     return (
       <div
-        className="modal fade" id="myModal" style={showStatus}
+        className="modal fade" id="myModal"
         tabIndex="-1" role="dialog" aria-labelledby="myModalLabel"
       >
         <div className="modal-dialog" role="document">

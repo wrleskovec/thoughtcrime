@@ -1,25 +1,46 @@
 import React from 'react';
 import SiteDBRow from './SiteDBRow.js';
 import Pagination from './Pagination';
+import _ from 'lodash';
 
 const PAGE_ITEMS = 12;
 
 export default class SearchSiteDB extends React.Component {
   constructor(props) {
     super(props);
+    const { sites, sortBy, order, openModal } = this.props;
+    console.log(sites);
 
-    console.log(props);
+    let records;
+    if (sites && sites.length > 0) {
+      records = this.sortProps(sites, sortBy, order);
+    } else {
+      records = [];
+    }
     this.onHeaderClick = this.onHeaderClick.bind(this);
     this.onPageClick = this.onPageClick.bind(this);
     this.state = {
       pageN: 0,
+      records
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(nextProps, this.props)) {
+      const { order, sites, sortBy } = nextProps;
+      let records;
+      if (sites && sites.length > 0) {
+        records = this.sortProps(sites, sortBy, order);
+      } else {
+        records = [];
+      }
+      this.setState({ records });
+    }
+  }
   onPageClick(e) {
-    const { pageN } = this.state;
-    const { sites } = this.props;
+    const { pageN, records } = this.state;
+
     const id = e.target.id;
-    const numOfPages = Math.ceil(sites.length / PAGE_ITEMS);
+    const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
 
     if (id === 'pagePrev' && pageN > 0) {
       this.setState({ pageN: pageN - 1 });
@@ -50,15 +71,8 @@ export default class SearchSiteDB extends React.Component {
   }
 
   render() {
-    const { sites, sortBy, order, openModal } = this.props;
-    console.log(sites);
-    const { pageN } = this.state;
-    let records;
-    if (sites && sites.length > 0) {
-      records = this.sortProps(sites, sortBy, order);
-    } else {
-      records = [];
-    }
+    const { openModal } = this.props;
+    const { pageN, records } = this.state;
 
     const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
 

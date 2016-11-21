@@ -19,7 +19,7 @@ export default function SiteDBRow(props) {
       <td className="dataCell">{record.action}</td>
       <td className="dataCell">{JSON.stringify(record.advAction)}</td>
       <td className="dataCell">
-        <a href="#" onClick={onClickEdit(record)}>
+        <a onClick={onClickEdit(record)}>
           <span className="glyphicon glyphicon-pencil"></span>
         </a>
       </td>
