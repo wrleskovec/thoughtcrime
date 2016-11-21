@@ -24,7 +24,7 @@ class Filtering extends React.Component {
     console.log(modalClicked);
     return (
       <div className="col-md-10 panel panel-default">
-        {modalClicked && <EditModal {...modalObj} />}
+        {modalClicked && <EditModal {...modalObj} modalClicked={modalClicked} />}
         <div className="panel-heading">Lookup Record</div>
         <div className="panel-body">
           <SearchRecordsBox searchSites={searchSites} />
@@ -32,7 +32,7 @@ class Filtering extends React.Component {
         {loaded &&
           <SearchSiteDB
             openModal={openModal} sortBy={sortBy} order={order}
-            sortSites={sortSites} sites={searchedSites} modalClicked={modalClicked}
+            sortSites={sortSites} sites={searchedSites}
           />
         }
       </div>
