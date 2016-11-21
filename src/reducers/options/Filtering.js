@@ -40,6 +40,17 @@ function Filtering(state = {
         searchedSites: { $set: results }
       });
     }
+    case 'SITE_SORT': {
+      if (action.sortBy === state.sortBy) {
+        const order = (state.sortBy === 'DESCENDING') ? 'ASCENDING' : 'DESCENDING';
+        return update(state, {
+          order: { $set: order }
+        });
+      }
+      return update(state, {
+        sortBy: { $set: action.sortBy }
+      });
+    }
     case 'OPEN_MODAL':
       return update(state, {
         modalObj: { $set: action.modalObj }

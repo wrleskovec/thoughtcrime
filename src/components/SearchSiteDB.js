@@ -12,10 +12,7 @@ export default class SearchSiteDB extends React.Component {
     this.onHeaderClick = this.onHeaderClick.bind(this);
     this.onPageClick = this.onPageClick.bind(this);
     this.state = {
-      sortBy: 'action',
-      order: 1,
       pageN: 0,
-      records: props.sites
     };
   }
   onPageClick(e) {
@@ -33,34 +30,31 @@ export default class SearchSiteDB extends React.Component {
     }
   }
   onHeaderClick(header) {
+    const { sortSites } = this.props;
     return e => {
-      const order = (header === this.state.sortBy) ? -this.state.order : 1;
-      this.setState({
-        sortBy: header,
-        order,
-        records: this.sortProps(this.state.records, header, order)
-      });
+      sortSites(header);
     };
   }
   sortProps(sites, sortBy, order) {
+    const sortOrder = (order === 'DESCENDING') ? 1 : -1;
     return sites.sort((a, b) => {
       if (a[sortBy] < b[sortBy]) {
-        return order * 1;
+        return sortOrder * 1;
       }
       if (a[sortBy] > b[sortBy]) {
-        return order * -1;
+        return sortOrder * -1;
       }
       return 0;
     });
   }
 
   render() {
-    const { sites, openModal } = this.props;
+    const { sites, sortBy, order, openModal } = this.props;
     console.log(sites);
-    const { pageN, sortBy } = this.state;
+    const { pageN } = this.state;
     let records;
     if (sites && sites.length > 0) {
-      records = this.sortProps(sites, sortBy, 1);
+      records = this.sortProps(sites, sortBy, order);
     } else {
       records = [];
     }

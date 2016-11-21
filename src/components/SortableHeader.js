@@ -7,7 +7,6 @@ export default class SortableHeader extends React.Component {
     this.onHeaderClick = this.onHeaderClick.bind(this);
   }
   onHeaderClick(e) {
-    e.preventDefault();
     this.props.onHeaderClick(this.props.column);
   }
   render() {

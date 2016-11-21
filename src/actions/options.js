@@ -16,11 +16,10 @@ export function searchSites(filter) {
     filter
   };
 }
-export function sortSites(sortBy, order) {
+export function sortSites(sortBy) {
   return {
     type: 'SITE_SORT',
-    sortBy,
-    order
+    sortBy
   };
 }
 export function fetchDailySites() {

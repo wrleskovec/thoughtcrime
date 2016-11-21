@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { editRecord, openModal, searchSites } from '../../actions/options.js';
+import { editRecord, openModal, searchSites, sortSites } from '../../actions/options.js';
 import { fetchSites, } from '../../actions/common.js';
 import SearchSiteDB from '../../components/SearchSiteDB.js';
 import SearchRecordsBox from '../../components/SearchRecordsBox';
@@ -16,19 +16,24 @@ class Filtering extends React.Component {
   }
 
   render() {
-    console.log(this.props.searchedSites);
-    console.log(this.props.modalObj);
-    const loaded = this.props.searchedSites[0] != null;
-    const modalClicked = this.props.modalObj !== null;
+    const { modalObj, searchedSites, sortBy, order } = this.props;
+    const { sortSites, searchSites, openModal } = this.props;
+    const loaded = searchedSites[0] != null;
+    const modalClicked = modalObj !== null;
     if (modalClicked) $('#myModal').modal('show');
     return (
       <div className="col-md-10 panel panel-default">
-        {modalClicked && <EditModal {...this.props.modalObj} />}
+        {modalClicked && <EditModal {...modalObj} />}
         <div className="panel-heading">Lookup Record</div>
         <div className="panel-body">
-          <SearchRecordsBox searchSites={this.props.searchSites} />
+          <SearchRecordsBox searchSites={searchSites} />
         </div>
-        {loaded && <SearchSiteDB openModal={this.props.openModal} sites={this.props.searchedSites} />}
+        {loaded &&
+          <SearchSiteDB
+            openModal={openModal} sortBy={sortBy} order={order}
+            sortSites={sortSites} sites={searchedSites}
+          />
+        }
       </div>
     );
   }
@@ -40,7 +45,9 @@ export default connect(
       sites: state.Filtering.sites,
       searchedSites: state.Filtering.searchedSites,
       message: state.Filtering.message,
-      modalObj: state.Filtering.modalObj
+      modalObj: state.Filtering.modalObj,
+      sortBy: state.Filtering.sortBy,
+      order: state.Filtering.order
     }
   ),
   dispatch => (
@@ -48,7 +55,8 @@ export default connect(
       fetchSites: () => dispatch(fetchSites()),
       searchSites: filter => dispatch(searchSites(filter)),
       editRecord: record => dispatch(editRecord(record)),
-      openModal: modalObj => dispatch(openModal(modalObj))
+      openModal: modalObj => dispatch(openModal(modalObj)),
+      sortSites: sortBy => dispatch(sortSites(sortBy))
     }
   )
 )(Filtering);

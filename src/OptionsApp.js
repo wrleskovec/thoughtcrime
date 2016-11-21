@@ -18,6 +18,7 @@ BL.init().then(() => {
   const store = createStore(reducer, applyMiddleware(sagaMiddleware));
   sagaMiddleware.run(optionsSagas);
   store.dispatch(fetchDailySites());
+  console.log(store.getState());
   render(
     <Provider store={store}>
       <OptionsApp />
