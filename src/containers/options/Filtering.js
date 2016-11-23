@@ -24,7 +24,7 @@ class Filtering extends React.Component {
     console.log(modalClicked);
     return (
       <div className="col-md-10 panel panel-default">
-        <EditModal {...modalObj} modalClicked={modalClicked} />
+        <EditModal {...modalObj} />
         <div className="panel-heading">Lookup Record</div>
         <div className="panel-body">
           <SearchRecordsBox searchSites={searchSites} />

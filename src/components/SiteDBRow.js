@@ -18,10 +18,13 @@ export default function SiteDBRow(props) {
             .format('H:mm:ss')}</td>
       <td className="dataCell">{record.action}</td>
       <td className="dataCell">{JSON.stringify(record.advAction)}</td>
-      <td className="dataCell">
-        <a onClick={onClickEdit(record)}>
+      <td className="editModal">
+        <button
+          type="button" className="btn btn-default"
+          data-toggle="modal" data-target="#myModal" onClick={onClickEdit(record)}
+        >
           <span className="glyphicon glyphicon-pencil"></span>
-        </a>
+        </button>
       </td>
     </tr>
   );

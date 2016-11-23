@@ -27,7 +27,7 @@ class BlockList {
             action: {},
             visits: {},
             timeSpent: {},
-            advAction: {}
+            advAction: []
           }
         },
         patterns: {
@@ -88,7 +88,7 @@ class BlockList {
       visits: 1,
       timeSpent: 0,
       action: 'accept',
-      advAction: {}
+      advAction: []
     });
   }
   addDayRecord(day) {
@@ -116,7 +116,7 @@ class BlockList {
           visits: 0,
           timeSpent: 0,
           action: 'block',
-          advAction: {}
+          advAction: []
         });
       });
   }
