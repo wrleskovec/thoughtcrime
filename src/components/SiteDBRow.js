@@ -9,7 +9,7 @@ export default function SiteDBRow(props) {
     openModal(record);
   };
   return (
-    <tr id={`datarow-${id + offset}`} key={id + offset} >
+    <tr className="dataRow" id={`datarow-${id + offset}`} key={id + offset} >
       <th scope="row">{id + offset + 1}</th>
       <td className="dataCell">{record.site}</td>
       <td className="dataCell">{record.visits}</td>

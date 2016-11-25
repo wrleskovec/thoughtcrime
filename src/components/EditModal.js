@@ -8,6 +8,16 @@ export default class EditModal extends React.Component {
       advAction: props.advAction,
       action: props.action
     };
+    this.handleAddRow = this.handleAddRow.bind(this);
+  }
+  handleAddRow(e) {
+    const rows = this.refs.advActionRows.querySelectorAll('tr');
+    const filteredRows = [];
+    for (let i = 0; i < rows.length; ++i) {
+      if (row[i].querySelector('.regexPattern').textContent !== '') {
+      }
+    }
+    console.log(notEmptyRows);
   }
 
   render() {
@@ -41,15 +51,20 @@ export default class EditModal extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <table className="table table-striped table-bordered">
+                <table className="table table-striped table-bordered editModal">
                   <thead className="thead-inverse">
                     <tr>
                       <th>Advanced Filtering(Regex)</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody ref="advActionRows">
                     <EditModalRow id={1} pattern={'manga'} action={'block'} />
                   </tbody>
+                  <tfoot>
+                    <button type="button" className="btn btn-default" onClick={this.handleAddRow}>
+                      <span className="glyphicon glyphicon-plus-sign"></span>
+                    </button>
+                  </tfoot>
                 </table>
               </div>
             </div>

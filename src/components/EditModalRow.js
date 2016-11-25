@@ -19,10 +19,10 @@ export default class EditModalRow extends React.Component {
         <td className="regexPattern" contentEditable>{pattern}</td>
         <td className="editModal">
           <div className="btn-group" role="group">
-            <button type="button" className="btn btn-default btn-sm">
+            <button type="button" className="btn btn-default btn-sm arrow">
               <span className="glyphicon glyphicon-menu-up"></span>
             </button>
-            <button type="button" className="btn btn-default btn-sm">
+            <button type="button" className="btn btn-default btn-sm arrow">
               <span className="glyphicon glyphicon-menu-down"></span>
             </button>
             <select className="btn btn-default btn-sm" name="advAction">
@@ -30,7 +30,7 @@ export default class EditModalRow extends React.Component {
               <option value="block">Block</option>
               <option value="limit">Limit</option>
             </select>
-            <button type="button" className="btn btn-danger btn-sm">
+            <button type="button" className="btn btn-danger btn-sm arrow">
               <span className="glyphicon glyphicon-remove"></span>
             </button>
           </div>
