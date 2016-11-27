@@ -23,8 +23,9 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: ['latest', 'react'],
-        plugins: ['transform-runtime', 'transform-react-inline-elements']
+        presets: ['stage-0', 'react', 'es2015'],
+        plugins: ['transform-runtime', 'transform-react-inline-elements',
+        'transform-decorators-legacy', 'transform-class-properties']
       }
     }, {
       test: /\.(png|jpg)$/,
