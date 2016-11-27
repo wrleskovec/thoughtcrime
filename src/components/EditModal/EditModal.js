@@ -33,8 +33,8 @@ export default class EditModal extends React.Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">X</span>
+              <button type="button" className="close" data-dismiss="modal">
+                <span className="glyphicon glyphicon-remove"></span>
               </button>
               <h4 className="modal-title" id="myModalLabel">Domain options: {site}</h4>
             </div>
@@ -52,22 +52,12 @@ export default class EditModal extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <table className="table table-striped table-bordered editModal">
-                  <thead className="thead-inverse">
-                    <tr>
-                      <th>Advanced Filtering(Regex)</th>
-                    </tr>
-                  </thead>
-                  <tbody ref="advActionRows">
-                    {/* <EditModalRow id={1} pattern={'manga'} action={'block'} /> */}
-                  </tbody>
-                  <tfoot>
-                    <button type="button" className="btn btn-default" onClick={this.handleAddRow}>
-                      <span className="glyphicon glyphicon-plus-sign"></span>
-                    </button>
-                  </tfoot>
-                </table>
-                <ActionRowContainer />
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label htmlFor="advAction">AdvFilter(regex):</label>
+                    <ActionRowContainer />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="modal-footer">

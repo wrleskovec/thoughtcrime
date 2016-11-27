@@ -6,7 +6,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 const style = {
-  width: 400
+  width: 550
 };
 
 @DragDropContext(HTML5Backend)
@@ -56,9 +56,9 @@ export default class Container extends Component {
 
   render() {
     const { cards } = this.state;
-
+    console.log(cards);
     return (
-      <div style={style}>
+      <div id="advAction" style={style}>
         {cards.map((card, i) => {
           return (
             <Card

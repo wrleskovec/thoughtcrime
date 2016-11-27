@@ -1,4 +1,4 @@
-import { Component, PropTypes } from 'react';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 
@@ -72,24 +72,36 @@ const cardTarget = {
   connectDragSource: connect.dragSource(),
   isDragging: monitor.isDragging()
 }))
-export default class Card extends Component {
+export default class Card extends React.Component {
   static propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    id: PropTypes.any.isRequired,
-    text: PropTypes.string.isRequired,
-    moveCard: PropTypes.func.isRequired
+    connectDragSource: React.PropTypes.func.isRequired,
+    connectDropTarget: React.PropTypes.func.isRequired,
+    index: React.PropTypes.number.isRequired,
+    isDragging: React.PropTypes.bool.isRequired,
+    id: React.PropTypes.any.isRequired,
+    text: React.PropTypes.string.isRequired,
+    moveCard: React.PropTypes.func.isRequired
   };
 
   render() {
-    const { text, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { text, isDragging, connectDragSource, connectDropTarget, id } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div style={{ ...style, opacity }}>
-        {text}
+      <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
+        <div className="regexPattern col-md-9" contentEditable>{text}</div>
+        <div className="editModal">
+          <div className="btn-group" role="group">
+            <select className="btn btn-default btn-sm" name="advAction">
+              <option value="accept">Accept</option>
+              <option value="block">Block</option>
+              <option value="limit">Limit</option>
+            </select>
+            <button type="button" className="btn btn-danger btn-sm arrow">
+              <span className="glyphicon glyphicon-remove"></span>
+            </button>
+          </div>
+        </div>
       </div>
     ));
   }
