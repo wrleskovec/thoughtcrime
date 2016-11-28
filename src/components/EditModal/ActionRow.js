@@ -2,6 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 
+
 const style = {
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
@@ -80,16 +81,29 @@ export default class ActionRow extends React.Component {
     isDragging: React.PropTypes.bool.isRequired,
     id: React.PropTypes.any.isRequired,
     text: React.PropTypes.string.isRequired,
-    moveCard: React.PropTypes.func.isRequired
+    moveCard: React.PropTypes.func.isRequired,
+    handleAdvText: React.PropTypes.func.isRequired
   };
+  constructor(props) {
+    super(props);
+    this.handleAdvText = this.handleAdvText.bind(this);
+  }
 
+  handleAdvText(e) {
+    const { handleAdvText, id } = this.props;
+    const value = e.target.textContent.trim();
+    console.log(value);
+    handleAdvText(id, value);
+  }
   render() {
     const { text, isDragging, connectDragSource, connectDropTarget, id } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
       <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
-        <div className="regexPattern col-md-9" contentEditable>{text}</div>
+        <div className="regexPattern col-md-9" onKeyUp={this.handleAdvText} contentEditable>
+          {text}
+        </div>
         <div className="editModal">
           <div className="btn-group" role="group">
             <select className="btn btn-default btn-sm" name="advAction">

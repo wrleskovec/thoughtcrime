@@ -3,6 +3,7 @@ import update from 'react/lib/update';
 import ActionRow from './ActionRow.js';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import _ from 'lodash';
 
 const style = {
   width: 550
@@ -39,6 +40,10 @@ export default class EditModal extends React.Component {
       }]
     };
     this.moveCard = this.moveCard.bind(this);
+    this.handleAdvText = this.handleAdvText.bind(this);
+  }
+  componentWillMount() {
+    this.handleAdvText = _.debounce(this.handleAdvText, 500);
   }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -53,11 +58,19 @@ export default class EditModal extends React.Component {
       }
     }));
   }
+  handleAdvText(id, value) {
+    console.log(id);
+    const index = this.state.cards.findIndex(i => i.id === id);
+    console.log(index);
+    this.setState({
+      cards: update(this.state.cards, { [index]: { text: { $set: value } } })
+    });
+  }
 
   render() {
-    console.log(this.props);
     const { site } = this.props;
     const { action, advAction, cards } = this.state;
+    console.log(cards);
     return (
       <div
         className="modal fade" id="myModal"
@@ -87,12 +100,13 @@ export default class EditModal extends React.Component {
               <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
-                    <label htmlFor="advAction">AdvFilter(regex):</label>
-                    <div id="advAction" style={style}>
+                    <label htmlFor="advActionRow">AdvFilter(regex):</label>
+                    <div id="advActionRow" style={style}>
                       {cards.map((card, i) => (
                         <ActionRow
                           key={card.id} index={i} id={card.id}
                           text={card.text} moveCard={this.moveCard}
+                          handleAdvText={this.handleAdvText}
                         />
                       )
                       )}
