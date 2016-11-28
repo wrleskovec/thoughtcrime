@@ -14,33 +14,14 @@ export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      advAction: props.advAction,
       action: props.action,
-      cards: [{
-        id: 1,
-        text: 'Write a cool JS library'
-      }, {
-        id: 2,
-        text: 'Make it generic enough'
-      }, {
-        id: 3,
-        text: 'Write README'
-      }, {
-        id: 4,
-        text: 'Create some examples'
-      }, {
-        id: 5,
-        text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)'
-      }, {
-        id: 6,
-        text: '???'
-      }, {
-        id: 7,
-        text: 'PROFIT'
-      }]
+      cards: props.advAction || []
     };
     this.moveCard = this.moveCard.bind(this);
     this.handleAdvText = this.handleAdvText.bind(this);
+    this.handleAddCard = this.handleAddCard.bind(this);
+    this.handleAdvDelete = this.handleAdvDelete.bind(this);
+    this.handleAdvSelect = this.handleAdvSelect.bind(this);
   }
   componentWillMount() {
     this.handleAdvText = _.debounce(this.handleAdvText, 500);
@@ -58,15 +39,47 @@ export default class EditModal extends React.Component {
       }
     }));
   }
+  prepCards(cards) {
+    return cards.map((card, index) => (
+      { id: index, text: card.text, action: card.action }
+    ));
+  }
   handleAdvText(id, value) {
-    console.log(id);
     const index = this.state.cards.findIndex(i => i.id === id);
-    console.log(index);
     this.setState({
       cards: update(this.state.cards, { [index]: { text: { $set: value } } })
     });
   }
-
+  handleAdvSelect(id, selected) {
+    console.log(selected);
+    const index = this.state.cards.findIndex(i => i.id === id);
+    this.setState({
+      cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
+    });
+  }
+  handleAdvDelete(id) {
+    const { cards } = this.state;
+    const newCards = cards.filter(card => card.id !== id)
+      .map((card, index) => ({
+        id: index + 1,
+        action: card.action,
+        text: card.text
+      }));
+    console.log(newCards);
+    this.setState({
+      cards: newCards
+    });
+  }
+  handleAddCard() {
+    const { cards } = this.state;
+    this.setState({
+      cards: update(cards, { $push: [{
+        id: cards.length + 1,
+        action: 'accept',
+        text: ''
+      }] })
+    });
+  }
   render() {
     const { site } = this.props;
     const { action, advAction, cards } = this.state;
@@ -105,13 +118,21 @@ export default class EditModal extends React.Component {
                       {cards.map((card, i) => (
                         <ActionRow
                           key={card.id} index={i} id={card.id}
-                          text={card.text} moveCard={this.moveCard}
-                          handleAdvText={this.handleAdvText}
+                          text={card.text} action={card.action} moveCard={this.moveCard}
+                          handleAdvText={this.handleAdvText} handleAdvDelete={this.handleAdvDelete}
+                          handleAdvSelect={this.handleAdvSelect}
                         />
                       )
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <button type="button" className="btn btn-default" onClick={this.handleAddCard}>
+                    <span className="glyphicon glyphicon-plus"></span>
+                  </button>
                 </div>
               </div>
             </div>

@@ -80,38 +80,54 @@ export default class ActionRow extends React.Component {
     index: React.PropTypes.number.isRequired,
     isDragging: React.PropTypes.bool.isRequired,
     id: React.PropTypes.any.isRequired,
+    action: React.PropTypes.string.isRequired,
     text: React.PropTypes.string.isRequired,
     moveCard: React.PropTypes.func.isRequired,
-    handleAdvText: React.PropTypes.func.isRequired
+    handleAdvText: React.PropTypes.func.isRequired,
+    handleAdvDelete: React.PropTypes.func.isRequired,
+    handleAdvSelect: React.PropTypes.func.isRequired
   };
   constructor(props) {
     super(props);
-    this.handleAdvText = this.handleAdvText.bind(this);
+    this.handleText = this.handleText.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
-  handleAdvText(e) {
+  handleText(e) {
     const { handleAdvText, id } = this.props;
     const value = e.target.textContent.trim();
     console.log(value);
     handleAdvText(id, value);
   }
+  handleSelect(e) {
+    const { handleAdvSelect, id } = this.props;
+    const selected = e.target.value;
+    handleAdvSelect(id, selected);
+  }
+  handleDelete() {
+    const { handleAdvDelete, id } = this.props;
+    handleAdvDelete(id);
+  }
   render() {
-    const { text, isDragging, connectDragSource, connectDropTarget, id } = this.props;
+    const { text, isDragging, connectDragSource, connectDropTarget, id, action } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
       <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
-        <div className="regexPattern col-md-9" onKeyUp={this.handleAdvText} contentEditable>
+        <div className="regexPattern col-md-9" onKeyUp={this.handleText} contentEditable>
           {text}
         </div>
         <div className="editModal">
           <div className="btn-group" role="group">
-            <select className="btn btn-default btn-sm" name="advAction">
-              <option value="accept">Accept</option>
-              <option value="block">Block</option>
-              <option value="limit">Limit</option>
+            <select className="btn btn-default btn-sm" onChange={this.handleSelect}>
+              <option value="accept" selected={action === 'accept'}>Accept</option>
+              <option value="block" selected={action === 'block'}>Block</option>
+              <option value="limit" selected={action === 'limit'}>Limit</option>
             </select>
-            <button type="button" className="btn btn-danger btn-sm arrow">
+            <button
+              type="button" className="btn btn-danger btn-sm arrow" onClick={this.handleDelete}
+            >
               <span className="glyphicon glyphicon-remove"></span>
             </button>
           </div>
