@@ -1,30 +1,63 @@
 import React from 'react';
-import EditModalRow from './EditModalRow';
-import ActionRowContainer from './ActionRowContainer';
+import update from 'react/lib/update';
+import ActionRow from './ActionRow.js';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
+const style = {
+  width: 550
+};
+
+@DragDropContext(HTML5Backend)
 export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       advAction: props.advAction,
-      action: props.action
+      action: props.action,
+      cards: [{
+        id: 1,
+        text: 'Write a cool JS library'
+      }, {
+        id: 2,
+        text: 'Make it generic enough'
+      }, {
+        id: 3,
+        text: 'Write README'
+      }, {
+        id: 4,
+        text: 'Create some examples'
+      }, {
+        id: 5,
+        text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)'
+      }, {
+        id: 6,
+        text: '???'
+      }, {
+        id: 7,
+        text: 'PROFIT'
+      }]
     };
-    this.handleAddRow = this.handleAddRow.bind(this);
+    this.moveCard = this.moveCard.bind(this);
   }
-  handleAddRow(e) {
-    const rows = this.refs.advActionRows.querySelectorAll('tr');
-    const filteredRows = [];
-    for (let i = 0; i < rows.length; ++i) {
-      if (row[i].querySelector('.regexPattern').textContent !== '') {
+  moveCard(dragIndex, hoverIndex) {
+    const { cards } = this.state;
+    const dragCard = cards[dragIndex];
+
+    this.setState(update(this.state, {
+      cards: {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragCard]
+        ]
       }
-    }
-    console.log(notEmptyRows);
+    }));
   }
 
   render() {
     console.log(this.props);
     const { site } = this.props;
-    const { action, advAction } = this.state;
+    const { action, advAction, cards } = this.state;
     return (
       <div
         className="modal fade" id="myModal"
@@ -55,7 +88,15 @@ export default class EditModal extends React.Component {
                 <div className="col-md-12">
                   <div className="form-group">
                     <label htmlFor="advAction">AdvFilter(regex):</label>
-                    <ActionRowContainer />
+                    <div id="advAction" style={style}>
+                      {cards.map((card, i) => (
+                        <ActionRow
+                          key={card.id} index={i} id={card.id}
+                          text={card.text} moveCard={this.moveCard}
+                        />
+                      )
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
