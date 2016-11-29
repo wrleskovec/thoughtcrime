@@ -21,10 +21,10 @@ function* fetchSites() {
 }
 function* deleteSite(action) {
   try {
-    const deleted = yield call([BL, BL.deleteSite], action.site);
-    yield put({ type: 'SITE_DELETE_SUCCESSFUL' }, deleted);
+    const deleted = yield call([BL, BL.deleteRecord], action.site);
+    yield put({ type: 'SITE_DELETE_SUCCESSFUL', deleted });
   } catch (e) {
-    yield put({ type: 'SITE_DELETE_UNSUCCESSFUL' }, e);
+    yield put({ type: 'SITE_DELETE_UNSUCCESSFUL', e });
   }
 }
 export function* addSiteSaga() {

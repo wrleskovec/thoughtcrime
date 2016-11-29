@@ -6,7 +6,7 @@ export function saveChangesModal(record) {
 }
 export function deleteSite(site) {
   return {
-    type: 'DELETE_SITE',
+    type: 'SITE_DELETE',
     site
   };
 }
