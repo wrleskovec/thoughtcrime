@@ -22,6 +22,7 @@ export default class EditModal extends React.Component {
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillMount() {
     this.handleAdvText = _.debounce(this.handleAdvText, 500);
@@ -80,6 +81,10 @@ export default class EditModal extends React.Component {
       }] })
     });
   }
+  handleDelete() {
+    const { site, deleteSite } = this.props;
+    deleteSite(site);
+  }
   render() {
     const { site } = this.props;
     const { action, advAction, cards } = this.state;
@@ -137,7 +142,12 @@ export default class EditModal extends React.Component {
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+              <button
+                type="button" className="btn btn-default" data-dismiss="modal"
+                onClick={this.handleDelete}
+              >
+                Close
+              </button>
               <button type="button" className="btn btn-danger">Delete</button>
               <button type="button" className="btn btn-primary">Save changes</button>
             </div>

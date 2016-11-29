@@ -74,6 +74,15 @@ class BlockList {
         return Promise.resolve(result);
       });
   }
+  deleteRecord(site) {
+    return this.idb.sites.remove(site)
+      .then(result => {
+        console.log(result);
+      })
+      .catch(e => {
+        throw e;
+      });
+  }
   getDayRecord(day) {
     return this.idb.dailyRecords.get(day)
     .then(result => {

@@ -3,26 +3,28 @@ import { takeLatest, takeEvery } from 'redux-saga';
 import BL from '../blockList.js';
 
 function* addSite(action) {
-  console.log('WHYYYYYY');
   try {
     const message = yield call([BL, BL.addSite], action.site);
     yield put({ type: 'ADD_SITE_SUCCEEDED', message });
   } catch (e) {
-    console.log(e);
     yield put({ type: 'ADD_SITE_FAILED', e });
   }
 }
 function* fetchSites() {
-  console.log('Hmmmmmm');
-  console.log(BL.idb);
   try {
     const sites = yield call([BL, BL.fetchSites]);
-    console.log(sites);
+
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
-    console.log('woo?');
   } catch (e) {
-    console.log(e);
     yield put({ type: 'SITE_FETCH_UNSUCCESSFUL', e });
+  }
+}
+function* deleteSite(action) {
+  try {
+    const deleted = yield call([BL, BL.deleteSite], action.site);
+    yield put({ type: 'SITE_DELETE_SUCCESSFUL' }, deleted);
+  } catch (e) {
+    yield put({ type: 'SITE_DELETE_UNSUCCESSFUL' }, e);
   }
 }
 export function* addSiteSaga() {
@@ -30,6 +32,9 @@ export function* addSiteSaga() {
 }
 
 export function* fetchSitesSaga() {
-  console.log('FUCK SAGAS');
   yield* takeEvery('SITE_FETCH', fetchSites);
+}
+
+export function* deleteSiteSaga() {
+  yield* takeEvery('SITE_DELETE', deleteSite);
 }

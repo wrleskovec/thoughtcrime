@@ -1,7 +1,13 @@
-export function editRecord(record) {
+export function saveChangesModal(record) {
   return {
-    type: 'EDIT_RECORD',
+    type: 'SAVE_CHANGES_MODAL',
     record
+  };
+}
+export function deleteSite(site) {
+  return {
+    type: 'DELETE_SITE',
+    site
   };
 }
 export function openModal(modalObj) {

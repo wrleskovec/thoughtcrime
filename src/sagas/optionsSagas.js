@@ -1,9 +1,8 @@
 import { fork } from 'redux-saga/effects';
-import { fetchSitesSaga, addSiteSaga } from './sagasDB.js';
+import { fetchSitesSaga, addSiteSaga, deleteSiteSaga } from './sagasDB.js';
 
 export default function* optionsSaga() {
   yield fork(fetchSitesSaga);
-  console.log('hi');
   yield fork(addSiteSaga);
-  console.log('hi again');
+  yield fork(deleteSiteSaga);
 }
