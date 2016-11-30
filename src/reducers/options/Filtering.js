@@ -1,5 +1,6 @@
 import update from 'react/lib/update';
 import Fuse from 'fuse.js';
+import { notify } from '../../helpers.js';
 
 const fuseOptions = {
   shouldSort: true,
@@ -56,16 +57,7 @@ function Filtering(state = {
         modalObj: { $set: action.modalObj }
       });
     case 'SITE_DELETE_SUCCESSFUL': {
-      chrome.notifications.create({
-        type: 'basic',
-        title: 'ThoughtCrime',
-        message: 'Record deletion was successful',
-        iconUrl: './icons/tc-128.png',
-      }, id => {
-        setTimeout(() => {
-          chrome.notifications.clear(id);
-        }, 1000);
-      });
+      notify('Record deletion successful');
       const sitesIndex = state.sites.findIndex(site => site.site === action.site);
       const searchedIndex = state.searchedSites.findIndex(site => site.site === action.site);
       return update(state, {
