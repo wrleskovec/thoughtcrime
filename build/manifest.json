@@ -20,6 +20,6 @@
    "manifest_version": 2,
    "name": "Thought Crime",
    "options_page": "options.html",
-   "permissions": [ "storage", "tabs", "webNavigation", "webRequest", "<all_urls>", "webRequestBlocking" ],
+   "permissions": [ "storage", "tabs", "webNavigation", "webRequest", "<all_urls>", "webRequestBlocking", "notifications" ],
    "version": "0.0.1"
 }

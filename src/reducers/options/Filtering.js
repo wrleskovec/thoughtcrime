@@ -55,6 +55,17 @@ function Filtering(state = {
       return update(state, {
         modalObj: { $set: action.modalObj }
       });
+    case 'SITE_DELETE_SUCCESSFUL':
+      console.log('at least it got this far');
+      chrome.notifications.create({
+        type: 'basic',
+        title: 'ThoughtCrime',
+        message: 'Record deletion was successful',
+        iconUrl: './icons/tc-128.png'
+      }, message => {
+        console.log(message);
+      });
+      break;
     default:
       return state;
   }

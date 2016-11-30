@@ -13,6 +13,7 @@ const style = {
 export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       action: props.action,
       cards: props.advAction || []
@@ -26,6 +27,13 @@ export default class EditModal extends React.Component {
   }
   componentWillMount() {
     this.handleAdvText = _.debounce(this.handleAdvText, 500);
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log('Prop change detected');
+    this.setState({
+      action: nextProps.action,
+      cards: nextProps.advAction || []
+    });
   }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -87,8 +95,8 @@ export default class EditModal extends React.Component {
   }
   render() {
     const { site } = this.props;
-    const { action, advAction, cards } = this.state;
-    console.log(cards);
+    const { action, cards } = this.state;
+    console.log('Rendered EditModal Component');
     return (
       <div
         className="modal fade" id="myModal"
@@ -107,10 +115,10 @@ export default class EditModal extends React.Component {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="action">Filter: </label>
-                    <select className="form-control" id="action">
-                      <option value="block" selected={action === 'block'}>Block</option>
-                      <option value="limit" selected={action === 'limit'}>Limit</option>
-                      <option value="accept" selected={action === 'accept'}>Accept</option>
+                    <select className="form-control" id="action" value={action}>
+                      <option value="block">Block</option>
+                      <option value="limit">Limit</option>
+                      <option value="accept">Accept</option>
                     </select>
                   </div>
                 </div>
@@ -145,10 +153,15 @@ export default class EditModal extends React.Component {
               <button type="button" className="btn btn-default" data-dismiss="modal">
                 Close
               </button>
-              <button type="button" className="btn btn-danger" onClick={this.handleDelete}>
+              <button
+                type="button" className="btn btn-danger"
+                onClick={this.handleDelete} data-dismiss="modal"
+              >
                 Delete
               </button>
-              <button type="button" className="btn btn-primary">Save changes</button>
+              <button type="button" className="btn btn-primary" data-dismiss="modal">
+                Save changes
+              </button>
             </div>
           </div>
         </div>
