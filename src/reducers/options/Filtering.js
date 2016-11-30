@@ -55,17 +55,24 @@ function Filtering(state = {
       return update(state, {
         modalObj: { $set: action.modalObj }
       });
-    case 'SITE_DELETE_SUCCESSFUL':
-      console.log('at least it got this far');
+    case 'SITE_DELETE_SUCCESSFUL': {
       chrome.notifications.create({
         type: 'basic',
         title: 'ThoughtCrime',
         message: 'Record deletion was successful',
-        iconUrl: './icons/tc-128.png'
-      }, message => {
-        console.log(message);
+        iconUrl: './icons/tc-128.png',
+      }, id => {
+        setTimeout(() => {
+          chrome.notifications.clear(id);
+        }, 1000);
       });
-      break;
+      const sitesIndex = state.sites.findIndex(site => site.site === action.site);
+      const searchedIndex = state.searchedSites.findIndex(site => site.site === action.site);
+      return update(state, {
+        sites: { $splice: [[sitesIndex, 1]] },
+        searchedSites: { $splice: [[searchedIndex, 1]] }
+      });
+    }
     default:
       return state;
   }

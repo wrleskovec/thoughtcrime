@@ -21,8 +21,8 @@ function* fetchSites() {
 }
 function* deleteSite(action) {
   try {
-    const deleted = yield call([BL, BL.deleteRecord], action.site);
-    yield put({ type: 'SITE_DELETE_SUCCESSFUL', deleted });
+    const site = yield call([BL, BL.deleteRecord], action.site);
+    yield put({ type: 'SITE_DELETE_SUCCESSFUL', site });
   } catch (e) {
     yield put({ type: 'SITE_DELETE_UNSUCCESSFUL', e });
   }
