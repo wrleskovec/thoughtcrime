@@ -70,8 +70,8 @@ function Filtering(state = {
       const sitesIndex = state.sites.findIndex(site => site.site === action.site.site);
       const searchedIndex = state.searchedSites.findIndex(site => site.site === action.site.site);
       return update(state, {
-        sites: { [sitesIndex]: { $set: action.site } },
-        searchedSites: { [searchedIndex]: { $set: action.site } }
+        sites: { [sitesIndex]: { $set: [action.site] } },
+        searchedSites: { [searchedIndex]: { $set: [action.site] } }
       });
     }
     default:
