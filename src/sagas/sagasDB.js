@@ -27,6 +27,14 @@ function* deleteSite(action) {
     yield put({ type: 'SITE_DELETE_UNSUCCESSFUL', e });
   }
 }
+function* saveChangesModal(action) {
+  try {
+    const site = yield call([BL, BL.saveChangesModal], action.site);
+    yield put({ type: 'SAVE_CHANGES_MODAL_SUCCESSFUL', site });
+  } catch (e) {
+    yield put({ type: 'SAVE_CHANGES_MODAL_UNSUCCESSFUL', e });
+  }
+}
 export function* addSiteSaga() {
   yield* takeLatest('ADD_SITE', addSite);
 }
@@ -37,4 +45,7 @@ export function* fetchSitesSaga() {
 
 export function* deleteSiteSaga() {
   yield* takeEvery('SITE_DELETE', deleteSite);
+}
+export function* saveChangesModalSaga() {
+  yield* takeEvery('SAVE_CHANGES_MODAL', saveChangesModal);
 }

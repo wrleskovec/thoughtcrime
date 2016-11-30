@@ -65,6 +65,15 @@ function Filtering(state = {
         searchedSites: { $splice: [[searchedIndex, 1]] }
       });
     }
+    case 'SAVE_CHANGES_MODAL_SUCCESSFUL': {
+      notify('Record changes saved');
+      const sitesIndex = state.sites.findIndex(site => site.site === action.site.site);
+      const searchedIndex = state.searchedSites.findIndex(site => site.site === action.site.site);
+      return update(state, {
+        sites: { [sitesIndex]: { $set: action.site } },
+        searchedSites: { [searchedIndex]: { $set: action.site } }
+      });
+    }
     default:
       return state;
   }

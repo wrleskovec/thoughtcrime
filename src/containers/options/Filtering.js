@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { editRecord, openModal, searchSites, sortSites, deleteSite }
+import { editRecord, openModal, searchSites, sortSites, deleteSite, saveChangesModal }
   from '../../actions/options.js';
 import { fetchSites, } from '../../actions/common.js';
 import SearchSiteDB from '../../components/SearchSiteDB.js';
@@ -18,14 +18,14 @@ class Filtering extends React.Component {
 
   render() {
     const { modalObj, searchedSites, sortBy, order } = this.props;
-    const { sortSites, searchSites, openModal, deleteSite } = this.props;
+    const { sortSites, searchSites, openModal, deleteSite, saveChangesModal } = this.props;
     const loaded = searchedSites[0] != null;
     console.log(modalObj);
     const modalClicked = modalObj !== null;
     console.log(modalClicked);
     return (
       <div className="col-md-10 panel panel-default">
-        <EditModal {...modalObj} deleteSite={deleteSite} />
+        <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
         <div className="panel-heading">Lookup Record</div>
         <div className="panel-body">
           <SearchRecordsBox searchSites={searchSites} />
@@ -59,7 +59,8 @@ export default connect(
       editRecord: record => dispatch(editRecord(record)),
       openModal: modalObj => dispatch(openModal(modalObj)),
       sortSites: sortBy => dispatch(sortSites(sortBy)),
-      deleteSite: site => dispatch(deleteSite(site))
+      deleteSite: site => dispatch(deleteSite(site)),
+      saveChangesModal: site => dispatch(saveChangesModal(site))
     }
   )
 )(Filtering);

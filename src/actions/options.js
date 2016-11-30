@@ -1,7 +1,7 @@
-export function saveChangesModal(record) {
+export function saveChangesModal(site) {
   return {
     type: 'SAVE_CHANGES_MODAL',
-    record
+    site
   };
 }
 export function deleteSite(site) {

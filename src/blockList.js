@@ -123,6 +123,10 @@ class BlockList {
         });
       });
   }
+  saveChangesModal(record) {
+    return this.idb.sites.update(record)
+      .catch(e => { throw e; });
+  }
   // Timer DB Methods
   updateSiteRecord(record, timeSpent) {
     return this.idb.sites.update({

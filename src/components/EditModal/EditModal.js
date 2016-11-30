@@ -14,26 +14,36 @@ export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = {
-      action: props.action,
-      cards: props.advAction || []
-    };
+    if (props.site != null) {
+      this.state = {
+        action: props.site.action || '',
+        cards: props.site.advAction || []
+      };
+    } else {
+      this.state = {
+        action: '',
+        cards: []
+      };
+    }
     this.moveCard = this.moveCard.bind(this);
     this.handleAdvText = this.handleAdvText.bind(this);
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleSaveChanges = this.handleSaveChanges.bind(this);
   }
   componentWillMount() {
     this.handleAdvText = _.debounce(this.handleAdvText, 500);
   }
   componentWillReceiveProps(nextProps) {
     console.log('Prop change detected');
-    this.setState({
-      action: nextProps.action,
-      cards: nextProps.advAction || []
-    });
+    if (nextProps.site) {
+      this.setState({
+        action: nextProps.site.action,
+        cards: nextProps.site.advAction
+      });
+    }
   }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -91,11 +101,20 @@ export default class EditModal extends React.Component {
   }
   handleDelete() {
     const { site, deleteSite } = this.props;
-    deleteSite(site);
+    deleteSite(site.site);
+  }
+  handleSaveChanges() {
+    const { site, saveChangesModal } = this.props;
+    const { action, cards } = this.state;
+    saveChangesModal(update(site, {
+      action: { $set: action },
+      advAction: { $set: cards }
+    }));
   }
   render() {
     const { site } = this.props;
     const { action, cards } = this.state;
+    const siteName = site ? site.site : '';
     console.log('Rendered EditModal Component');
     return (
       <div
@@ -108,7 +127,7 @@ export default class EditModal extends React.Component {
               <button type="button" className="close" data-dismiss="modal">
                 <span className="glyphicon glyphicon-remove"></span>
               </button>
-              <h4 className="modal-title" id="myModalLabel">Domain options: {site}</h4>
+              <h4 className="modal-title" id="myModalLabel">Domain options: {siteName}</h4>
             </div>
             <div className="modal-body">
               <div className="row">
@@ -159,7 +178,10 @@ export default class EditModal extends React.Component {
               >
                 Delete
               </button>
-              <button type="button" className="btn btn-primary" data-dismiss="modal">
+              <button
+                type="button" className="btn btn-primary"
+                data-dismiss="modal" onClick={this.handleSaveChanges}
+              >
                 Save changes
               </button>
             </div>
