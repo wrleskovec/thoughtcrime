@@ -30,6 +30,7 @@ export default class EditModal extends React.Component {
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
   }
@@ -74,6 +75,12 @@ export default class EditModal extends React.Component {
     const index = this.state.cards.findIndex(i => i.id === id);
     this.setState({
       cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
+    });
+  }
+  handleSelect(e) {
+    const selected = e.target.value;
+    this.setState({
+      action: selected
     });
   }
   handleAdvDelete(id) {
@@ -134,7 +141,10 @@ export default class EditModal extends React.Component {
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="action">Filter: </label>
-                    <select className="form-control" id="action" value={action}>
+                    <select
+                      className="form-control" id="action" value={action}
+                      onChange={this.handleSelect}
+                    >
                       <option value="block">Block</option>
                       <option value="limit">Limit</option>
                       <option value="accept">Accept</option>
