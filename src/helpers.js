@@ -7,6 +7,6 @@ export function notify(message) {
   }, id => {
     setTimeout(() => {
       chrome.notifications.clear(id);
-    }, 1000);
+    }, 2000);
   });
 }

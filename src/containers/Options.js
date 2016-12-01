@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../img/thoughtcrime.svg';
-import menuOptions from './options/AllOptions.js';
+import menuOptions from './options/OptionsMenu';
 
 export default class OptionsApp extends React.Component {
   constructor(props) {
@@ -16,15 +16,16 @@ export default class OptionsApp extends React.Component {
     };
   }
 
-
   render() {
-    const Content = menuOptions[this.state.selectedPage];
+    const Content = menuOptions.options[this.state.selectedPage];
     return (
       <div id="OptionsApp">
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2">
-              <img src={logo} alt="" className="img-responsive center-block" height="128" width="128" />
+              <img
+                src={logo} alt="" className="img-responsive center-block" height="128" width="128"
+              />
             </div>
             <div className="col-md-10 offset-md-2">
               <div className="page-header text-center">
@@ -34,16 +35,32 @@ export default class OptionsApp extends React.Component {
           </div>
           <div className="row">
             <div className="col-md-2 sidebar">
-              <ul className="nav nav-sidebar nav-pills nav-stacked">
-                {Object.keys(menuOptions).map(item => {
-                  const active = (this.state.selectedPage === item) ? 'active' : '';
+              <ul className="nav nav-sidebar nav-pills nav-stacked" id="options-menu">
+                {menuOptions.structure.map(cat => {
+                  const catActive = (this.state.selectedPage === cat.title) ? 'active' : '';
+                  const collapse = cat.items ? 'collapse' : '';
                   return (
-                    <li
-                      id={item}
-                      key={item}
-                      role="presentation" className={active} onClick={this.onMenuClick(item)}
-                    >
-                      <a href="#">{item}</a>
+                    <li key={cat.title} role="presentation" className={catActive}>
+                      <div onClick={this.onMenuClick(cat.title)}>
+                        <a data-toggle={collapse} data-parent="options-menu" href="#">
+                          {cat.title}
+                        </a>
+                      </div>
+                      {cat.items &&
+                        <ul className="nav nav-pills nav-stacked collapse in" id={cat.title}>
+                          {cat.items.map(item => {
+                            const active = (this.state.selectedPage === item) ? 'active' : '';
+                            return (
+                              <li
+                                key={cat.title} role="presentation" className={active}
+                                onClick={this.onMenuClick(item)}
+                              >
+                                <a href="#">{item}</a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      }
                     </li>
                   );
                 })}

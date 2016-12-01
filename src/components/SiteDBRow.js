@@ -8,6 +8,7 @@ export default function SiteDBRow(props) {
     console.log(record);
     openModal(record);
   };
+  const advAction = (record.advAction.length === 0) ? 'N/A' : '...';
   return (
     <tr className="dataRow" id={`datarow-${id + offset}`} key={id + offset} >
       <th scope="row">{id + offset + 1}</th>
@@ -17,7 +18,7 @@ export default function SiteDBRow(props) {
             .seconds(record.timeSpent)
             .format('H:mm:ss')}</td>
       <td className="dataCell">{record.action}</td>
-      <td className="dataCell">{JSON.stringify(record.advAction)}</td>
+      <td className="dataCell">{advAction}</td>
       <td className="editModal">
         <button
           type="button" className="btn btn-default"
