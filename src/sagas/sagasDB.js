@@ -21,16 +21,16 @@ function* fetchSites() {
 }
 function* deleteSite(action) {
   try {
-    const site = yield call([BL, BL.deleteRecord], action.site);
-    yield put({ type: 'SITE_DELETE_SUCCESSFUL', site });
+    yield call([BL, BL.deleteRecord], action.site);
+    yield put({ type: 'SITE_DELETE_SUCCESSFUL', site: action.site });
   } catch (e) {
     yield put({ type: 'SITE_DELETE_UNSUCCESSFUL', e });
   }
 }
 function* saveChangesModal(action) {
   try {
-    const site = yield call([BL, BL.saveChangesModal], action.site);
-    yield put({ type: 'SAVE_CHANGES_MODAL_SUCCESSFUL', site });
+    yield call([BL, BL.saveChangesModal], action.site);
+    yield put({ type: 'SAVE_CHANGES_MODAL_SUCCESSFUL', site: action.site });
   } catch (e) {
     yield put({ type: 'SAVE_CHANGES_MODAL_UNSUCCESSFUL', e });
   }

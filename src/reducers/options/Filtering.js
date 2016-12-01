@@ -69,10 +69,15 @@ function Filtering(state = {
       notify('Record changes saved');
       const sitesIndex = state.sites.findIndex(site => site.site === action.site.site);
       const searchedIndex = state.searchedSites.findIndex(site => site.site === action.site.site);
-      return update(state, {
-        sites: { [sitesIndex]: { $set: [action.site] } },
-        searchedSites: { [searchedIndex]: { $set: [action.site] } }
+      const newSites = update(state.sites, { [sitesIndex]: { $set: action.site } });
+      const newSearchedSites = update(state.searchedSites, {
+        [searchedIndex]: { $set: action.site }
       });
+      return {
+        ...state,
+        sites: newSites,
+        searchedSites: newSearchedSites
+      };
     }
     default:
       return state;
