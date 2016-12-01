@@ -21,9 +21,8 @@ function Filtering(state = {
 }, action) {
   switch (action.type) {
     case 'SITE_FETCH_UNSUCCESSFUL':
-      return update(state, {
-        message: { $set: action.e }
-      });
+      notify('Error: Unable to fetch sites from DB.');
+      break;
     case 'SITE_FETCH_SUCCESSFUL':
       return update(state, {
         sites: { $set: action.sites },

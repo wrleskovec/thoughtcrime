@@ -13,16 +13,27 @@ function loadFilteredPage(tabId, url) {
     chrome.tabs.update(tabId, { url });
   }, 500);
 }
-
+function handleAction(action, details) {
+  if (action === 'block') {
+    loadFilteredPage(details.tabId, BLOCKED_PAGE);
+  } else if (action === 'limit') {
+    loadFilteredPage(details.tabId, BLOCKED_PAGE);
+  }
+}
 function urlCheck(details) {
   const protocol = wurl('protocol', details.url);
   if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
     const site = wurl('domain', details.url);
     BL.getRecord(site)
       .then(record => {
-        if (record.action === 'block') {
-          console.log('HMMMMMMMMM');
-          loadFilteredPage(details.tabId, BLOCKED_PAGE);
+        const aclMatch = record.advAction.find(action => {
+          const reg = new RegExp(action.text, 'i');
+          return reg.test(details.url);
+        });
+        if (aclMatch) {
+          handleAction(aclMatch.action, details);
+        } else {
+          handleAction(record.action, details);
         }
       })
       .catch(err => {
