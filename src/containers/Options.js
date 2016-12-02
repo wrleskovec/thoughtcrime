@@ -6,18 +6,21 @@ export default class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPage: 'Dash'
+      selectedPage: 'Dash',
+      category: 'Dash'
     };
     this.onMenuClick = this.onMenuClick.bind(this);
   }
-  onMenuClick(id) {
+  onMenuClick(category, selectedPage) {
     return e => {
-      this.setState({ selectedPage: id });
+      e.stopPropagation();
+      this.setState({ category, selectedPage });
     };
   }
 
   render() {
-    const Content = menuOptions.options[this.state.selectedPage];
+    const { selectedPage, category } = this.state;
+    const Content = menuOptions.options[selectedPage];
     return (
       <div id="OptionsApp">
         <div className="container-fluid">
@@ -29,7 +32,7 @@ export default class OptionsApp extends React.Component {
             </div>
             <div className="col-md-10 offset-md-2">
               <div className="page-header text-center">
-                <h1>ThoughtCrime - <small>{this.state.selectedPage}</small></h1>
+                <h1>ThoughtCrime - <small>{selectedPage}</small></h1>
               </div>
             </div>
           </div>
@@ -37,25 +40,32 @@ export default class OptionsApp extends React.Component {
             <div className="col-md-2 sidebar">
               <ul className="nav nav-sidebar nav-pills nav-stacked" id="options-menu">
                 {menuOptions.structure.map(cat => {
-                  const catActive = (this.state.selectedPage === cat.title) ? 'active' : '';
-                  const collapse = cat.items ? 'collapse' : '';
+                  const catActive = (selectedPage === cat.title) ? 'active' : '';
+                  const collapse = (cat.title === category) ?
+                  'nav nav-pills nav-stacked collapse in' : 'nav nav-pills nav-stacked collapse';
                   return (
                     <li
                       key={cat.title} role="presentation" className={catActive}
-                      data-toggle="collapse" data-parent="options-menu"
-                      onClick={this.onMenuClick(cat.title)}
+
                     >
-                      <a href="#">{cat.title}</a>
+                      <a
+                        data-toggle="collapse" data-parent="options-menu"
+                        onClick={this.onMenuClick(cat.title, cat.title)} href={`#${cat.title}-menu`}
+                      >
+                        {cat.title}
+                      </a>
                       {cat.items &&
-                        <ul className="nav nav-pills nav-stacked collapse in" id={cat.title}>
+                        <ul
+                          className={collapse} id={`${cat.title}-menu`}
+                        >
                           {cat.items.map(item => {
-                            const active = (this.state.selectedPage === item) ? 'active' : '';
+                            const active = (selectedPage === item) ? 'active' : '';
                             return (
                               <li
                                 key={item} role="presentation" className={active}
-                                onClick={this.onMenuClick(item)}
+                                onClick={this.onMenuClick(cat.title, item)}
                               >
-                                <a href="#">{item}</a>
+                                <a href={`#${item}`}>{item}</a>
                               </li>
                             );
                           })}
