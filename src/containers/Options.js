@@ -40,19 +40,19 @@ export default class OptionsApp extends React.Component {
                   const catActive = (this.state.selectedPage === cat.title) ? 'active' : '';
                   const collapse = cat.items ? 'collapse' : '';
                   return (
-                    <li key={cat.title} role="presentation" className={catActive}>
-                      <div onClick={this.onMenuClick(cat.title)}>
-                        <a data-toggle={collapse} data-parent="options-menu" href="#">
-                          {cat.title}
-                        </a>
-                      </div>
+                    <li
+                      key={cat.title} role="presentation" className={catActive}
+                      data-toggle="collapse" data-parent="options-menu"
+                      onClick={this.onMenuClick(cat.title)}
+                    >
+                      <a href="#">{cat.title}</a>
                       {cat.items &&
                         <ul className="nav nav-pills nav-stacked collapse in" id={cat.title}>
                           {cat.items.map(item => {
                             const active = (this.state.selectedPage === item) ? 'active' : '';
                             return (
                               <li
-                                key={cat.title} role="presentation" className={active}
+                                key={item} role="presentation" className={active}
                                 onClick={this.onMenuClick(item)}
                               >
                                 <a href="#">{item}</a>

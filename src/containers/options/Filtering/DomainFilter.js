@@ -56,7 +56,6 @@ export default connect(
     {
       fetchSites: () => dispatch(fetchSites()),
       searchSites: filter => dispatch(searchSites(filter)),
-      editRecord: record => dispatch(editRecord(record)),
       openModal: modalObj => dispatch(openModal(modalObj)),
       sortSites: sortBy => dispatch(sortSites(sortBy)),
       deleteSite: site => dispatch(deleteSite(site)),
