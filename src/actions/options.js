@@ -33,3 +33,9 @@ export function fetchDailySites() {
     type: 'FETCH_DAILY_SITES'
   };
 }
+export function saveChangesRegex(items) {
+  return {
+    type: 'SAVE_CHANGES_MODAL',
+    items
+  };
+}

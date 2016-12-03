@@ -59,11 +59,6 @@ export default class EditModal extends React.Component {
       }
     }));
   }
-  prepCards(cards) {
-    return cards.map((card, index) => (
-      { id: index, regex: card.regex, action: card.action }
-    ));
-  }
   handleAdvRegex(id, value) {
     const index = this.state.cards.findIndex(i => i.id === id);
     this.setState({

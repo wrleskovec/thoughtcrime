@@ -5,7 +5,7 @@ import { openModal, searchSites, sortSites, deleteSite, saveChangesModal }
 import { fetchSites, } from '~/actions/common.js';
 import SearchSiteDB from '~/components/SearchSiteDB.js';
 import SearchRecordsBox from '~/components/SearchRecordsBox';
-import EditModal from '~/components/EditModal/EditModal';
+import EditModal from '~/components/EditModal';
 
 class Filtering extends React.Component {
   constructor(props) {

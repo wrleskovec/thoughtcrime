@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import wurl from 'wurl';
 import logo from '../img/tc-32.png';
-import { addSite } from '../actions/common.js';
+import { addFilter } from '../actions/common.js';
 import { getTimer } from '../actions/popup.js';
 import Timer from '../components/Timer.js';
 import InputBar from '../components/InputBar.js';
@@ -49,7 +49,7 @@ class PopupApp extends React.Component {
         <div className="panel-body">
           {this.state.currentValue &&
             <InputBar
-              addSite={this.props.addSite} currentValue={this.state.currentValue}
+              addFilter={this.props.addFilter} currentValue={this.state.currentValue}
             />}
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
@@ -71,7 +71,7 @@ export default connect(
   ),
   dispatch => (
     {
-      addSite: site => dispatch(addSite(site)),
+      addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type)),
       getTimer: () => dispatch(getTimer())
     }
   )
