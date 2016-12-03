@@ -206,15 +206,7 @@ class BlockList {
       .execute();
   }
   fetchDailySites() {
-    console.log(this.dailyRecord.sites);
-    return this.dailyRecord.sites.map(record => ({
-      site: record.site,
-      timeSpent: (
-        moment('2015-01-01').startOf('day')
-        .seconds(record.timeSpent)
-        .format('H:mm:ss')),
-      visits: record.visits
-    }));
+    return this.dailyRecord.sites;
   }
 
 }

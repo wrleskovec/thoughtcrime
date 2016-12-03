@@ -4,6 +4,7 @@ import moment from 'moment';
 export default function SiteDBRow(props) {
   // utilize id that corresponds to index of element in state
   const { id, record } = props;
+  console.log(record.timeSpent);
 
   return (
     <tr className="dataRow" id={`tenrow-${id + 1}`} key={id + 1} >

@@ -1,5 +1,4 @@
 import React from 'react';
-import SortableHeader from './SortableHeader.js';
 import TopTenRow from './TopTenRow';
 
 export default class SiteTable extends React.Component {
@@ -16,11 +15,13 @@ export default class SiteTable extends React.Component {
   }
   onHeaderClick(column) {
     const order = (column === this.state.sortBy) ? -this.state.order : 1;
-    this.setState({
-      sortBy: column,
-      order,
-      sites: this.sortProps(this.props.sites, column, order)
-    });
+    return () => {
+      this.setState({
+        sortBy: column,
+        order,
+        sites: this.sortProps(this.props.sites, column, order)
+      });
+    };
   }
   sortProps(sites, sortBy, order) {
     return sites.sort((a, b) => {
@@ -42,14 +43,14 @@ export default class SiteTable extends React.Component {
     return (
       <div id="searchSiteDB">
         <table className="table table-striped table-bordered">
-          <SortableHeader
-            handleHeaderClick={this.onHeaderClick} columns={[
-              { name: '#', sort: false, title: '#' },
-              { name: 'site', sort: false, title: 'Site' },
-              { name: 'visits', sort: true, title: 'Visits' },
-              { name: 'timeSpent', sort: true, title: 'Time Spent' }
-            ]}
-          />
+          <thead className="thead-inverse">
+            <tr>
+              <th>#</th>
+              <th onClick={this.onHeaderClick('site')}>Site</th>
+              <th onClick={this.onHeaderClick('visits')}>Visits</th>
+              <th onClick={this.onHeaderClick('timeSpent')}>TimeSpent</th>
+            </tr>
+          </thead>
           <tbody>
             {topTen.map((record, index) => (
               <TopTenRow id={index} record={record} />
