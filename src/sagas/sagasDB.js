@@ -2,9 +2,10 @@ import { call, put } from 'redux-saga/effects';
 import { takeLatest, takeEvery } from 'redux-saga';
 import BL from '../blockList.js';
 
-function* addSite(action) {
+function* addFilter(action) {
   try {
-    const message = yield call([BL, BL.addSite], action.site);
+    console.log('OMG OMG OGM');
+    const message = yield call([BL, BL.addFilter], action.filter, action.action, action.filterType);
     yield put({ type: 'ADD_SITE_SUCCEEDED', message });
   } catch (e) {
     yield put({ type: 'ADD_SITE_FAILED', e });
@@ -35,8 +36,8 @@ function* saveChangesModal(action) {
     yield put({ type: 'SAVE_CHANGES_MODAL_UNSUCCESSFUL', e });
   }
 }
-export function* addSiteSaga() {
-  yield* takeLatest('ADD_SITE', addSite);
+export function* addFilterSaga() {
+  yield* takeLatest('ADD_FILTER', addFilter);
 }
 
 export function* fetchSitesSaga() {

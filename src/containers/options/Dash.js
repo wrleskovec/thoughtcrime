@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SiteTable from '../../components/SiteTable.js';
 import InputBar from '../../components/InputBar.js';
 
-import { addSite } from '../../actions/common.js';
+import { addFilter } from '../../actions/common.js';
 
 class Dash extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Dash extends React.Component {
             <h3 className="panel-title">Add Pattern</h3>
           </div>
           <div className="panel-body">
-            <InputBar addSite={this.props.addSite} />
+            <InputBar addFilter={this.props.addFilter} />
           </div>
         </div>
         <div className="col-md-7 panel panel-default">
@@ -43,7 +43,7 @@ export default connect(
   ),
   dispatch => (
     {
-      addSite: site => dispatch(addSite(site))
+      addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type))
     }
   )
 )(Dash);

@@ -110,7 +110,7 @@ class BlockList {
   }
   addRegexPattern(regex, action) {
     const { items } = this.patterns;
-    if (items.length > 0) {
+    if (items.length === 0) {
       items.push({ id: 1, regex, action });
     } else {
       items.push({ id: items.length + 1, regex, action });
@@ -135,6 +135,7 @@ class BlockList {
     .then(r => r[0]);
   }
   addFilter(filter, acl, type) {
+    console.log('YES. EXCELLENT');
     if (type === 'Domain') return this.addSite(filter, acl);
     return this.addRegexPattern(filter, acl);
   }

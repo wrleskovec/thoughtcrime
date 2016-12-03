@@ -13,7 +13,7 @@ export default class InputBar extends React.Component {
     e.preventDefault();
     const { patternInput, select } = this.refs;
     const { type } = this.state;
-    this.props.addSite(patternInput.value.trim(), select.value, type);
+    this.props.addFilter(patternInput.value.trim(), select.value, type);
     this.refs.patternInput.value = '';
   }
   toggleACL(type) {

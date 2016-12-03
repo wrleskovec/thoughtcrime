@@ -1,7 +1,9 @@
-export function addSite(site) {
+export function addFilter(filter, action, filterType) {
   return {
-    type: 'ADD_SITE',
-    site
+    type: 'ADD_FILTER',
+    filter,
+    action,
+    filterType
   };
 }
 export function fetchSites() {

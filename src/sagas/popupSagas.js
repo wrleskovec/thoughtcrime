@@ -1,5 +1,5 @@
 import { fork, put, call } from 'redux-saga/effects';
-import { addSiteSaga } from './sagasDB.js';
+import { addFilterSaga } from './sagasDB.js';
 import { takeLatest } from 'redux-saga';
 
 function sendTimerMessage() {
@@ -23,6 +23,6 @@ function* getTimerSaga() {
   yield* takeLatest('GET_TIMER', getTimer);
 }
 export default function* popupSagas() {
-  yield fork(addSiteSaga);
+  yield fork(addFilterSaga);
   yield fork(getTimerSaga);
 }
