@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SiteTable from '../../components/SiteTable.js';
-import InputBar from '../../components/InputBar.js';
+import SiteTable from '~/components/TopTen.js';
+import InputBar from '~/components/InputBar.js';
 
 import { addSite, fetchSites } from '../../actions/common.js';
 

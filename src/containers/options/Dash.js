@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SiteTable from '../../components/SiteTable.js';
-import InputBar from '../../components/InputBar.js';
+import TopTen from '~/components/TopTen';
+import InputBar from '~/components/InputBar.js';
 
-import { addFilter } from '../../actions/common.js';
+import { addFilter } from '~/actions/common.js';
 
 class Dash extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Dash extends React.Component {
             <h3 className="panel-title">Daily Statistics</h3>
           </div>
           <div className="panel-body">
-            <SiteTable sites={this.props.dailySites} maxEntry={10} />
+            <TopTen sites={this.props.dailySites} maxEntry={10} />
           </div>
         </div>
       </div>
