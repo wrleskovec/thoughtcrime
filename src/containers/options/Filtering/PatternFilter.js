@@ -82,7 +82,7 @@ class PatternFilter extends React.Component {
     this.setState({
       cards: update(cards, { $push: [{
         id: cards.length + 1,
-        action: 'accept',
+        action: 'limit',
         regex: ''
       }] })
     });

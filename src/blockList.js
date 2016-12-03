@@ -91,6 +91,12 @@ class BlockList {
         return Promise.resolve(result);
       });
   }
+  saveChangesRegex(items) {
+    return this.idb.settings.update({
+      config: 'patterns',
+      items
+    }).catch(e => Promise.reject(e));
+  }
   getRecord(site) {
     return this.idb.sites.get(site)
       .then(result => {

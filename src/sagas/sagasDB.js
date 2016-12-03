@@ -36,6 +36,14 @@ function* saveChangesModal(action) {
     yield put({ type: 'SAVE_CHANGES_MODAL_UNSUCCESSFUL', e });
   }
 }
+function* saveChangesRegex(action) {
+  try {
+    yield call([BL, BL.saveChangesRegex], action.items);
+    yield put({ type: 'SAVE_CHANGES_REGEX_SUCCESSFUL', items: action.items });
+  } catch (e) {
+    yield put({ type: 'SAVE_CHANGES_REGEX_UNSUCCESSFUL', e });
+  }
+}
 export function* addFilterSaga() {
   yield* takeLatest('ADD_FILTER', addFilter);
 }
@@ -49,4 +57,8 @@ export function* deleteSiteSaga() {
 }
 export function* saveChangesModalSaga() {
   yield* takeEvery('SAVE_CHANGES_MODAL', saveChangesModal);
+}
+
+export function* saveChangesRegexSaga() {
+  yield* takeEvery('SAVE_CHANGES_REGEX', saveChangesRegex);
 }

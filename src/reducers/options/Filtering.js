@@ -1,6 +1,7 @@
 import update from 'react/lib/update';
 import Fuse from 'fuse.js';
 import { notify } from '../../helpers.js';
+import BL from '~/blockList';
 
 const fuseOptions = {
   shouldSort: true,
@@ -17,9 +18,14 @@ function Filtering(state = {
   message: '',
   modalObj: null,
   sortBy: 'action',
-  order: 'DESCENDING'
+  order: 'DESCENDING',
+  patterns: []
 }, action) {
   switch (action.type) {
+    case 'FETCH_PATTERNS':
+      return update(state, {
+        patterns: BL.patterns.items
+      });
     case 'SITE_FETCH_UNSUCCESSFUL':
       notify('Error: Unable to fetch sites from DB.');
       break;
@@ -77,6 +83,12 @@ function Filtering(state = {
         sites: newSites,
         searchedSites: newSearchedSites
       };
+    }
+    case 'SAVE_CHANGES_REGEX_SUCCESSFUL': {
+      notify('Pattern changes saved');
+      return update(state, {
+        patterns: action.items
+      });
     }
     default:
       return state;

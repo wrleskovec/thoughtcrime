@@ -35,7 +35,12 @@ export function fetchDailySites() {
 }
 export function saveChangesRegex(items) {
   return {
-    type: 'SAVE_CHANGES_MODAL',
+    type: 'SAVE_CHANGES_REGEX',
     items
+  };
+}
+export function fetchPatterns() {
+  return {
+    type: 'FETCH_PATTERNS'
   };
 }
