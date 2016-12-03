@@ -46,7 +46,6 @@ export default class OptionsApp extends React.Component {
                   return (
                     <li
                       key={cat.title} role="presentation" className={catActive}
-
                     >
                       <a
                         data-toggle="collapse" data-parent="options-menu"

@@ -26,7 +26,7 @@ export default class EditModal extends React.Component {
       };
     }
     this.moveCard = this.moveCard.bind(this);
-    this.handleAdvText = this.handleAdvText.bind(this);
+    this.handleAdvRegex = this.handleAdvRegex.bind(this);
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
@@ -35,7 +35,7 @@ export default class EditModal extends React.Component {
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
   }
   componentWillMount() {
-    this.handleAdvText = _.debounce(this.handleAdvText, 500);
+    this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
   }
   componentWillReceiveProps(nextProps) {
     console.log('Prop change detected');
@@ -61,13 +61,13 @@ export default class EditModal extends React.Component {
   }
   prepCards(cards) {
     return cards.map((card, index) => (
-      { id: index, text: card.text, action: card.action }
+      { id: index, regex: card.regex, action: card.action }
     ));
   }
-  handleAdvText(id, value) {
+  handleAdvRegex(id, value) {
     const index = this.state.cards.findIndex(i => i.id === id);
     this.setState({
-      cards: update(this.state.cards, { [index]: { text: { $set: value } } })
+      cards: update(this.state.cards, { [index]: { regex: { $set: value } } })
     });
   }
   handleAdvSelect(id, selected) {
@@ -89,7 +89,7 @@ export default class EditModal extends React.Component {
       .map((card, index) => ({
         id: index + 1,
         action: card.action,
-        text: card.text
+        regex: card.regex
       }));
     console.log(newCards);
     this.setState({
@@ -102,7 +102,7 @@ export default class EditModal extends React.Component {
       cards: update(cards, { $push: [{
         id: cards.length + 1,
         action: 'accept',
-        text: ''
+        regex: ''
       }] })
     });
   }
@@ -160,8 +160,9 @@ export default class EditModal extends React.Component {
                       {cards.map((card, i) => (
                         <ActionRow
                           key={card.id} index={i} id={card.id}
-                          text={card.text} action={card.action} moveCard={this.moveCard}
-                          handleAdvText={this.handleAdvText} handleAdvDelete={this.handleAdvDelete}
+                          regex={card.regex} action={card.action} moveCard={this.moveCard}
+                          handleAdvRegex={this.handleAdvRegex}
+                          handleAdvDelete={this.handleAdvDelete}
                           handleAdvSelect={this.handleAdvSelect}
                         />
                       )

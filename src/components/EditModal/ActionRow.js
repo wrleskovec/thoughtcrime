@@ -81,24 +81,24 @@ export default class ActionRow extends React.Component {
     isDragging: React.PropTypes.bool.isRequired,
     id: React.PropTypes.any.isRequired,
     action: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string.isRequired,
+    regex: React.PropTypes.string.isRequired,
     moveCard: React.PropTypes.func.isRequired,
-    handleAdvText: React.PropTypes.func.isRequired,
+    handleAdvRegex: React.PropTypes.func.isRequired,
     handleAdvDelete: React.PropTypes.func.isRequired,
     handleAdvSelect: React.PropTypes.func.isRequired
   };
   constructor(props) {
     super(props);
-    this.handleText = this.handleText.bind(this);
+    this.handleRegex = this.handleRegex.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
   }
 
-  handleText(e) {
-    const { handleAdvText, id } = this.props;
+  handleRegex(e) {
+    const { handleAdvRegex, id } = this.props;
     const value = e.target.textContent.trim();
     console.log(value);
-    handleAdvText(id, value);
+    handleAdvRegex(id, value);
   }
   handleSelect(e) {
     const { handleAdvSelect, id } = this.props;
@@ -110,13 +110,13 @@ export default class ActionRow extends React.Component {
     handleAdvDelete(id);
   }
   render() {
-    const { text, isDragging, connectDragSource, connectDropTarget, id, action } = this.props;
+    const { regex, isDragging, connectDragSource, connectDropTarget, id, action } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
       <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
-        <div className="regexPattern col-md-9" onKeyUp={this.handleText} contentEditable>
-          {text}
+        <div className="regexPattern col-md-9" onKeyUp={this.handleRegex} contentEditable>
+          {regex}
         </div>
         <div className="editModal">
           <div className="btn-group" role="group">
@@ -126,7 +126,7 @@ export default class ActionRow extends React.Component {
               <option value="limit" selected={action === 'limit'}>Limit</option>
             </select>
             <button
-              type="button" className="btn btn-danger btn-sm arrow" onClick={this.handleDelete}
+              type="button" className="btn btn-danger btn-sm remove" onClick={this.handleDelete}
             >
               <span className="glyphicon glyphicon-remove"></span>
             </button>
