@@ -65,7 +65,6 @@ export default connect(
   state => (
     {
       sites: state.sites,
-      message: state.message,
       timer: state.timer
     }
   ),

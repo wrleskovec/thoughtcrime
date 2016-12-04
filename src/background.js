@@ -20,6 +20,19 @@ function handleAction(action, details) {
     loadFilteredPage(details.tabId, BLOCKED_PAGE);
   }
 }
+function matchPatterns(details) {
+  return BL.getRegexPatterns()
+    .then(patterns => {
+      if (patterns !== undefined && patterns.items.length > 0) {
+        return patterns.items.find(action => {
+          const reg = new RegExp(action.regex, 'i');
+          return reg.test(details.url);
+        });
+      }
+      return undefined;
+    });
+}
+
 function urlCheck(details) {
   const protocol = wurl('protocol', details.url);
   if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
@@ -33,19 +46,21 @@ function urlCheck(details) {
         if (aclMatch) {
           handleAction(aclMatch.action, details);
         } else {
-          const patternMatch = BL.patterns.items.find(item => {
-            const reg = new RegExp(item.regex, 'i');
-            return reg.test(details.url);
-          });
-          if (patternMatch) {
-            handleAction(patternMatch.action, details);
-          } else {
-            handleAction(record.action, details);
-          }
+          matchPatterns(details)
+            .then(patternMatch => {
+              if (patternMatch) {
+                handleAction(patternMatch.action, details);
+              } else {
+                handleAction(record.action, details);
+              }
+            });
         }
       })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
+        matchPatterns(details)
+          .then(patternMatch => {
+            if (patternMatch) handleAction(patternMatch.action, details);
+          });
       });
   }
   return {};

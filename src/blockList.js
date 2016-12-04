@@ -10,7 +10,7 @@ class BlockList {
       this.idb = null;
       this.date = moment().format('DD-MM-YYYY');
       this.dailyRecord = null;
-      this.patterns = null;
+      this.patterns = undefined;
     }
     return instance;
   }
@@ -66,14 +66,15 @@ class BlockList {
     .then(() => (
       this.getRegexPatterns()
         .then(patterns => {
-          console.log(patterns);
-          this.patterns = patterns;
-        })
-        .catch(() => this.initRegexPatterns()
-          .then(patterns => {
-            console.log(patterns);
+          if (patterns !== undefined) {
             this.patterns = patterns;
-          }))
+            return Promise.resolve();
+          }
+          return this.initRegexPatterns()
+            .then(result => {
+              this.patterns = result;
+            });
+        })
     ));
   }
   initRegexPatterns() {
@@ -85,11 +86,7 @@ class BlockList {
     .then(r => r[0]);
   }
   getRegexPatterns() {
-    return this.idb.settings.get('patterns')
-      .then(result => {
-        if (result === undefined) return Promise.reject('Record not found');
-        return Promise.resolve(result);
-      });
+    return this.idb.settings.get('patterns');
   }
   saveChangesRegex(items) {
     this.patterns.items = items;
