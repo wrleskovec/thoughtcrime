@@ -27,13 +27,21 @@ function urlCheck(details) {
     BL.getRecord(site)
       .then(record => {
         const aclMatch = record.advAction.find(action => {
-          const reg = new RegExp(action.text, 'i');
+          const reg = new RegExp(action.regex, 'i');
           return reg.test(details.url);
         });
         if (aclMatch) {
           handleAction(aclMatch.action, details);
         } else {
-          handleAction(record.action, details);
+          const patternMatch = BL.patterns.items.find(item => {
+            const reg = new RegExp(item.regex, 'i');
+            return reg.test(details.url);
+          });
+          if (patternMatch) {
+            handleAction(patternMatch.action, details);
+          } else {
+            handleAction(record.action, details);
+          }
         }
       })
       .catch(err => {
