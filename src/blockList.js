@@ -92,6 +92,8 @@ class BlockList {
       });
   }
   saveChangesRegex(items) {
+    this.patterns.items = items;
+    console.log('TESTING');
     return this.idb.settings.update({
       config: 'patterns',
       items

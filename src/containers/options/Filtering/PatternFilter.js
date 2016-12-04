@@ -8,14 +8,15 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
 
 const style = {
-  width: 550
+  width: 800
 };
 
 @DragDropContext(HTML5Backend)
 class PatternFilter extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    console.log('constructing pattern filter');
+    console.log(props.patterns);
     this.state = {
       cards: props.patterns || []
     };
@@ -28,15 +29,6 @@ class PatternFilter extends React.Component {
   }
   componentWillMount() {
     this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log('Prop change detected');
-    if (nextProps.site) {
-      this.setState({
-        action: nextProps.site.action,
-        cards: nextProps.site.advAction
-      });
-    }
   }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -95,34 +87,45 @@ class PatternFilter extends React.Component {
   render() {
     const { cards } = this.state;
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="form-group">
-              <label htmlFor="advActionRow">AdvFilter(regex):</label>
-              <div id="advActionRow" style={style}>
-                {cards.map((card, i) => (
-                  <ActionRow
-                    key={card.id} index={i} id={card.id}
-                    regex={card.regex} action={card.action} moveCard={this.moveCard}
-                    handleAdvRegex={this.handleAdvRegex}
-                    handleAdvDelete={this.handleAdvDelete}
-                    handleAdvSelect={this.handleAdvSelect}
-                  />
-                )
-                )}
+      <div className="col-md-10" id="pattern-sorter">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h3 className="panel-title">Pattern Drag and Drop</h3>
+          </div>
+          <div className="panel-body">
+            <p>Drag and drop the patterns into the desired order of precedence.</p>
+            <div className="col-md-12">
+              <div className="form-group">
+                <div id="PatternDND" style={style}>
+                  {cards.map((card, i) => (
+                    <ActionRow
+                      key={card.id} index={i} id={card.id}
+                      regex={card.regex} action={card.action} moveCard={this.moveCard}
+                      handleAdvRegex={this.handleAdvRegex}
+                      handleAdvDelete={this.handleAdvDelete}
+                      handleAdvSelect={this.handleAdvSelect}
+                    />
+                  )
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <button type="button" className="btn btn-default" onClick={this.handleAddCard}>
-              <span className="glyphicon glyphicon-plus"></span>
-            </button>
+          <div className="row">
+            <div className="col-md-12">
+              <button type="button" className="btn btn-default" onClick={this.handleAddCard}>
+                <span className="glyphicon glyphicon-plus"></span>
+              </button>
+              <button type="button" className="btn btn-primary pull-right" onClick={this.handleSaveChanges}>
+                Save Changes
+              </button>
+            </div>
+          </div>
+          <div className="panel-footer">
           </div>
         </div>
       </div>
+
     );
   }
 }

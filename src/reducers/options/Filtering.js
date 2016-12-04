@@ -24,7 +24,7 @@ function Filtering(state = {
   switch (action.type) {
     case 'FETCH_PATTERNS':
       return update(state, {
-        patterns: BL.patterns.items
+        patterns: { $set: BL.patterns.items }
       });
     case 'SITE_FETCH_UNSUCCESSFUL':
       notify('Error: Unable to fetch sites from DB.');
@@ -87,7 +87,7 @@ function Filtering(state = {
     case 'SAVE_CHANGES_REGEX_SUCCESSFUL': {
       notify('Pattern changes saved');
       return update(state, {
-        patterns: action.items
+        patterns: { $set: action.items }
       });
     }
     default:
