@@ -41,10 +41,9 @@ export default class SearchSiteDB extends React.Component {
 
     const id = e.target.id;
     const numOfPages = Math.ceil(records.length / PAGE_ITEMS);
-
-    if (id === 'pagePrev' && pageN > 0) {
+    if (id === 'prev' && pageN > 0) {
       this.setState({ pageN: pageN - 1 });
-    } else if (id === 'pageNext' && pageN < numOfPages) {
+    } else if (id === 'next' && pageN < numOfPages - 1) {
       this.setState({ pageN: pageN + 1 });
     } else if (id.indexOf('page') > -1) {
       this.setState({ pageN: parseInt(id.slice(4), 10) });

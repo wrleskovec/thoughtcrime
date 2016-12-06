@@ -23,13 +23,13 @@ export default function Pagination(props) {
     <nav className="tablePagination" aria-label="...">
       <ul className="pagination" onClick={onPageClick}>
         <li>
-          <a id="pagePrev" href="#" aria-label="Next">
+          <a id="prev" href="#" aria-label="Next">
             {'<'}
           </a>
         </li>
         {pages}
         <li>
-          <a id="pageNext" href="#" aria-label="Next">
+          <a id="next" href="#" aria-label="Next">
             {'>'}
           </a>
         </li>
