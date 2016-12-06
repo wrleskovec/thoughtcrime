@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'moment-duration-format';
 import BL from './blockList.js';
 import wurl from 'wurl';
 
@@ -7,26 +8,14 @@ class Timer {
     this.currentSite = null;
     this.currentTab = null;
     this.popup = false;
-//    this.windowFocus = true;
     this.counter = 1;
     this.dbCounter = 1;
     this.intervalId = null;
     this.currentDate = moment().format('DD-MM-YYYY');
+    this.startTime = null;
+    this.newDayTimer = this.setNewDayTimer();
   }
   init() {
-    // chrome.windows.onFocusChanged.addListener(() => {
-    //   if (chrome.windows.WINDOW_ID_NONE) {
-    //     this.windowFocus = false;
-    //     if (this.currentSite !== null) {
-    //       this.stopInterval();
-    //       BL.reconcileRecords(this.currentSite, this.counter);
-    //     }
-    //     this.currentSite = null;
-    //   } else {
-    //     this.windowFocus = true;
-    //     console.log('kill me google');
-    //   }
-    // });
     chrome.windows.getAll({ populate: true }, (windows) => {
       windows.forEach((win) => {
         win.tabs.forEach((tab) => {
@@ -47,11 +36,11 @@ class Timer {
           }
           this.currentTab = sender.tab.id;
           this.currentSite = senderSite;
-          this.startInterval();
+          this.startTime = moment();
         } else if (request.focus === 'blur') {
           if (sender.tab.id === this.currentTab && senderSite && !this.popup) {
-            console.log('wow');
             this.saveRecords();
+            this.startTime = null;
             this.currentSite = null;
             this.currentTab = null;
           }
@@ -59,79 +48,43 @@ class Timer {
       }
       if (request.timer === 'popup') {
         this.popup = true;
-        console.log('background response');
-        console.log(sender);
-        sendResponse({ seconds: this.counter });
+        sendResponse({ seconds: moment.duration(moment().diff(this.startTime)).asSeconds() });
       }
     });
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       const tabSite = wurl('domain', tab.url);
+      console.log(`currentSite: ${this.currentSite}, tab: ${tabSite}`);
       const validUrl = tabSite !== this.currentSite && this.isValidProtocol(tab.url);
-      console.log(`${tabSite}: ${validUrl}`);
       if (validUrl) {
         this.currentSite = tabSite;
         this.currentTab = tab.id;
-        this.startInterval();
       }
     });
   }
-  //   chrome.windows.onRemoved.addListener(() => {
-  //     //
-  //   });
-  //   chrome.tabs.onActivated.addListener(activeInfo => {
-  //     chrome.tabs.get(activeInfo.tabId, tab => {
-  //       const protocol = wurl('protocol', tab.url);
-  //       if (protocol === 'chrome' || protocol === 'chrome-extension') {
-  //         console.log('NOICE');
-  //       } else if (wurl('domain', tab.url) === this.currentSite) {
-  //         console.log('SAME SITE');
-  //       } else {
-  //         if (this.currentSite !== null) {
-  //           this.stopInterval();
-  //           BL.reconcileRecords(this.currentSite, this.counter);
-  //         }
-  //         console.log('DIFF SITE');
-  //         this.currentSite = wurl('domain', tab.url);
-  //         this.startInterval();
-  //       }
-  //     });
-  //   });
-
+  setNewDayTimer() {
+    const tomorrow = moment().add(1, 'days').startOf('day');
+    return setTimeout(() => {
+      const now = moment();
+      this.saveRecords();
+      this.currentDate = this.currentDate = now.format('DD-MM-YYYY');
+      this.startTime = now;
+    }, tomorrow.diff(moment()));
+  }
   isValidProtocol(url) {
     const protocol = wurl('protocol', url);
     return (
       protocol === 'http' || protocol === 'https' || protocol === 'ftp'
     );
   }
-  saveRecords() {
-    clearInterval(this.intervalId);
-    this.intervalId = null;
-    BL.reconcileRecords(this.currentSite, this.dbCounter, 1);
+  getDuration() {
+    return moment.duration(moment().diff(this.startTime)).asSeconds();
   }
-  startInterval() {
-    clearInterval(this.intervalId);
-    this.counter = 1;
-    this.dbCounter = 1;
-    this.intervalId = setInterval(() => {
-      const now = moment().format('DD-MM-YYYY');
-      if (now !== this.currentDate) {
-        if (this.intervalId !== null) {
-          this.saveRecords();
-        }
-        // Whatever its not like this needs to be precise
-        this.currentDate = now;
-        this.startInterval();
-      } else {
-        this.counter = this.counter += 1;
-        this.dbCounter = this.dbCounter += 1;
-        if (this.dbCounter % 60 === 0) {
-          BL.reconcileRecords(this.currentSite, this.dbCounter, 0);
-          this.dbCounter = 0;
-        }
-      }
-    }, 1000);
+  saveRecords() {
+    BL.reconcileRecords(this.currentSite, this.getDuration(), 1);
+    this.startTime = moment();
   }
 }
+
 const proxyTimer = new Proxy(new Timer(), {
   set(target, key, value) {
     // console.log(`${key}: ${value}`);

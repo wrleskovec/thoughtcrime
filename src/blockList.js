@@ -90,7 +90,6 @@ class BlockList {
   }
   saveChangesRegex(items) {
     this.patterns.items = items;
-    console.log('TESTING');
     return this.idb.settings.update({
       config: 'patterns',
       items
@@ -123,7 +122,6 @@ class BlockList {
     return this.idb.settings.update(this.patterns);
   }
   addSiteRecord(site) {
-    console.log(site);
     return this.idb.sites.update({
       site,
       visits: 1,
@@ -140,7 +138,6 @@ class BlockList {
     .then(r => r[0]);
   }
   addFilter(filter, acl, type) {
-    console.log('YES. EXCELLENT');
     if (type === 'Domain') return this.addSite(filter, acl);
     return this.addRegexPattern(filter, acl);
   }
@@ -181,7 +178,6 @@ class BlockList {
   }
   reconcileRecords(site, seconds, visits) {
     const cacheIndex = this.dailyRecord.sites.findIndex(record => record.site === site);
-    console.log(cacheIndex);
     if (cacheIndex !== -1) {
       const siteRecord = this.dailyRecord.sites[cacheIndex];
       siteRecord.visits += visits;
