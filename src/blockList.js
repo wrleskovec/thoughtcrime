@@ -8,7 +8,7 @@ class BlockList {
     if (!instance) {
       instance = this;
       this.idb = null;
-      this.date = moment().format('DD-MM-YYYY');
+      this.date = null;
       this.dailyRecord = null;
       this.patterns = undefined;
     }
@@ -53,15 +53,7 @@ class BlockList {
     })
     .then(d => {
       this.idb = d;
-      return this.getDayRecord(this.date)
-        .then(day => {
-          this.dailyRecord = day;
-        })
-        .catch(() => this.addDayRecord(this.date)
-          .then(record => {
-            this.dailyRecord = record;
-          })
-        );
+      return this.initNewDate();
     })
     .then(() => (
       this.getRegexPatterns()
@@ -76,6 +68,18 @@ class BlockList {
             });
         })
     ));
+  }
+  initNewDate() {
+    this.date = moment().format('DD-MM-YYYY');
+    return this.getDayRecord(this.date)
+      .then(day => {
+        this.dailyRecord = day;
+      })
+      .catch(() => this.addDayRecord(this.date)
+        .then(record => {
+          this.dailyRecord = record;
+        })
+      );
   }
   initRegexPatterns() {
     return this.idb.settings.add({

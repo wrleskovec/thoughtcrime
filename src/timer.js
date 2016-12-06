@@ -11,7 +11,6 @@ class Timer {
     this.counter = 1;
     this.dbCounter = 1;
     this.intervalId = null;
-    this.currentDate = moment().format('DD-MM-YYYY');
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
   }
@@ -48,7 +47,7 @@ class Timer {
       }
       if (request.timer === 'popup') {
         this.popup = true;
-        sendResponse({ seconds: moment.duration(moment().diff(this.startTime)).asSeconds() });
+        sendResponse({ seconds: this.getDuration() });
       }
     });
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -64,10 +63,8 @@ class Timer {
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
     return setTimeout(() => {
-      const now = moment();
-      this.saveRecords();
-      this.currentDate = this.currentDate = now.format('DD-MM-YYYY');
-      this.startTime = now;
+      this.saveRecords()
+        .then(() => BL.initNewDate());
     }, tomorrow.diff(moment()));
   }
   isValidProtocol(url) {
@@ -80,16 +77,11 @@ class Timer {
     return moment.duration(moment().diff(this.startTime)).asSeconds();
   }
   saveRecords() {
-    BL.reconcileRecords(this.currentSite, this.getDuration(), 1);
-    this.startTime = moment();
+    return BL.reconcileRecords(this.currentSite, this.getDuration(), 1)
+      .then(() => {
+        this.startTime = moment();
+      });
   }
 }
 
-const proxyTimer = new Proxy(new Timer(), {
-  set(target, key, value) {
-    // console.log(`${key}: ${value}`);
-    target[key] = value;
-    return true;
-  }
-});
-export default proxyTimer;
+export default new Timer();
