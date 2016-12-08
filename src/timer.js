@@ -8,9 +8,6 @@ class Timer {
     this.currentSite = null;
     this.currentTab = null;
     this.popup = false;
-    this.counter = 1;
-    this.dbCounter = 1;
-    this.intervalId = null;
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
   }
