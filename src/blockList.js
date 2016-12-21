@@ -89,6 +89,11 @@ class BlockList {
     })
     .then(r => r[0]);
   }
+  initSchedule() {
+    return this.idb.settings.add({
+      config: 'schedule'
+    });
+  }
   getRegexPatterns() {
     return this.idb.settings.get('patterns');
   }
@@ -170,6 +175,26 @@ class BlockList {
   saveChangesModal(record) {
     return this.idb.sites.update(record)
       .catch(e => { throw e; });
+  }
+  saveChangesSchedule(schedule) {
+    return this.idb.settings.update({
+      config: 'schedule',
+      items: schedule
+    });
+  }
+  getSchedule() {
+    return this.idb.settings.get('schedule')
+      .then((result) => {
+        if (result === undefined) {
+          return Promise.reject();
+        }
+        return result;
+      })
+      .catch(() => this.idb.settings.add({
+        config: 'schedule',
+        items: [],
+        setting: { dailyLimit: 0 }
+      }));
   }
   // Timer DB Methods
   updateSiteRecord(record, timeSpent) {

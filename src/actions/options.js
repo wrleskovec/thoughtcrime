@@ -39,6 +39,12 @@ export function saveChangesRegex(items) {
     items
   };
 }
+export function saveChangesSchedule(schedule) {
+  return {
+    type: 'SAVE_CHANGES_SCHEDULE',
+    schedule
+  };
+}
 export function fetchPatterns() {
   return {
     type: 'FETCH_PATTERNS'

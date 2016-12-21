@@ -1,7 +1,7 @@
 import Dash from './Dash';
 import DomainFilter from './Filtering/DomainFilter';
 import PatternFilter from './Filtering/PatternFilter';
-import Settings from './Settings';
+import ScheduleSettings from './Settings/Scheduling';
 import Statistics from './Statistics';
 
 const structure = [
@@ -19,14 +19,15 @@ const structure = [
   },
   {
     title: 'Settings',
-    items: null
+    items: ['Scheduling']
   }
 ];
 
 const options = {
   Dash,
   Filtering: DomainFilter,
-  Settings,
+  Settings: ScheduleSettings,
+  Scheduling: ScheduleSettings,
   Statistics,
   'Filter by Domain': DomainFilter,
   'Filter by Pattern': PatternFilter
