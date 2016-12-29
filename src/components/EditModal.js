@@ -16,7 +16,7 @@ export default class EditModal extends React.Component {
     console.log(props);
     if (props.site != null) {
       this.state = {
-        action: props.site.action || '',
+        action: props.site.action || 'accept',
         cards: props.site.advAction || []
       };
     } else {

@@ -4,7 +4,8 @@ export default class InputBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 'Domain'
+      type: 'Domain',
+      action: 'limit'
     };
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
     this.toggleACL = this.toggleACL.bind(this);
@@ -16,13 +17,19 @@ export default class InputBar extends React.Component {
     this.props.addFilter(patternInput.value.trim(), select.value, type);
     this.refs.patternInput.value = '';
   }
+  handleSelect(e) {
+    const selected = e.target.value;
+    this.setState({
+      action: selected
+    });
+  }
   toggleACL(type) {
     return e => {
       this.setState({ type });
     };
   }
   render() {
-    const { type } = this.state;
+    const { type, action } = this.state;
     const domainBtn = `btn ${(type === 'Domain') ? 'btn-primary' : 'btn-default'}`;
     const patternBtn = `btn ${(type === 'Pattern') ? 'btn-primary' : 'btn-default'}`;
     return (
@@ -42,7 +49,9 @@ export default class InputBar extends React.Component {
             <button type="button" className={patternBtn} onClick={this.toggleACL('Pattern')}>
               Pattern
             </button>
-            <select ref="select" value="limit" className="btn btn-default">
+            <select
+              ref="select" value={action} onChange={this.handleSelect} className="btn btn-default"
+            >
               <option value="accept">Accept</option>
               <option value="block">Block</option>
               <option value="limit">Limit</option>
