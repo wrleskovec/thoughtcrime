@@ -44,6 +44,28 @@ function* saveChangesRegex(action) {
     yield put({ type: 'SAVE_CHANGES_REGEX_UNSUCCESSFUL', e });
   }
 }
+function* fetchSchedule() {
+  try {
+    const schedule = yield call([BL, BL.getSchedule]);
+    yield put({ type: 'FETCH_SCHEDULE_SUCCESSFUL', schedule });
+  } catch (e) {
+    yield put({ type: 'FETCH_SCHEDULE_UNSUCCESSFUL', e });
+  }
+}
+function* saveChangesSchedule(action) {
+  try {
+    const schedule = yield call([BL, BL.saveChangesSchedule], action.schedule);
+    yield put({ type: 'SAVE_CHANGES_SCHEDULE_SUCCESSFUL', schedule });
+  } catch (e) {
+    yield put({ type: 'SAVE_CHANGES_SCHEDULE_UNSUCCESSFUL', e });
+  }
+}
+export function* fetchScheduleSaga() {
+  yield* takeLatest('FETCH_SCHEDULE', fetchSchedule);
+}
+export function* saveChangesScheduleSaga() {
+  yield* takeLatest('SAVE_CHANGES_SCHEDULE', saveChangesSchedule);
+}
 export function* addFilterSaga() {
   yield* takeLatest('ADD_FILTER', addFilter);
 }

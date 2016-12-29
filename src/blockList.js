@@ -2,7 +2,7 @@ import db from 'db.js';
 import moment from 'moment';
 
 let instance = null;
-
+// I cache regexPatterns, dailyRecord for faster lookups
 class BlockList {
   constructor() {
     if (!instance) {
@@ -66,6 +66,12 @@ class BlockList {
             .then(result => {
               this.patterns = result;
             });
+        })
+    ))
+    .then(() => (
+      this.getSchedule()
+        .then(schedule => {
+          this.schedule = schedule;
         })
     ));
   }
@@ -192,9 +198,22 @@ class BlockList {
       })
       .catch(() => this.idb.settings.add({
         config: 'schedule',
-        items: [],
+        items: this.initDefaultSchedule(),
         setting: { dailyLimit: 0 }
-      }));
+      })
+      .then(r => r[0])
+    );
+  }
+  initDefaultSchedule() {
+    const days = [];
+    for (let i = 0; i < 7; i += 1) {
+      const day = [];
+      for (let j = 0; j < 96; j += 1) {
+        day.push({ event: 'Default', color: [215, 12, 85] });
+      }
+      days.push(day);
+    }
+    return days;
   }
   // Timer DB Methods
   updateSiteRecord(record, timeSpent) {

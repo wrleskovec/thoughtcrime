@@ -1,6 +1,7 @@
 import { fork } from 'redux-saga/effects';
 import { fetchSitesSaga, addFilterSaga, deleteSiteSaga,
-saveChangesModalSaga, saveChangesRegexSaga } from './sagasDB.js';
+saveChangesModalSaga, saveChangesRegexSaga, fetchScheduleSaga,
+saveChangesScheduleSaga } from './sagasDB.js';
 
 export default function* optionsSaga() {
   yield fork(fetchSitesSaga);
@@ -8,4 +9,6 @@ export default function* optionsSaga() {
   yield fork(deleteSiteSaga);
   yield fork(saveChangesModalSaga);
   yield fork(saveChangesRegexSaga);
+  yield fork(saveChangesScheduleSaga);
+  yield fork(fetchScheduleSaga);
 }

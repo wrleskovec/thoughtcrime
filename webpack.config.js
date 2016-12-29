@@ -1,5 +1,6 @@
 const CommonsPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -15,6 +16,11 @@ module.exports = {
     new CommonsPlugin({
       minChunks: 2,
       name: 'vendor'
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
     })
   ],
   devtool: '#inline-source-map',
@@ -27,7 +33,7 @@ module.exports = {
         query: {
           presets: ['stage-0', 'react', 'es2015'],
           plugins: ['transform-runtime', 'transform-react-inline-elements',
-          'transform-decorators-legacy', 'transform-class-properties']
+            'transform-decorators-legacy', 'transform-class-properties']
         }
       },
       {

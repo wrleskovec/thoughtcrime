@@ -45,6 +45,11 @@ export function saveChangesSchedule(schedule) {
     schedule
   };
 }
+export function fetchSchedule() {
+  return {
+    type: 'FETCH_SCHEDULE'
+  };
+}
 export function fetchPatterns() {
   return {
     type: 'FETCH_PATTERNS'

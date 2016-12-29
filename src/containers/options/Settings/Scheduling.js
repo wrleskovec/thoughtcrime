@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import WeeklyScheduler from 'react-week-scheduler';
 import 'react-week-scheduler/react-week-scheduler.css';
-import { saveChangesSchedule } from '~/actions/options';
+import { saveChangesSchedule, fetchSchedule } from '~/actions/options';
 
 const startingDefault = { event: 'Default', color: [215, 12, 85] };
 const blockingEvent = { event: 'Block All', color: [360, 36, 55] };
@@ -13,6 +13,10 @@ class Scheduling extends React.Component {
   constructor(props) {
     super(props);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
+  }
+  componentWillMount() {
+    const { fetchSchedule } = this.props;
+    fetchSchedule();
   }
   handleSaveChanges(e) {
     const { saveChangesSchedule } = this.props;
@@ -61,9 +65,10 @@ class Scheduling extends React.Component {
 
 export default connect(
   state => ({
-    patterns: state.Filtering.patterns
+    schedule: state.Settings.schedule
   }),
   dispatch => ({
-    saveChangesSchedule: schedule => dispatch(saveChangesSchedule(schedule))
+    saveChangesSchedule: schedule => dispatch(saveChangesSchedule(schedule)),
+    fetchSchedule: () => dispatch(fetchSchedule())
   })
 )(Scheduling);
