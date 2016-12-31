@@ -21,10 +21,14 @@ class Scheduling extends React.Component {
   handleSaveChanges(e) {
     const { saveChangesSchedule } = this.props;
     const { scheduler } = this.refs;
-    const schedule = scheduler.state.days;
-    saveChangesSchedule(schedule);
+    const newSchedule = scheduler.state.days;
+    saveChangesSchedule(newSchedule);
   }
   render() {
+    const { schedule } = this.props;
+    const currentSchedule = schedule ? schedule.items : undefined;
+    console.log('Schedule in Props :');
+    console.log(schedule);
     return (
       <div className="col-md-10" id="Scheduling">
         <div className="panel panel-default">
@@ -41,7 +45,7 @@ class Scheduling extends React.Component {
             <div className="col-md-12">
               <WeeklyScheduler
                 defaultEvent={startingDefault} selectedEvent={blockingEvent} events={eventList}
-                ref="scheduler"
+                ref="scheduler" currentSchedule={currentSchedule}
               />
             </div>
           </div>

@@ -31,7 +31,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          presets: ['stage-0', 'react', 'es2015'],
+          presets: ['react', 'es2015', 'stage-0'],
           plugins: ['transform-runtime', 'transform-react-inline-elements',
             'transform-decorators-legacy', 'transform-class-properties']
         }
