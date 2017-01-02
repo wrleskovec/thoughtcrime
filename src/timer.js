@@ -10,8 +10,11 @@ class Timer {
     this.popup = false;
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
+    this.dailyLimit = undefined;
+    this.limitCD = undefined;
   }
   init() {
+    // loading content.js on all previously opened windows (maybe just ask user to restart?)
     chrome.windows.getAll({ populate: true }, (windows) => {
       windows.forEach((win) => {
         win.tabs.forEach((tab) => {
@@ -21,6 +24,7 @@ class Timer {
         });
       });
     });
+    // interacting with popup for timer & content.js
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.focus) {
         const senderSite = wurl('domain', sender.tab.url);
@@ -56,6 +60,9 @@ class Timer {
         this.currentTab = tab.id;
       }
     });
+  }
+  setLimitCD() {
+
   }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');

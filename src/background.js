@@ -2,6 +2,7 @@ import wurl from 'wurl';
 import BL from './blockList.js';
 import Timer from './timer.js';
 import moment from 'moment';
+import _ from 'lodash';
 
 BL.init().then(() => {
   Timer.init();
@@ -67,6 +68,9 @@ function matchPatterns(details) {
 
 
 function urlCheck(details) {
+  console.log('urlCheck Called:');
+  console.log(details.url);
+  console.log(details.tabId);
   const protocol = wurl('protocol', details.url);
   if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
     const site = wurl('domain', details.url);
@@ -99,7 +103,7 @@ function urlCheck(details) {
   return {};
 }
 
-chrome.webRequest.onBeforeRequest.addListener(urlCheck, {
+chrome.webRequest.onBeforeRequest.addListener(_.debounce(urlCheck, 50), {
   urls: ['<all_urls>'],
   types: ['main_frame']
 });

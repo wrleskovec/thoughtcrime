@@ -13,24 +13,64 @@ class Scheduling extends React.Component {
   constructor(props) {
     super(props);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      dailyLimit: 0
+    };
   }
   componentWillMount() {
     const { fetchSchedule } = this.props;
     fetchSchedule();
   }
+  componentWillReceiveProps({ schedule }) {
+    const { dailyLimit } = this.state;
+    if (schedule.setting.dailyLimit !== dailyLimit) {
+      this.setState({
+        dailyLimit: schedule.setting.dailyLimit
+      });
+    }
+  }
+  handleChange(e) {
+    this.setState({
+      dailyLimit: e.target.value
+    });
+  }
   handleSaveChanges(e) {
     const { saveChangesSchedule } = this.props;
-    const { scheduler } = this.refs;
+    const { scheduler, dailyLimit } = this.refs;
     const newSchedule = scheduler.state.days;
-    saveChangesSchedule(newSchedule);
+    saveChangesSchedule(dailyLimit.value, newSchedule);
   }
   render() {
     const { schedule } = this.props;
     const currentSchedule = schedule ? schedule.items : undefined;
-    console.log('Schedule in Props :');
-    console.log(schedule);
+    const { dailyLimit } = this.state;
+
+    console.log('new Props');
     return (
       <div className="col-md-10" id="Scheduling">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h3 className="panel-title">Allocate Daily Limit</h3>
+          </div>
+          <div className="panel-body">
+            <p>Allocate the amount of time allowed to visit limited websites daily
+              (integer in minutes).
+            </p>
+            <div className="row">
+              <div className="col-md-12">
+                <div className="input-group daily-limit">
+                  <input
+                    type="text" className="form-control" name="dailyLimit" ref="dailyLimit"
+                    value={dailyLimit} onChange={this.handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
         <div className="panel panel-default">
           <div className="panel-heading">
             <h3 className="panel-title">Schedule Week Filter Behavior</h3>
@@ -72,7 +112,9 @@ export default connect(
     schedule: state.Settings.schedule
   }),
   dispatch => ({
-    saveChangesSchedule: schedule => dispatch(saveChangesSchedule(schedule)),
+    saveChangesSchedule: (dailyLimit, schedule) => (
+      dispatch(saveChangesSchedule(dailyLimit, schedule))
+    ),
     fetchSchedule: () => dispatch(fetchSchedule())
   })
 )(Scheduling);

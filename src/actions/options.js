@@ -39,10 +39,11 @@ export function saveChangesRegex(items) {
     items
   };
 }
-export function saveChangesSchedule(schedule) {
+export function saveChangesSchedule(dailyLimit, schedule) {
   return {
     type: 'SAVE_CHANGES_SCHEDULE',
-    schedule
+    schedule,
+    dailyLimit
   };
 }
 export function fetchSchedule() {
