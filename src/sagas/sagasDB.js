@@ -54,7 +54,7 @@ function* fetchSchedule() {
 }
 function* saveChangesSchedule(action) {
   try {
-    const schedule = yield call([BL, BL.saveChangesSchedule], action.dailyLimit, action.schedule);
+    const schedule = yield call([BL, BL.saveChangesSchedule], action.schedule);
     yield put({ type: 'SAVE_CHANGES_SCHEDULE_SUCCESSFUL', schedule });
   } catch (e) {
     yield put({ type: 'SAVE_CHANGES_SCHEDULE_UNSUCCESSFUL', e });

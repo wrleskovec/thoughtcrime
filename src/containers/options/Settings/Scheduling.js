@@ -36,10 +36,18 @@ class Scheduling extends React.Component {
     });
   }
   handleSaveChanges(e) {
-    const { saveChangesSchedule } = this.props;
+    const { saveChangesSchedule, schedule } = this.props;
     const { scheduler, dailyLimit } = this.refs;
     const newSchedule = scheduler.state.days;
-    saveChangesSchedule(dailyLimit.value, newSchedule);
+    // Adjusting currentTime alotted to this day to account for previous usage
+    const oldCurrentTime = schedule.setting.currentTime;
+    const oldDailyLimit = schedule.setting.dailyLimit;
+    const newCurrentTime = dailyLimit * 60 - (oldDailyLimit * 60 - oldCurrentTime);
+    const newRecord = {
+      items: newSchedule,
+      setting: { dailyLimit, currentTime: newCurrentTime }
+    };
+    saveChangesSchedule(newRecord);
   }
   render() {
     const { schedule } = this.props;
@@ -112,9 +120,7 @@ export default connect(
     schedule: state.Settings.schedule
   }),
   dispatch => ({
-    saveChangesSchedule: (dailyLimit, schedule) => (
-      dispatch(saveChangesSchedule(dailyLimit, schedule))
-    ),
+    saveChangesSchedule: schedule => dispatch(saveChangesSchedule(schedule)),
     fetchSchedule: () => dispatch(fetchSchedule())
   })
 )(Scheduling);

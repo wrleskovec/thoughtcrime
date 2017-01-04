@@ -182,12 +182,8 @@ class BlockList {
     return this.idb.sites.update(record)
       .catch(e => { throw e; });
   }
-  saveChangesSchedule(dailyLimit, schedule) {
-    return this.idb.settings.update({
-      config: 'schedule',
-      items: schedule,
-      setting: { dailyLimit }
-    })
+  saveChangesSchedule(schedule) {
+    return this.idb.settings.update(schedule)
     .then(r => r[0]);
   }
   getSchedule() {
