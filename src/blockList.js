@@ -201,7 +201,7 @@ class BlockList {
       .catch(() => this.idb.settings.add({
         config: 'schedule',
         items: this.initDefaultSchedule(),
-        setting: { dailyLimit: 120 }
+        setting: { dailyLimit: 120, currentTime: 7200 }
       })
       .then(r => r[0])
     );
