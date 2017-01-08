@@ -4,6 +4,8 @@ import wurl from 'wurl';
 import _ from 'lodash';
 import BL from './blockList.js';
 
+// This is possibly some of the worst code I have ever written and I really need better paradigm
+// for complicated concurrentcy
 
 const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
 
@@ -15,72 +17,83 @@ class Filter {
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
     this.limitCD = undefined;
+    // This is to deal with blur async weirdness
+    this.focusCount = 0;
     // Need to bind since I'm calling it externally
     this.webRequestHandler = this.webRequestHandler.bind(this);
+    this.messageHandler = this.messageHandler.bind(this);
   }
   init() {
-    chrome.windows.getAll({ populate: true }, (windows) => {
-      windows.forEach((win) => {
-        win.tabs.forEach((tab) => {
-          if (this.isValidProtocol(tab.url)) {
-            chrome.tabs.executeScript(tab.id, { file: 'content.js' });
-          }
-        });
-      });
-    });
-    // interacting with popup for timer & content.js
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.focus) {
-        const senderSite = wurl('domain', sender.tab.url);
-        if (request.focus === 'focus' && this.currentSite && senderSite !== this.currentSite.site
-         && sender.tab.id !== this.currentTab && this.isValidProtocol(senderSite)) {
-          this.popup = false;
-          if (this.currentSite !== null) {
-            this.saveRecords();
-          }
-          BL.getRecord(senderSite)
-            .then((record) => {
-              this.currentTab = sender.tab.id;
-              this.currentSite = record;
-              this.startTime = moment();
-              clearTimeout(this.limitCD);
-              this.handleAction(this.currentSite.action, this.currentTab);
-            });
-        } else if (request.focus === 'blur') {
-          console.log('BLUUUUUUUUUURRRRR');
-          if (sender.tab.id === this.currentTab && senderSite && !this.popup) {
-            this.saveRecords();
-            this.startTime = null;
-            this.currentSite = null;
-            this.currentTab = null;
-          }
-        }
-      }
-      if (request.timer === 'popup') {
-        this.popup = true;
-        sendResponse({ seconds: this.getDuration(moment()) });
-      }
-    });
-    // chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    //   const tabSite = wurl('domain', tab.url);
-    //   console.log(`currentSite: ${this.currentSite}, tab: ${tabSite}`);
-    //   const validUrl = tabSite !== this.currentSite && this.isValidProtocol(tab.url);
-    //   if (validUrl) {
-    //     this.currentSite = tabSite;
-    //     this.currentTab = tab.id;
-    //   }
+    // chrome.windows.getAll({ populate: true }, (windows) => {
+    //   windows.forEach((win) => {
+    //     win.tabs.forEach((tab) => {
+    //       if (this.isValidProtocol(tab.url)) {
+    //         chrome.tabs.executeScript(tab.id, { file: 'content.js' });
+    //       }
+    //     });
+    //   });
     // });
+    // interacting with popup for timer & content.js
+    chrome.runtime.onMessage.addListener(this.messageHandler);
 
     chrome.webRequest.onBeforeRequest.addListener(_.debounce(this.webRequestHandler, 50), {
       urls: ['<all_urls>'],
       types: ['main_frame']
     });
   }
+  messageHandler(request, sender, sendResponse) {
+    if (request.focus && this.isValidProtocol(sender.tab.url)) {
+      const senderSite = wurl('domain', sender.tab.url);
+      if (request.focus === 'focus' && senderSite) {
+        this.popup = false;
+        this.focusCount += 1;
+        console.log(this.focusCount);
+        if (!this.currentSite) {
+          this.urlCheck(sender.tab.url, sender.tab.id);
+        } else {
+          if (this.notDuplicateTabOrDomain(senderSite, sender.tab.id)) {
+            this.saveRecords()
+              .then(() => this.urlCheck(sender.tab.url, sender.tab.id));
+          } else {
+            this.currentTab = sender.tab.id;
+          }
+        }
+      } else if (request.focus === 'blur') {
+        console.log('BLUUUUUUUUUURRRRR');
+        this.focusCount -= 1;
+        console.log(this.focusCount);
+        console.log(`blurTab: ${sender.tab.id} tab: ${this.currentTab} ${senderSite} `);
+        if (sender.tab.id === this.currentTab && senderSite && !this.popup) {
+          this.saveRecords();
+
+          this.startTime = null;
+          this.currentSite = null;
+          this.currentTab = null;
+        }
+      }
+    }
+    if (request.timer === 'popup') {
+      this.popup = true;
+      sendResponse({ seconds: this.getDuration(moment()) });
+    }
+  }
+  notDuplicateTabOrDomain(domain, tabId) {
+    return this.currentSite !== domain && this.currentTab !== tabId;
+  }
+  handleNewDomainFocus() {
+    this.startTime = moment();
+    clearTimeout(this.limitCD);
+  }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
     return setTimeout(() => {
       this.saveRecords()
-        .then(() => BL.initNewDate());
+        .then(() => BL.initNewDate())
+        .then(() => BL.getSchedule())
+        .then((schedule) => {
+          schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
+          return BL.saveChangesSchedule(schedule);
+        });
     }, tomorrow.diff(moment()));
   }
   isValidProtocol(url) {
@@ -93,15 +106,18 @@ class Filter {
     return moment.duration(now.diff(this.startTime)).asSeconds();
   }
   saveRecords() {
+    console.log('saveRecords called: something must be working');
     const timeElapsed = this.getDuration(moment());
-    return BL.reconcileRecords(this.currentSite.site, timeElapsed, 1)
-      .then(() =>
+    return BL.reconcileRecords(this.currentSite, timeElapsed, 1)
+      .then(() => {
         BL.getSchedule()
           .then((schedule) => {
-            schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
-            return BL.saveChangesSchedule(schedule);
-          })
-      );
+            if (this.limitCD) {
+              schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
+              BL.saveChangesSchedule(schedule);
+            }
+          });
+      });
   }
 
   loadFilteredPage(tabId, url) {
@@ -118,7 +134,7 @@ class Filter {
     const currentQuarter = currentHour * 4 + Math.ceil(currentMinute / 15);
     return schedule.items[convertedDay][currentQuarter].event;
   }
-  handleAction(action, tabId) {
+  handleAction(site, action, tabId) {
     return BL.getSchedule()
       .then((schedule) => {
         const now = moment();
@@ -129,16 +145,22 @@ class Filter {
               this.loadFilteredPage(tabId, BLOCKED_PAGE);
             } else if (action === 'limit') {
               this.loadFilteredPage(tabId, BLOCKED_PAGE);
+            } else {
+              this.handleNewDomainFocus();
             }
             break;
           }
           case 'Accept All':
+            this.handleNewDomainFocus();
             break;
           default: {
             if (action === 'block') {
               this.loadFilteredPage(tabId, BLOCKED_PAGE);
             } else if (action === 'limit') {
+              this.handleNewDomainFocus();
               this.setLimitCD(tabId, schedule);
+            } else {
+              this.handleNewDomainFocus();
             }
             break;
           }
@@ -147,10 +169,11 @@ class Filter {
   }
   setLimitCD(tabId, schedule) {
     const currentTime = schedule.setting.currentTime;
+    console.log(currentTime);
     if (currentTime > 0) {
       this.limitCD = setTimeout(() => {
         this.loadFilteredPage(tabId, BLOCKED_PAGE);
-      }, moment.duration('seconds', currentTime));
+      }, Math.round(currentTime * 1000));
     } else {
       this.loadFilteredPage(tabId, BLOCKED_PAGE);
     }
@@ -169,41 +192,45 @@ class Filter {
   }
 
   webRequestHandler(details) {
-    this.urlCheck(details.url, details.tabId);
+    if (this.isValidProtocol(details.url)) {
+      const site = wurl('domain', details.url);
+      this.urlCheck(site, details.tabId);
+    }
     return {};
   }
   urlCheck(url, tabId) {
-    const protocol = wurl('protocol', url);
-    if (protocol !== 'chrome' && protocol !== 'chrome-extension') {
-      const site = wurl('domain', url);
-      BL.getRecord(site)
-        .then(record => {
-          this.currentSite = record;
-          console.log(self);
-          const aclMatch = record.advAction.find(action => {
-            const reg = new RegExp(action.regex, 'i');
-            return reg.test(url);
-          });
-          if (aclMatch) {
-            this.handleAction(aclMatch.action, tabId);
-          } else {
-            this.matchPatterns(url)
-              .then(patternMatch => {
-                if (patternMatch) {
-                  this.handleAction(patternMatch.action, tabId);
-                } else {
-                  this.handleAction(record.action, tabId);
-                }
-              });
-          }
-        })
-        .catch(() => {
+    console.log(url);
+    const site = wurl('domain', url);
+    this.currentSite = site;
+    this.currentTab = tabId;
+    console.log('urlCheck() runs');
+    BL.getRecord(site)
+      .then(record => {
+        const aclMatch = record.advAction.find(action => {
+          const reg = new RegExp(action.regex, 'i');
+          return reg.test(url);
+        });
+        if (aclMatch) {
+          this.handleAction(site, aclMatch.action, tabId);
+        } else {
           this.matchPatterns(url)
             .then(patternMatch => {
-              if (patternMatch) this.handleAction(patternMatch.action, tabId);
+              if (patternMatch) {
+                this.handleAction(site, patternMatch.action, tabId);
+              } else {
+                this.handleAction(site, record.action, tabId);
+              }
             });
-        });
-    }
+        }
+      })
+      .catch(() => this.matchPatterns(url)
+        .then(patternMatch => {
+          if (patternMatch) {
+            this.handleAction(site, patternMatch.action, tabId);
+          } else {
+            this.handleNewDomainFocus();
+          }
+        }));
   }
 }
 

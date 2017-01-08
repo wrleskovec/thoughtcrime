@@ -47,6 +47,7 @@
     "db.js": "^0.15.0",
     "fixed-data-table": "^0.6.3",
     "fuse.js": "^2.5.0",
+    "ifvisible.js": "^1.0.6",
     "jquery": "^1.9.1",
     "lodash": "^4.13.1",
     "moment": "^2.15.1",

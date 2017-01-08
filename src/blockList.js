@@ -53,7 +53,22 @@ class BlockList {
     })
     .then(d => {
       this.idb = d;
-      return this.initNewDate();
+      this.date = moment().format('DD-MM-YYYY');
+      return this.getDayRecord(this.date)
+        .then(day => {
+          this.dailyRecord = day;
+        })
+        .catch(() => this.addDayRecord(this.date)
+          .then(record => {
+            this.dailyRecord = record;
+            return this.getSchedule()
+            // If schedule exists reset currentTime with stored limit. In process handled in Filter
+              .then((schedule) => {
+                schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
+              })
+              .catch(() => this.initNewSchedule());
+          })
+        );
     })
     .then(() => (
       this.getRegexPatterns()
@@ -73,19 +88,8 @@ class BlockList {
         .then(schedule => {
           this.schedule = schedule;
         })
+        .catch(() => this.initNewSchedule())
     ));
-  }
-  initNewDate() {
-    this.date = moment().format('DD-MM-YYYY');
-    return this.getDayRecord(this.date)
-      .then(day => {
-        this.dailyRecord = day;
-      })
-      .catch(() => this.addDayRecord(this.date)
-        .then(record => {
-          this.dailyRecord = record;
-        })
-      );
   }
   initRegexPatterns() {
     return this.idb.settings.add({
@@ -113,7 +117,7 @@ class BlockList {
   getRecord(site) {
     return this.idb.sites.get(site)
       .then(result => {
-        if (result === undefined) return Promise.reject('Record not found');
+        if (result === undefined) return Promise.reject(`${site}: Record not found`);
         return Promise.resolve(result);
       });
   }
@@ -193,14 +197,15 @@ class BlockList {
           return Promise.reject();
         }
         return result;
-      })
-      .catch(() => this.idb.settings.add({
-        config: 'schedule',
-        items: this.initDefaultSchedule(),
-        setting: { dailyLimit: 120, currentTime: 7200 }
-      })
-      .then(r => r[0])
-    );
+      });
+  }
+  initNewSchedule() {
+    return this.idb.settings.add({
+      config: 'schedule',
+      items: this.initDefaultSchedule(),
+      setting: { dailyLimit: 120, currentTime: 7200 }
+    })
+    .then(r => r[0]);
   }
   initDefaultSchedule() {
     const days = [];
