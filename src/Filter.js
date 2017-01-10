@@ -194,8 +194,7 @@ class Filter {
 
   webRequestHandler(details) {
     if (this.isValidProtocol(details.url)) {
-      const site = wurl('domain', details.url);
-      this.addToQueue(this.urlCheck(site, details.tabId));
+      this.addToQueue(this.urlCheck(details.url, details.tabId));
     }
     return {};
   }
@@ -209,7 +208,8 @@ class Filter {
       .then(record => {
         const aclMatch = record.advAction.find(action => {
           const reg = new RegExp(action.regex, 'i');
-          return reg.test(url);
+          const result = reg.test(url);
+          return result;
         });
         if (aclMatch) {
           return this.handleAction(site, aclMatch.action, tabId);
