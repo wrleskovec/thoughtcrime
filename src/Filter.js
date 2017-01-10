@@ -1,6 +1,7 @@
 import moment from 'moment';
 import 'moment-duration-format';
 import wurl from 'wurl';
+import PQueue from 'p-queue';
 import _ from 'lodash';
 import BL from './blockList.js';
 
@@ -17,8 +18,8 @@ class Filter {
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
     this.limitCD = undefined;
+    this.queue = new PQueue({ concurrency: 1 });
     // This is to deal with blur async weirdness
-    this.focusCount = 0;
     // Need to bind since I'm calling it externally
     this.webRequestHandler = this.webRequestHandler.bind(this);
     this.messageHandler = this.messageHandler.bind(this);
@@ -46,26 +47,22 @@ class Filter {
       const senderSite = wurl('domain', sender.tab.url);
       if (request.focus === 'focus' && senderSite) {
         this.popup = false;
-        this.focusCount += 1;
-        console.log(this.focusCount);
         if (!this.currentSite) {
-          this.urlCheck(sender.tab.url, sender.tab.id);
+          this.addToQueue(this.urlCheck(sender.tab.url, sender.tab.id));
         } else {
           if (this.notDuplicateTabOrDomain(senderSite, sender.tab.id)) {
-            this.saveRecords()
-              .then(() => this.urlCheck(sender.tab.url, sender.tab.id));
+            this.addToQueue(this.saveRecords()
+              .then(() => this.urlCheck(sender.tab.url, sender.tab.id))
+            );
           } else {
             this.currentTab = sender.tab.id;
           }
         }
       } else if (request.focus === 'blur') {
         console.log('BLUUUUUUUUUURRRRR');
-        this.focusCount -= 1;
-        console.log(this.focusCount);
         console.log(`blurTab: ${sender.tab.id} tab: ${this.currentTab} ${senderSite} `);
-        if (sender.tab.id === this.currentTab && senderSite && !this.popup) {
-          this.saveRecords();
-
+        if (senderSite && !this.popup) {
+          this.addToQueue(this.saveRecords());
           this.startTime = null;
           this.currentSite = null;
           this.currentTab = null;
@@ -76,6 +73,9 @@ class Filter {
       this.popup = true;
       sendResponse({ seconds: this.getDuration(moment()) });
     }
+  }
+  addToQueue(p) {
+    this.queue.add(() => p.then(() => { console.log('Promise added to queue'); }));
   }
   notDuplicateTabOrDomain(domain, tabId) {
     return this.currentSite !== domain && this.currentTab !== tabId;
@@ -195,7 +195,7 @@ class Filter {
   webRequestHandler(details) {
     if (this.isValidProtocol(details.url)) {
       const site = wurl('domain', details.url);
-      this.urlCheck(site, details.tabId);
+      this.addToQueue(this.urlCheck(site, details.tabId));
     }
     return {};
   }
@@ -205,32 +205,29 @@ class Filter {
     this.currentSite = site;
     this.currentTab = tabId;
     console.log('urlCheck() runs');
-    BL.getRecord(site)
+    return BL.getRecord(site)
       .then(record => {
         const aclMatch = record.advAction.find(action => {
           const reg = new RegExp(action.regex, 'i');
           return reg.test(url);
         });
         if (aclMatch) {
-          this.handleAction(site, aclMatch.action, tabId);
-        } else {
-          this.matchPatterns(url)
-            .then(patternMatch => {
-              if (patternMatch) {
-                this.handleAction(site, patternMatch.action, tabId);
-              } else {
-                this.handleAction(site, record.action, tabId);
-              }
-            });
+          return this.handleAction(site, aclMatch.action, tabId);
         }
+        return this.matchPatterns(url)
+          .then(patternMatch => {
+            if (patternMatch) {
+              return this.handleAction(site, patternMatch.action, tabId);
+            }
+            return this.handleAction(site, record.action, tabId);
+          });
       })
       .catch(() => this.matchPatterns(url)
         .then(patternMatch => {
           if (patternMatch) {
-            this.handleAction(site, patternMatch.action, tabId);
-          } else {
-            this.handleNewDomainFocus();
+            return this.handleAction(site, patternMatch.action, tabId);
           }
+          return this.handleNewDomainFocus();
         }));
   }
 }

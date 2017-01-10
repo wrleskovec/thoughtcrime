@@ -5,7 +5,5 @@ function sendFocus(focus) {
   chrome.runtime.sendMessage({ focus });
 }
 sendFocus('focus');
-
-ifvisible.on('blur', () => sendFocus('blur'));
-
 ifvisible.on('focus', () => sendFocus('focus'));
+ifvisible.on('blur', () => sendFocus('blur'));
