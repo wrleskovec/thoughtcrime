@@ -8,7 +8,6 @@ import PopupApp from './containers/Popup.js';
 import popupSagas from './sagas/popupSagas.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import '~/css/common.styl';
-// import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import BL from './blockList.js';
 BL.init();

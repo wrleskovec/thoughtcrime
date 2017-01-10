@@ -9,7 +9,6 @@ import optionsSagas from './sagas/optionsSagas.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import '~/css/common.styl';
 import '~/css/options.styl';
-// import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.js';
 import BL from './blockList.js';
 import { fetchDailySites, fetchPatterns } from './actions/options';

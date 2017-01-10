@@ -88,9 +88,10 @@ class Filter {
     const tomorrow = moment().add(1, 'days').startOf('day');
     return setTimeout(() => {
       this.saveRecords()
-        .then(() => BL.initNewDate())
+        .then(() => BL.addDayRecord(moment().format('DD-MM-YYYY')))
         .then(() => BL.getSchedule())
         .then((schedule) => {
+          console.log('resetting schedule');
           schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
           return BL.saveChangesSchedule(schedule);
         });

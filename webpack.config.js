@@ -1,4 +1,4 @@
-const CommonsPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -6,17 +6,15 @@ module.exports = {
   entry: {
     PopupApp: './src/PopupApp.js',
     OptionsApp: './src/OptionsApp.js',
-    background: './src/background.js'
+    background: './src/background.js',
+    content: './src/content.js'
   },
   output: {
     path: './build',
     filename: '[name].js',
   },
   plugins: [
-    new CommonsPlugin({
-      minChunks: 2,
-      name: 'vendor'
-    }),
+    new CommonsChunkPlugin('vendor.js', ['PopupApp', 'OptionsApp'], 2),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
