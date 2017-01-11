@@ -18,8 +18,9 @@ class Filter {
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
     this.limitCD = undefined;
-    this.queue = new PQueue({ concurrency: 1 });
     // This is to deal with blur async weirdness
+    this.queue = new PQueue({ concurrency: 1 });
+
     // Need to bind since I'm calling it externally
     this.webRequestHandler = this.webRequestHandler.bind(this);
     this.messageHandler = this.messageHandler.bind(this);
@@ -71,8 +72,19 @@ class Filter {
     }
     if (request.timer === 'popup') {
       this.popup = true;
-      sendResponse({ seconds: this.getDuration(moment()) });
+      console.log(request);
+      BL.getSchedule()
+        .then((schedule) => {
+          const response = {
+            seconds: this.getDuration(moment()),
+            currentLimit: schedule.setting.currentTime
+          };
+          console.log(response);
+          sendResponse(response);
+        });
+      return true;
     }
+    return false;
   }
   addToQueue(p) {
     this.queue.add(() => p.then(() => { console.log('Promise added to queue'); }));
