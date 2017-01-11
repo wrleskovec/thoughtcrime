@@ -3,5 +3,6 @@ import Filter from './Filter.js';
 
 
 BL.init().then(() => {
-  Filter.init();
+  BL.idb.dailyRecords.remove('11-01-2017')
+    .then(() => Filter.init());
 });

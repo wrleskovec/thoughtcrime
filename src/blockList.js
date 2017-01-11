@@ -65,6 +65,7 @@ class BlockList {
             // If schedule exists reset currentTime with stored limit. In process handled in Filter
               .then((schedule) => {
                 schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
+                return this.saveChangesSchedule(schedule);
               })
               .catch(() => this.initNewSchedule());
           })

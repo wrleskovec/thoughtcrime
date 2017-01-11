@@ -110,15 +110,15 @@ class Filter {
     console.log('saveRecords called: something must be working');
     const timeElapsed = this.getDuration(moment());
     return BL.reconcileRecords(this.currentSite, timeElapsed, 1)
-      .then(() => {
-        BL.getSchedule()
+      .then(() => BL.getSchedule()
           .then((schedule) => {
             if (this.limitCD) {
               schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
-              BL.saveChangesSchedule(schedule);
+              return BL.saveChangesSchedule(schedule);
             }
-          });
-      });
+            return schedule;
+          })
+      );
   }
 
   loadFilteredPage(tabId, url) {
