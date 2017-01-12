@@ -5,7 +5,7 @@ import { takeLatest } from 'redux-saga';
 function sendTimerMessage() {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage({ timer: 'popup' }, (response) => {
-      resolve(response.seconds);
+      resolve(response);
     });
   });
 }

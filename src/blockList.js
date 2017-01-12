@@ -188,6 +188,7 @@ class BlockList {
       .catch(e => { throw e; });
   }
   saveChangesSchedule(schedule) {
+    schedule.setting.currentTime = Math.floor(schedule.setting.currentTime);
     return this.idb.settings.update(schedule)
     .then(r => r[0]);
   }

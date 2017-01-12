@@ -73,16 +73,22 @@ class Filter {
     if (request.timer === 'popup') {
       this.popup = true;
       console.log(request);
-      BL.getSchedule()
-        .then((schedule) => {
-          const response = {
-            seconds: this.getDuration(moment()),
-            currentLimit: schedule.setting.currentTime
-          };
-          console.log(response);
-          sendResponse(response);
-        });
-      return true;
+      if (this.limitCD) {
+        BL.getSchedule()
+          .then((schedule) => {
+            const response = {
+              seconds: this.getDuration(moment()),
+              currentLimit: schedule.setting.currentTime,
+            };
+            console.log(response);
+            sendResponse(response);
+          });
+        return true;
+      }
+      sendResponse({
+        seconds: Math.floor(this.getDuration(moment())),
+        currentLimit: undefined
+      });
     }
     return false;
   }
@@ -95,6 +101,7 @@ class Filter {
   handleNewDomainFocus() {
     this.startTime = moment();
     clearTimeout(this.limitCD);
+    this.limitCD = undefined;
   }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');

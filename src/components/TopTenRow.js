@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import 'moment-duration-format';
 
 export default function SiteDBRow(props) {
   // utilize id that corresponds to index of element in state
@@ -11,9 +12,9 @@ export default function SiteDBRow(props) {
       <th scope="row">{id + 1}</th>
       <td className="dataCell">{record.site}</td>
       <td className="dataCell">{record.visits}</td>
-      <td className="dataCell">{moment('2015-01-01').startOf('day')
-            .seconds(record.timeSpent)
-            .format('H:mm:ss')}</td>
+      <td className="dataCell">
+        {moment.duration(record.timeSpent, 'seconds').format('hh:mm', { trim: false })}
+      </td>
     </tr>
   );
 }

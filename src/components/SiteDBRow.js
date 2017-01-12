@@ -14,9 +14,9 @@ export default function SiteDBRow(props) {
       <th scope="row">{id + offset + 1}</th>
       <td className="dataCell">{record.site}</td>
       <td className="dataCell">{record.visits}</td>
-      <td className="dataCell">{moment('2015-01-01').startOf('day')
-            .seconds(record.timeSpent)
-            .format('H:mm:ss')}</td>
+      <td className="dataCell">
+        {moment.duration(record.timeSpent, 'seconds').format('hh:mm', { trim: false })}
+      </td>
       <td className="dataCell">{record.action}</td>
       <td className="dataCell">{advAction}</td>
       <td className="editModal">

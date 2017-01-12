@@ -1,29 +1,42 @@
 import React from 'react';
 import moment from 'moment';
+import 'moment-duration-format';
 
 export default class Timer extends React.Component {
   constructor(props) {
     super(props);
-    console.log(`In Timer: ${props.timer}`);
+    console.log(props);
+    const limitSeconds = props.currentLimit ? props.currentLimit - props.seconds : undefined;
     this.state = {
-      seconds: props.timer || 0
+      seconds: props.seconds || 0,
+      limitSeconds
     };
     this.incrementTimer = this.incrementTimer.bind(this);
     this.interval = setInterval(this.incrementTimer, 1000);
   }
   incrementTimer() {
+    const { seconds } = this.state;
+    console.log(this.state);
     this.setState({
-      seconds: this.state.seconds + 1
+      seconds: seconds + 1,
     });
   }
   render() {
-    console.log(this.state.seconds);
-    const spanTimer = moment('2015-01-01').startOf('day')
-    .seconds(this.state.seconds)
-    .format('H:mm:ss');
-
+    const { seconds, limitSeconds } = this.state;
+    let spanTimer;
+    const spanStyle = {};
+    if (limitSeconds) {
+      spanTimer = moment.duration(limitSeconds - seconds, 'seconds')
+        .format('h:mm:ss', { trim: false });
+      spanStyle.color = 'red';
+    } else {
+      spanTimer = moment.duration(seconds, 'seconds').format('h:mm:ss', { trim: false });
+    }
+// Need to set onLimit value in Filter or maybe check if limitCD is undefined?
     return (
-      <span>{spanTimer}</span>
+      <div>
+        <span style={spanStyle}>{spanTimer}</span>
+      </div>
     );
   }
 }

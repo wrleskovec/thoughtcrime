@@ -31,10 +31,10 @@ class PopupApp extends React.Component {
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
   }
   render() {
-    console.log(`Timer: ${this.props.timer}`);
+    const { timer } = this.props;
     let timerComponent;
-    if (this.props.timer) {
-      timerComponent = <Timer timer={this.props.timer} />;
+    if (timer) {
+      timerComponent = <Timer {...timer} />;
     } else {
       timerComponent = '';
     }
