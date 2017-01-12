@@ -47,7 +47,6 @@ class Filter {
     if (request.focus && this.isValidProtocol(sender.tab.url)) {
       const senderSite = wurl('domain', sender.tab.url);
       if (request.focus === 'focus' && senderSite) {
-        this.popup = false;
         if (!this.currentSite) {
           this.addToQueue(this.urlCheck(sender.tab.url, sender.tab.id));
         } else {
@@ -62,7 +61,7 @@ class Filter {
       } else if (request.focus === 'blur') {
         console.log('BLUUUUUUUUUURRRRR');
         console.log(`blurTab: ${sender.tab.id} tab: ${this.currentTab} ${senderSite} `);
-        if (senderSite && !this.popup) {
+        if (senderSite) {
           this.addToQueue(this.saveRecords());
           this.startTime = null;
           this.currentSite = null;
