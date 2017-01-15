@@ -2,7 +2,7 @@ import Dash from './Dash';
 import DomainFilter from './Filtering/DomainFilter';
 import PatternFilter from './Filtering/PatternFilter';
 import ScheduleSettings from './Settings/Scheduling';
-import Statistics from './Statistics';
+import DailyStatistics from './Statistics/DailyStatistics';
 
 const structure = [
   {
@@ -28,7 +28,7 @@ const options = {
   Filtering: DomainFilter,
   Settings: ScheduleSettings,
   Scheduling: ScheduleSettings,
-  Statistics,
+  Statistics: DailyStatistics,
   'Filter by Domain': DomainFilter,
   'Filter by Pattern': PatternFilter
 };

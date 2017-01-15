@@ -62,10 +62,11 @@ class Filter {
         console.log('BLUUUUUUUUUURRRRR');
         console.log(`blurTab: ${sender.tab.id} tab: ${this.currentTab} ${senderSite} `);
         if (senderSite) {
-          this.addToQueue(this.saveRecords());
-          this.startTime = null;
-          this.currentSite = null;
-          this.currentTab = null;
+          this.addToQueue(this.saveRecords().then(() => {
+            this.startTime = null;
+            this.currentSite = null;
+            this.currentTab = null;
+          }));
         }
       }
     }

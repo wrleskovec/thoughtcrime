@@ -1,7 +1,5 @@
 import update from 'react/lib/update';
-function Settings(state = {
-  schedule: undefined,
-}, action) {
+function Settings(state, action) {
   switch (action.type) {
     case 'SAVE_CHANGES_SCHEDULE_SUCCESSFUL':
       return update(state, {

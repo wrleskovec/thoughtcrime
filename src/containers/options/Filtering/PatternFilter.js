@@ -116,7 +116,10 @@ class PatternFilter extends React.Component {
               <button type="button" className="btn btn-default" onClick={this.handleAddCard}>
                 <span className="glyphicon glyphicon-plus"></span>
               </button>
-              <button type="button" className="btn btn-primary pull-right" onClick={this.handleSaveChanges}>
+              <button
+                type="button" className="btn btn-primary pull-right"
+                onClick={this.handleSaveChanges}
+              >
                 Save Changes
               </button>
             </div>
@@ -132,7 +135,7 @@ class PatternFilter extends React.Component {
 
 export default connect(
   state => ({
-    patterns: state.Filtering.patterns
+    patterns: state.patterns
   }),
   dispatch => ({
     saveChangesRegex: items => dispatch(saveChangesRegex(items))

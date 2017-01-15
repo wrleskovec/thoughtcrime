@@ -1,23 +1,13 @@
-import update from 'react/lib/update';
-import BL from '../../blockList.js';
+import { notify } from '../../helpers';
 
-function Dash(state = {
-  dailySites: [],
-  message: {}
-}, action) {
+function Dash(state, action) {
   switch (action.type) {
     case 'ADD_SITE_SUCCEEDED':
-      return update(state, {
-        message: { $set: action.message }
-      });
+      notify('Successfully added site');
+      return state;
     case 'ADD_SITE_FAILED':
-      return update(state, {
-        message: { $set: action.e }
-      });
-    case 'FETCH_DAILY_SITES':
-      return update(state, {
-        dailySites: { $set: BL.fetchDailySites() }
-      });
+      notify('Unable to add site');
+      return state;
     default:
       return state;
   }

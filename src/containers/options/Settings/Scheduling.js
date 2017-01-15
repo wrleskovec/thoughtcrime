@@ -117,7 +117,7 @@ class Scheduling extends React.Component {
 
 export default connect(
   state => ({
-    schedule: state.Settings.schedule
+    schedule: state.schedule
   }),
   dispatch => ({
     saveChangesSchedule: schedule => dispatch(saveChangesSchedule(schedule)),

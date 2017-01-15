@@ -6,8 +6,9 @@ export function addFilter(filter, action, filterType) {
     filterType
   };
 }
-export function fetchSites() {
+export function fetchSites(search = false) {
   return {
     type: 'SITE_FETCH',
+    search
   };
 }

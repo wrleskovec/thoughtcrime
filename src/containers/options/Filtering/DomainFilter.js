@@ -44,9 +44,8 @@ class Filtering extends React.Component {
 export default connect(
   state => (
     {
-      sites: state.Filtering.sites,
+      sites: state.sites,
       searchedSites: state.Filtering.searchedSites,
-      message: state.Filtering.message,
       modalObj: state.Filtering.modalObj,
       sortBy: state.Filtering.sortBy,
       order: state.Filtering.order
@@ -54,7 +53,7 @@ export default connect(
   ),
   dispatch => (
     {
-      fetchSites: () => dispatch(fetchSites()),
+      fetchSites: () => dispatch(fetchSites(true)),
       searchSites: filter => dispatch(searchSites(filter)),
       openModal: modalObj => dispatch(openModal(modalObj)),
       sortSites: sortBy => dispatch(sortSites(sortBy)),
