@@ -45,29 +45,23 @@ class Filter {
   }
   messageHandler(request, sender, sendResponse) {
     if (request.focus && this.isValidProtocol(sender.tab.url)) {
-      const senderSite = wurl('domain', sender.tab.url);
-      if (request.focus === 'focus' && senderSite) {
-        if (!this.currentSite) {
-          this.addToQueue(this.urlCheck(sender.tab.url, sender.tab.id));
-        } else {
-          if (this.notDuplicateTabOrDomain(senderSite, sender.tab.id)) {
-            this.addToQueue(this.saveRecords()
-              .then(() => this.urlCheck(sender.tab.url, sender.tab.id))
-            );
-          } else {
-            this.currentTab = sender.tab.id;
-          }
-        }
+      if (request.focus === 'focus') {
+        this.queue.add(() => this.urlCheck(sender.tab.url, sender.tab.id));
       } else if (request.focus === 'blur') {
-        console.log('BLUUUUUUUUUURRRRR');
-        console.log(`blurTab: ${sender.tab.id} tab: ${this.currentTab} ${senderSite} `);
-        if (senderSite) {
-          this.addToQueue(this.saveRecords().then(() => {
-            this.startTime = null;
-            this.currentSite = null;
-            this.currentTab = null;
-          }));
-        }
+        const senderSite = wurl('domain', sender.tab.url);
+        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentTab}
+         ${this.currentSite} `);
+// Need to wrap this queue promise in a function to evaluate accurate currentSite at execution
+        this.queue.add(() => {
+          if (senderSite && !this.diffTabAndDomain(senderSite, sender.tab.id)) {
+            return this.saveRecords().then(() => {
+              this.startTime = null;
+              this.currentSite = null;
+              this.currentTab = null;
+            });
+          }
+          return Promise.resolve();
+        });
       }
     }
     if (request.timer === 'popup') {
@@ -77,8 +71,8 @@ class Filter {
         BL.getSchedule()
           .then((schedule) => {
             const response = {
-              seconds: this.getDuration(moment()),
-              currentLimit: schedule.setting.currentTime,
+              seconds: Math.round(this.getDuration(moment()) / 1000),
+              currentLimit: Math.round(schedule.setting.currentTime / 1000),
             };
             console.log(response);
             sendResponse(response);
@@ -92,16 +86,14 @@ class Filter {
     }
     return false;
   }
-  addToQueue(p) {
-    this.queue.add(() => p.then(() => { console.log('Promise added to queue'); }));
-  }
-  notDuplicateTabOrDomain(domain, tabId) {
+  diffTabAndDomain(domain, tabId) {
     return this.currentSite !== domain && this.currentTab !== tabId;
   }
   handleNewDomainFocus() {
     this.startTime = moment();
     clearTimeout(this.limitCD);
     this.limitCD = undefined;
+    console.log('limitCD removed');
   }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
@@ -123,21 +115,24 @@ class Filter {
     );
   }
   getDuration(now) {
-    return moment.duration(now.diff(this.startTime)).asSeconds();
+    return moment.duration(now.diff(this.startTime));
   }
   saveRecords() {
     console.log('saveRecords called: something must be working');
     const timeElapsed = this.getDuration(moment());
     return BL.reconcileRecords(this.currentSite, timeElapsed, 1)
-      .then(() => BL.getSchedule()
-          .then((schedule) => {
-            if (this.limitCD) {
+      .then(() => {
+        if (this.limitCD) {
+          return BL.getSchedule()
+            .then((schedule) => {
               schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
+              console.log(`currentTime: ${schedule.setting.currentTime}`);
               return BL.saveChangesSchedule(schedule);
-            }
-            return schedule;
-          })
-      );
+            });
+        }
+        return undefined;
+      })
+      .then(() => this.handleNewDomainFocus());
   }
 
   loadFilteredPage(tabId, url) {
@@ -189,11 +184,11 @@ class Filter {
   }
   setLimitCD(tabId, schedule) {
     const currentTime = schedule.setting.currentTime;
-    console.log(currentTime);
+    console.log(`limitCD started: ${currentTime}`);
     if (currentTime > 0) {
       this.limitCD = setTimeout(() => {
         this.loadFilteredPage(tabId, BLOCKED_PAGE);
-      }, Math.round(currentTime * 1000));
+      }, currentTime);
     } else {
       this.loadFilteredPage(tabId, BLOCKED_PAGE);
     }
@@ -213,16 +208,13 @@ class Filter {
 
   webRequestHandler(details) {
     if (this.isValidProtocol(details.url)) {
-      this.addToQueue(this.urlCheck(details.url, details.tabId));
+      this.queue.add(() => this.urlCheck(details.url, details.tabId));
     }
     return {};
   }
-  urlCheck(url, tabId) {
-    console.log(url);
-    const site = wurl('domain', url);
-    this.currentSite = site;
+  urlMatch(site, url, tabId) {
     this.currentTab = tabId;
-    console.log('urlCheck() runs');
+    this.currentSite = site;
     return BL.getRecord(site)
       .then(record => {
         const aclMatch = record.advAction.find(action => {
@@ -248,6 +240,20 @@ class Filter {
           }
           return this.handleNewDomainFocus();
         }));
+  }
+  urlCheck(url, tabId) {
+    console.log(url);
+    const site = wurl('domain', url);
+    console.log(`WebReq: ${tabId} ${site} current: ${this.currentTab} ${this.currentSite} `);
+    if (!this.currentSite) {
+      return this.urlMatch(site, url, tabId);
+    }
+    if (this.diffTabAndDomain(site, tabId)) {
+      return this.saveRecords()
+        .then(() => this.urlMatch(site, url, tabId));
+    }
+    this.currentTab = tabId;
+    return Promise.resolve();
   }
 }
 

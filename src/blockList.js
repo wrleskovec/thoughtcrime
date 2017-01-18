@@ -64,7 +64,7 @@ class BlockList {
             return this.getSchedule()
             // If schedule exists reset currentTime with stored limit. In process handled in Filter
               .then((schedule) => {
-                schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
+                schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
                 return this.saveChangesSchedule(schedule);
               })
               .catch(() => this.initNewSchedule());
@@ -205,7 +205,7 @@ class BlockList {
     return this.idb.settings.add({
       config: 'schedule',
       items: this.initDefaultSchedule(),
-      setting: { dailyLimit: 120, currentTime: 7200 }
+      setting: { dailyLimit: 120, currentTime: 7200000 }
     })
     .then(r => r[0]);
   }

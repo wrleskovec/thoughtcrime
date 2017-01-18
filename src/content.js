@@ -6,5 +6,5 @@ function sendFocus(focus) {
 }
 sendFocus('focus');
 
-ifvisible.on('blur', () => sendFocus('blur'));
-ifvisible.on('focus', () => setTimeout(() => { sendFocus('focus'); }, 10));
+ifvisible.on('focus', () => sendFocus('focus'));
+ifvisible.on('blur', () => setTimeout(() => { sendFocus('blur'); }, 55));
