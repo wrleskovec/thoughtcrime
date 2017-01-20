@@ -7,4 +7,7 @@ function sendFocus(focus) {
 sendFocus('focus');
 
 ifvisible.on('focus', () => sendFocus('focus'));
-ifvisible.on('blur', () => setTimeout(() => { sendFocus('blur'); }, 55));
+// some websites load intermediate state that triggers blur
+setTimeout(() => {
+  ifvisible.on('blur', () => setTimeout(() => { sendFocus('blur'); }, 55));
+}, 50);

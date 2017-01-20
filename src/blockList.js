@@ -118,7 +118,10 @@ class BlockList {
   getRecord(site) {
     return this.idb.sites.get(site)
       .then(result => {
-        if (result === undefined) return Promise.reject(`${site}: Record not found`);
+        if (result === undefined) {
+          if (site === 'youtube.com') alert('youtube bug');
+          return Promise.reject(`${site}: Record not found`);
+        }
         return Promise.resolve(result);
       });
   }
@@ -142,13 +145,14 @@ class BlockList {
     return this.idb.settings.update(this.patterns);
   }
   addSiteRecord(site) {
-    return this.idb.sites.update({
+    return this.idb.sites.add({
       site,
       visits: 1,
       timeSpent: 0,
       action: 'accept',
       advAction: []
-    });
+    })
+    .then(r => r[0]);
   }
   addDayRecord(day) {
     return this.idb.dailyRecords.add({

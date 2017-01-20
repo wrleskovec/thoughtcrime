@@ -120,7 +120,8 @@ class Filter {
   saveRecords() {
     console.log('saveRecords called: something must be working');
     const timeElapsed = this.getDuration(moment());
-    return BL.reconcileRecords(this.currentSite, timeElapsed, 1)
+    const seconds = Math.round(timeElapsed / 1000);
+    return BL.reconcileRecords(this.currentSite, seconds, 1)
       .then(() => {
         if (this.limitCD) {
           return BL.getSchedule()
@@ -138,7 +139,7 @@ class Filter {
   loadFilteredPage(tabId, url) {
     setTimeout(() => {
       chrome.tabs.update(tabId, { url });
-    }, 500);
+    }, 100);
   }
   getScheduleEvent(now, schedule) {
     const dayOfWeek = now.day();
