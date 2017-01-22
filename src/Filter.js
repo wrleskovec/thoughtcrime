@@ -14,7 +14,6 @@ class Filter {
   constructor() {
     this.currentSite = null;
     this.currentTab = null;
-    this.popup = false;
     this.startTime = null;
     this.newDayTimer = this.setNewDayTimer();
     this.limitCD = undefined;
@@ -46,7 +45,6 @@ class Filter {
     chrome.tabs.onRemoved.addListener(() => {
       chrome.tabs.query({ active: true }, (tabs) => {
         if (this.currentSite && !this.isValidProtocol(tabs[0].url)) {
-          console.log('Bug fix working');
           this.queue.add(() => this.saveRecords()
             .then(() => {
               this.startTime = null;
@@ -80,7 +78,6 @@ class Filter {
       }
     }
     if (request.timer === 'popup') {
-      this.popup = true;
       console.log(request);
       if (this.limitCD) {
         BL.getSchedule()
