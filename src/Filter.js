@@ -38,9 +38,24 @@ class Filter {
     // interacting with popup for timer & content.js
     chrome.runtime.onMessage.addListener(this.messageHandler);
 
-    chrome.webRequest.onBeforeRequest.addListener(_.debounce(this.webRequestHandler, 50), {
-      urls: ['<all_urls>'],
-      types: ['main_frame']
+    chrome.webRequest.onBeforeRequest.addListener(
+      _.debounce(this.webRequestHandler, 50, { maxWait: 100 }), {
+        urls: ['<all_urls>'],
+        types: ['main_frame']
+      });
+    chrome.tabs.onRemoved.addListener(() => {
+      chrome.tabs.query({ active: true }, (tabs) => {
+        if (this.currentSite && !this.isValidProtocol(tabs[0].url)) {
+          console.log('Bug fix working');
+          this.queue.add(() => this.saveRecords()
+            .then(() => {
+              this.startTime = null;
+              this.currentSite = null;
+              this.currentTab = null;
+            })
+          );
+        }
+      });
     });
   }
   messageHandler(request, sender, sendResponse) {
@@ -53,7 +68,7 @@ class Filter {
          ${this.currentSite} `);
 // Need to wrap this queue promise in a function to evaluate accurate currentSite at execution
         this.queue.add(() => {
-          if (senderSite && !this.diffTabAndDomain(senderSite, sender.tab.id)) {
+          if (senderSite && this.currentSite !== senderSite && this.currentTab !== sender.tab.id) {
             return this.saveRecords().then(() => {
               this.startTime = null;
               this.currentSite = null;
@@ -79,21 +94,20 @@ class Filter {
           });
         return true;
       }
-      sendResponse({
-        seconds: Math.floor(this.getDuration(moment())),
-        currentLimit: undefined
-      });
+      const response = {
+        seconds: Math.round(this.getDuration(moment()) / 1000),
+        currentLimit: undefined,
+      };
+      console.log(response);
+      sendResponse(response);
     }
     return false;
-  }
-  diffTabAndDomain(domain, tabId) {
-    return this.currentSite !== domain && this.currentTab !== tabId;
   }
   handleNewDomainFocus() {
     this.startTime = moment();
     clearTimeout(this.limitCD);
     this.limitCD = undefined;
-    console.log('limitCD removed');
+    console.log(`Current Site: ${this.currentSite}`);
   }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
@@ -137,9 +151,7 @@ class Filter {
   }
 
   loadFilteredPage(tabId, url) {
-    setTimeout(() => {
-      chrome.tabs.update(tabId, { url });
-    }, 100);
+    chrome.tabs.update(tabId, { url });
   }
   getScheduleEvent(now, schedule) {
     const dayOfWeek = now.day();
@@ -249,7 +261,7 @@ class Filter {
     if (!this.currentSite) {
       return this.urlMatch(site, url, tabId);
     }
-    if (this.diffTabAndDomain(site, tabId)) {
+    if (this.currentSite !== site) {
       return this.saveRecords()
         .then(() => this.urlMatch(site, url, tabId));
     }

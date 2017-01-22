@@ -247,15 +247,16 @@ class BlockList {
       });
     }
     return this.idb.dailyRecords.update(this.dailyRecord)
-      .then(() => this.getRecord(site))
-      .then(record => this.idb.sites.update({
-        site,
-        visits: record.visits + 1,
-        timeSpent: record.timeSpent + seconds,
-        action: record.action,
-        advAction: record.advAction
-      }))
-      .catch(() => this.addSiteRecord(site));
+      .then(() => this.getRecord(site)
+        .then(record => this.idb.sites.update({
+          site,
+          visits: record.visits + 1,
+          timeSpent: record.timeSpent + seconds,
+          action: record.action,
+          advAction: record.advAction
+        }))
+        .catch(() => this.addSiteRecord(site))
+      );
   }
 // consider renaming
   fetchSites() {
