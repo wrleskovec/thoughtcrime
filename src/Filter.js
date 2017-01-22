@@ -220,9 +220,7 @@ class Filter {
   }
 
   webRequestHandler(details) {
-    if (this.isValidProtocol(details.url)) {
-      this.queue.add(() => this.urlCheck(details.url, details.tabId));
-    }
+    this.queue.add(() => this.urlCheck(details.url, details.tabId));
     return {};
   }
   urlMatch(site, url, tabId) {
@@ -237,6 +235,9 @@ class Filter {
         });
         if (aclMatch) {
           return this.handleAction(site, aclMatch.action, tabId);
+        }
+        if (record.action === 'block') {
+          return this.handleAction(site, record.action, tabId);
         }
         return this.matchPatterns(url)
           .then(patternMatch => {
@@ -258,14 +259,13 @@ class Filter {
     console.log(url);
     const site = wurl('domain', url);
     console.log(`WebReq: ${tabId} ${site} current: ${this.currentTab} ${this.currentSite} `);
-    if (!this.currentSite) {
+    if (this.isValidProtocol(url)) {
+      if (this.currentSite && this.currentSite !== site) {
+        return this.saveRecords()
+          .then(() => this.urlMatch(site, url, tabId));
+      }
       return this.urlMatch(site, url, tabId);
     }
-    if (this.currentSite !== site) {
-      return this.saveRecords()
-        .then(() => this.urlMatch(site, url, tabId));
-    }
-    this.currentTab = tabId;
     return Promise.resolve();
   }
 }
