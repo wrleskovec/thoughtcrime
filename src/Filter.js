@@ -23,6 +23,7 @@ class Filter {
     // Need to bind since I'm calling it externally
     this.webRequestHandler = this.webRequestHandler.bind(this);
     this.messageHandler = this.messageHandler.bind(this);
+    this.urlCheck = _.debounce(this.urlCheck.bind(this), 50, { maxWait: 100 });
   }
   init() {
     // chrome.windows.getAll({ populate: true }, (windows) => {
@@ -37,44 +38,26 @@ class Filter {
     // interacting with popup for timer & content.js
     chrome.runtime.onMessage.addListener(this.messageHandler);
 
-    chrome.webRequest.onBeforeRequest.addListener(
-      _.debounce(this.webRequestHandler, 50, { maxWait: 100 }), {
-        urls: ['<all_urls>'],
-        types: ['main_frame']
-      });
-    chrome.tabs.onRemoved.addListener(() => {
-      chrome.tabs.query({ active: true }, (tabs) => {
-        if (this.currentSite && !this.isValidProtocol(tabs[0].url)) {
-          this.queue.add(() => this.saveRecords()
-            .then(() => {
-              this.startTime = null;
-              this.currentSite = null;
-              this.currentTab = null;
-            })
-          );
-        }
-      });
+    chrome.webRequest.onBeforeRequest.addListener(this.webRequestHandler, {
+      urls: ['<all_urls>'],
+      types: ['main_frame']
     });
+    chrome.tabs.onRemoved.addListener(() => this.handleBlur());
   }
   messageHandler(request, sender, sendResponse) {
     if (request.focus && this.isValidProtocol(sender.tab.url)) {
       if (request.focus === 'focus') {
-        this.queue.add(() => this.urlCheck(sender.tab.url, sender.tab.id));
+        console.log('focus request');
+        this.urlCheck(sender.tab.url, sender.tab.id);
       } else if (request.focus === 'blur') {
         const senderSite = wurl('domain', sender.tab.url);
         console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentTab}
          ${this.currentSite} `);
 // Need to wrap this queue promise in a function to evaluate accurate currentSite at execution
-        this.queue.add(() => {
-          if (senderSite && this.currentSite !== senderSite && this.currentTab !== sender.tab.id) {
-            return this.saveRecords().then(() => {
-              this.startTime = null;
-              this.currentSite = null;
-              this.currentTab = null;
-            });
-          }
-          return Promise.resolve();
-        });
+
+        if (senderSite && this.currentSite === senderSite) {
+          this.handleBlur();
+        }
       }
     }
     if (request.timer === 'popup') {
@@ -99,6 +82,21 @@ class Filter {
       sendResponse(response);
     }
     return false;
+  }
+  handleBlur() {
+    if (this.currentSite) {
+      chrome.tabs.query({ active: true }, (tabs) => {
+        if (!tabs || !this.isValidProtocol(tabs[0].url)) {
+          this.queue.add(() => this.saveRecords()
+            .then(() => {
+              this.startTime = null;
+              this.currentSite = null;
+              this.currentTab = null;
+            })
+          );
+        }
+      });
+    }
   }
   handleNewDomainFocus() {
     this.startTime = moment();
@@ -217,7 +215,8 @@ class Filter {
   }
 
   webRequestHandler(details) {
-    this.queue.add(() => this.urlCheck(details.url, details.tabId));
+    this.urlCheck(details.url, details.tabId);
+    console.log('navbar request');
     return {};
   }
   urlMatch(site, url, tabId) {
@@ -258,12 +257,11 @@ class Filter {
     console.log(`WebReq: ${tabId} ${site} current: ${this.currentTab} ${this.currentSite} `);
     if (this.isValidProtocol(url)) {
       if (this.currentSite && this.currentSite !== site) {
-        return this.saveRecords()
-          .then(() => this.urlMatch(site, url, tabId));
+        this.queue.add(() => this.saveRecords()
+          .then(() => this.urlMatch(site, url, tabId)));
       }
-      return this.urlMatch(site, url, tabId);
+      this.queue.add(() => this.urlMatch(site, url, tabId));
     }
-    return Promise.resolve();
   }
 }
 
