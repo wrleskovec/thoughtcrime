@@ -53,8 +53,6 @@ class Filter {
         const senderSite = wurl('domain', sender.tab.url);
         console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentTab}
          ${this.currentSite} `);
-// Need to wrap this queue promise in a function to evaluate accurate currentSite at execution
-
         if (senderSite && this.currentSite === senderSite) {
           this.handleBlur();
         }
@@ -86,7 +84,8 @@ class Filter {
   handleBlur() {
     if (this.currentSite) {
       chrome.tabs.query({ active: true }, (tabs) => {
-        if (!tabs || !this.isValidProtocol(tabs[0].url)) {
+        if (!tabs || !this.isValidProtocol(tabs[0].url) &&
+        !this.isPopup(tabs[0].url)) {
           this.queue.add(() => this.saveRecords()
             .then(() => {
               this.startTime = null;
@@ -112,7 +111,7 @@ class Filter {
         .then(() => BL.getSchedule())
         .then((schedule) => {
           console.log('resetting schedule');
-          schedule.setting.currentTime = schedule.setting.dailyLimit * 60;
+          schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
           return BL.saveChangesSchedule(schedule);
         });
     }, tomorrow.diff(moment()));
@@ -122,6 +121,10 @@ class Filter {
     return (
       protocol === 'http' || protocol === 'https' || protocol === 'ftp'
     );
+  }
+  isPopup(url) {
+    const regex = new RegExp('chrome-extension:\\/\\/\\w+\\/popup.html');
+    return regex.test(url);
   }
   getDuration(now) {
     return moment.duration(now.diff(this.startTime));
@@ -206,7 +209,7 @@ class Filter {
       .then(patterns => {
         if (patterns !== undefined && patterns.items.length > 0) {
           return patterns.items.find(action => {
-            const reg = new RegExp(action.regex, 'i');
+            const reg = new RegExp(_.escapeRegExp(action.regex), 'i');
             return reg.test(url);
           });
         }
@@ -225,7 +228,7 @@ class Filter {
     return BL.getRecord(site)
       .then(record => {
         const aclMatch = record.advAction.find(action => {
-          const reg = new RegExp(action.regex, 'i');
+          const reg = new RegExp(_.escapeRegExp(action.regex), 'i');
           const result = reg.test(url);
           return result;
         });

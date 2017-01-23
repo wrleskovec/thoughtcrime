@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchDailySites } from '~/actions/options.js';
+import { VictoryPie } from 'victory';
 
 class DailyStatistics extends React.Component {
   constructor(props) {
@@ -15,6 +16,15 @@ class DailyStatistics extends React.Component {
             <h3 className="panel-title">Add Pattern</h3>
           </div>
           <div className="panel-body">
+            <VictoryPie
+              data={[
+                { month: 'September', profit: 35000, loss: 2000 },
+                { month: 'October', profit: 42000, loss: 8000 },
+                { month: 'November', profit: 55000, loss: 5000 }
+              ]}
+              x="month"
+              y={(datum) => datum.profit - datum.loss}
+            />
           </div>
         </div>
         <div className="col-md-7 panel panel-default">
