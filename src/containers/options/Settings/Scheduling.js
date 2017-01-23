@@ -42,7 +42,7 @@ class Scheduling extends React.Component {
     // Adjusting currentTime alotted to this day to account for previous usage
     const oldCurrentTime = schedule.setting.currentTime;
     const oldDailyLimit = schedule.setting.dailyLimit;
-    const newCurrentTime = dailyLimit * 60 - (oldDailyLimit * 60 - oldCurrentTime);
+    const newCurrentTime = dailyLimit * 60000 - (oldDailyLimit * 60000 - oldCurrentTime);
     const newRecord = {
       items: newSchedule,
       setting: { dailyLimit, currentTime: newCurrentTime }
