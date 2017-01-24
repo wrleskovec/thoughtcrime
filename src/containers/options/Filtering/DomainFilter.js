@@ -24,18 +24,20 @@ class Filtering extends React.Component {
     const modalClicked = modalObj !== null;
     console.log(modalClicked);
     return (
-      <div className="col-md-10 panel panel-default">
-        <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
-        <div className="panel-heading">Lookup Record</div>
-        <div className="panel-body">
-          <SearchRecordsBox searchSites={searchSites} />
+      <div className="col-md-10">
+        <div className="panel panel-default">
+          <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
+          <div className="panel-heading">Lookup Record</div>
+          <div className="panel-body">
+            <SearchRecordsBox searchSites={searchSites} />
+          </div>
+          {loaded &&
+            <SearchSiteDB
+              openModal={openModal} sortBy={sortBy} order={order}
+              sortSites={sortSites} sites={searchedSites}
+            />
+          }
         </div>
-        {loaded &&
-          <SearchSiteDB
-            openModal={openModal} sortBy={sortBy} order={order}
-            sortSites={sortSites} sites={searchedSites}
-          />
-        }
       </div>
     );
   }
