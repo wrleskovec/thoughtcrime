@@ -25,7 +25,12 @@ class Dash extends React.Component {
               </div>
             </div>
             <div className="panel panel-default">
-              <DailyPieChart sites={this.props.dailySites} />
+              <div className="panel-heading">
+                <h3 className="panel-title">Daily Statistics</h3>
+              </div>
+              <div className="panel-body">
+                <DailyPieChart sites={this.props.dailySites} />
+              </div>
             </div>
           </div>
           <div className="col-md-7">

@@ -1,12 +1,13 @@
-import { VictoryPie, VictoryTheme } from 'victory';
+// import { VictoryPie, VictoryTheme, VictoryContainer } from 'victory';
 import React from 'react';
+import Chart from 'chart.js';
 
-const pieStyle = {
-  parent: {
-    paddingLeft: '50px',
-    paddingRight: '50px'
-  }
-};
+// const pieStyle = {
+//   parent: {
+//     paddingLeft: '50px',
+//     paddingRight: '50px'
+//   }
+// };
 
 export default class DailyPieChart extends React.Component {
   constructor(props) {
@@ -33,6 +34,36 @@ export default class DailyPieChart extends React.Component {
       };
     }
   }
+  componentDidMount() {
+    const { topFiveSites } = this.state;
+    const ctx = document.getElementById('dailyPieChart');
+    const dailyPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: topFiveSites.map(record => record.site),
+        datasets: [{
+          data: topFiveSites.map(record => record.timeSpent),
+          backgroundColor: [
+            'hsl(35, 100%, 55%)',
+            'hsl(195, 100%, 55%)',
+            'hsl(107, 100%, 55%)',
+            'hsl(0, 100%, 55%)',
+            'hsl(52, 100%, 55%)',
+            'hsl(149, 100%, 55%)'
+          ],
+          hoverBackgroundColor: [
+            'hsl(35, 100%, 65%)',
+            'hsl(195, 100%, 65%)',
+            'hsl(107, 100%, 65%)',
+            'hsl(0, 100%, 65%)',
+            'hsl(52, 100%, 65%)',
+            'hsl(149, 100%, 65%)'
+          ]
+        }]
+      },
+      animation: { animateScale: true }
+    });
+  }
   sortProps(sites) {
     return sites.sort((a, b) => {
       if (a.timeSpent < b.timeSpent) {
@@ -44,17 +75,11 @@ export default class DailyPieChart extends React.Component {
       return 0;
     });
   }
+
   render() {
     return (
-      <div className="svg-chart-container">
-        <VictoryPie
-          style={pieStyle}
-          theme={VictoryTheme.material}
-          data={this.state.topFiveSites}
-          x="site"
-          y={(datum) => datum.timeSpent}
-        />
-      </div>
+      <canvas id="dailyPieChart" width={400} height={400}>
+      </canvas>
     );
   }
 }
