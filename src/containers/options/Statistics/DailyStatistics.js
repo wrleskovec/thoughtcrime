@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchDailySites } from '~/actions/options.js';
-import { VictoryPie, VictoryTheme } from 'victory';
+import DailyPieChart from '~/components/DailyPieChart';
 
 class DailyStatistics extends React.Component {
   constructor(props) {
@@ -10,36 +10,37 @@ class DailyStatistics extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-10 panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Add Pattern</h3>
-          </div>
-          <div className="panel-body">
-            <div className="svg-chart-container">
-              <VictoryPie
-                style={{ parent: { paddingLeft: '30px' } }}
-                theme={VictoryTheme.material}
-                data={[
-                  { month: 'September', profit: 35000, loss: 2000 },
-                  { month: 'October', profit: 42000, loss: 8000 },
-                  { month: 'November', profit: 55000, loss: 5000 }
-                ]}
-                x="month"
-                y={(datum) => datum.profit - datum.loss}
-              />
+      <div id="DailyStatistics">
+        <div className="row">
+          <div className="col-md-10">
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">
+                  Time Spent Today
+                </h3>
+              </div>
+              <div className="panel-body">
+                <DailyPieChart sites={this.props.dailySites} />
+              </div>
             </div>
-
           </div>
         </div>
-        <div className="col-md-7 panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Add Pattern</h3>
-          </div>
-          <div className="panel-body">
+        <div className="row" height="400px">
+          <div className="col-md-10">
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title">
+                  Time Spent Today
+                </h3>
+              </div>
+              <div className="panel-body">
+                <DailyPieChart sites={this.props.dailySites} n={8} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
     );
   }
 }
@@ -47,7 +48,7 @@ class DailyStatistics extends React.Component {
 export default connect(
   state => (
     {
-      sites: state.sites,
+      dailySites: state.dailySites,
       message: state.message
     }
   ),

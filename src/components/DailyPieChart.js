@@ -1,5 +1,7 @@
 // import { VictoryPie, VictoryTheme, VictoryContainer } from 'victory';
 import React from 'react';
+import moment from 'moment';
+import 'moment-duration-format';
 import Chart from 'chart.js';
 
 // const pieStyle = {
@@ -15,53 +17,72 @@ export default class DailyPieChart extends React.Component {
     if (props.sites) {
       let totalTime = 0;
       let fiveTotalTime = 0;
-      const numOfSites = (props.sites.length > 5) ? 5 : props.sites.length;
-      const topFive = this.sortProps(props.sites).slice(0, numOfSites);
+      const numOfSites = (props.sites.length > props.n) ? props.n : props.sites.length;
+      const topSites = this.sortProps(props.sites).slice(0, numOfSites);
       for (let j = 0; j < numOfSites; j += 1) {
-        fiveTotalTime += topFive[j].timeSpent;
+        fiveTotalTime += topSites[j].timeSpent;
       }
       for (let i = 0; i < props.sites.length; i += 1) {
         totalTime += props.sites[i].timeSpent;
       }
-      topFive.push({ site: 'Other', timeSpent: totalTime - fiveTotalTime, visits: 0 });
-      console.log(topFive);
+      topSites.push({ site: 'Other', timeSpent: totalTime - fiveTotalTime, visits: 0 });
+      console.log(topSites);
       this.state = {
-        topFiveSites: topFive
+        topSites
       };
     } else {
       this.state = {
-        topFiveSites: []
+        topSites: []
       };
     }
   }
   componentDidMount() {
-    const { topFiveSites } = this.state;
+    const { topSites } = this.state;
     const ctx = document.getElementById('dailyPieChart');
     const dailyPieChart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: topFiveSites.map(record => record.site),
+        labels: topSites.map(record => record.site),
         datasets: [{
-          data: topFiveSites.map(record => record.timeSpent),
+          data: topSites.map(record => record.timeSpent),
           backgroundColor: [
-            'hsl(35, 100%, 55%)',
-            'hsl(195, 100%, 55%)',
-            'hsl(107, 100%, 55%)',
-            'hsl(0, 100%, 55%)',
-            'hsl(52, 100%, 55%)',
-            'hsl(149, 100%, 55%)'
+            '#1b9e77',
+            '#d95f02',
+            '#7570b3',
+            '#e7298a',
+            '#66a61e',
+            '#e6ab02',
+            '#a6761d',
+            '#666666'
           ],
           hoverBackgroundColor: [
-            'hsl(35, 100%, 65%)',
-            'hsl(195, 100%, 65%)',
-            'hsl(107, 100%, 65%)',
-            'hsl(0, 100%, 65%)',
-            'hsl(52, 100%, 65%)',
-            'hsl(149, 100%, 65%)'
+            '#3bdead',
+            '#fd9444',
+            '#b5b2d7',
+            '#f183bc',
+            '#99de4a',
+            '#fdcf4e',
+            '#dfaa49',
+            '#999'
           ]
         }]
       },
-      animation: { animateScale: true }
+      animation: { animateScale: true },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          callbacks: {
+            label: (tooltipItems, data) => {
+              console.log(data);
+              console.log(tooltipItems);
+              const secs = data.datasets[0].data[tooltipItems.index];
+              const site = data.labels[tooltipItems.index];
+              const timeElapsed = moment.duration(secs, 'seconds').format('hh:mm', { trim: false });
+              return `${timeElapsed} - ${site}`;
+            }
+          }
+        }
+      }
     });
   }
   sortProps(sites) {
@@ -78,8 +99,9 @@ export default class DailyPieChart extends React.Component {
 
   render() {
     return (
-      <canvas id="dailyPieChart" width={400} height={400}>
-      </canvas>
+      <div>
+        <canvas id="dailyPieChart" />
+      </div>
     );
   }
 }

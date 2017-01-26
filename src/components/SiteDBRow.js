@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import 'moment-duration-format';
 
 export default function SiteDBRow(props) {
   // utilize id that corresponds to index of element in state
