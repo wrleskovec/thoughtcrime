@@ -55,3 +55,11 @@ export function fetchPatterns() {
     type: 'FETCH_PATTERNS'
   };
 }
+export function navigateOptions(selectedCategory, selectedPage, options = {}) {
+  return {
+    type: 'NAVIGATE_OPTIONS',
+    selectedCategory,
+    selectedPage,
+    options
+  };
+}

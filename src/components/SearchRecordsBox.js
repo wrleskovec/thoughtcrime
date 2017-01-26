@@ -8,7 +8,6 @@ export default class SearchRecordsBox extends React.Component {
   }
   searchSites() {
     const { searchSites } = this.props;
-    console.log(this.refs.findSites.value);
     searchSites(this.refs.findSites.value);
   }
   handleKeyDown(e) {

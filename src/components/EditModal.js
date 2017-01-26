@@ -13,7 +13,6 @@ const style = {
 export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     if (props.site != null) {
       this.state = {
         action: props.site.action || 'accept',
@@ -38,7 +37,6 @@ export default class EditModal extends React.Component {
     this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
   }
   componentWillReceiveProps(nextProps) {
-    console.log('Prop change detected');
     if (nextProps.site) {
       this.setState({
         action: nextProps.site.action,
@@ -66,7 +64,6 @@ export default class EditModal extends React.Component {
     });
   }
   handleAdvSelect(id, selected) {
-    console.log(selected);
     const index = this.state.cards.findIndex(i => i.id === id);
     this.setState({
       cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
@@ -86,7 +83,6 @@ export default class EditModal extends React.Component {
         action: card.action,
         regex: card.regex
       }));
-    console.log(newCards);
     this.setState({
       cards: newCards
     });
@@ -117,7 +113,6 @@ export default class EditModal extends React.Component {
     const { site } = this.props;
     const { action, cards } = this.state;
     const siteName = site ? site.site : '';
-    console.log('Rendered EditModal Component');
     return (
       <div
         className="modal fade" id="myModal"

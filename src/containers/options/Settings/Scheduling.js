@@ -53,8 +53,6 @@ class Scheduling extends React.Component {
     const { schedule } = this.props;
     const currentSchedule = schedule ? schedule.items : undefined;
     const { dailyLimit } = this.state;
-
-    console.log('new Props');
     return (
       <div className="col-md-10" id="Scheduling">
         <div className="panel panel-default">

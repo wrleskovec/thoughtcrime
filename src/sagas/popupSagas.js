@@ -13,7 +13,6 @@ function sendTimerMessage() {
 function* getTimer() {
   try {
     const timer = yield call(sendTimerMessage);
-    console.log(timer);
     yield put({ type: 'RECIEVE_TIMER', timer });
   } catch (e) {
     console.error(e);

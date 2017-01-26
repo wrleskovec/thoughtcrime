@@ -1,7 +1,6 @@
 import ifvisible from 'ifvisible.js';
 
 function sendFocus(focus) {
-  console.log(`Sending: ${focus}`);
   chrome.runtime.sendMessage({ focus });
 }
 sendFocus('focus');

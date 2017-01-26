@@ -1,25 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import logo from '../img/thoughtcrime.svg';
 import menuOptions from './options/OptionsMenu';
+import { navigateOptions } from '~/actions/options';
 
-export default class OptionsApp extends React.Component {
+class OptionsApp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedPage: 'Dash',
-      category: 'Dash'
-    };
     this.onMenuClick = this.onMenuClick.bind(this);
   }
-  onMenuClick(category, selectedPage) {
+  onMenuClick(category, page) {
+    const { navigateOptions } = this.props;
     return e => {
       e.stopPropagation();
-      this.setState({ category, selectedPage });
+      navigateOptions(category, page);
     };
   }
 
   render() {
-    const { selectedPage, category } = this.state;
+    const { selectedPage, selectedCategory } = this.props;
     const Content = menuOptions.options[selectedPage];
     return (
       <div id="OptionsApp">
@@ -41,7 +40,7 @@ export default class OptionsApp extends React.Component {
               <ul className="nav nav-sidebar nav-pills nav-stacked" id="options-menu">
                 {menuOptions.structure.map(cat => {
                   const catActive = (selectedPage === cat.title) ? 'active' : '';
-                  const collapse = (cat.title === category) ?
+                  const collapse = (cat.title === selectedCategory) ?
                   'nav nav-pills nav-stacked collapse in' : 'nav nav-pills nav-stacked collapse';
                   return (
                     <li
@@ -84,3 +83,17 @@ export default class OptionsApp extends React.Component {
     );
   }
 }
+export default connect(
+  state => (
+    {
+      selectedPage: state.selectedPage,
+      selectedCategory: state.selectedCategory,
+      navOptions: state.navOptions
+    }
+  ),
+  dispatch => (
+    {
+      navigateOptions: (category, page) => dispatch(navigateOptions(category, page))
+    }
+  )
+)(OptionsApp);

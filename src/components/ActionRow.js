@@ -97,7 +97,6 @@ export default class ActionRow extends React.Component {
   handleRegex(e) {
     const { handleAdvRegex, id } = this.props;
     const value = e.target.textContent.trim();
-    console.log(value);
     handleAdvRegex(id, value);
   }
   handleSelect(e) {

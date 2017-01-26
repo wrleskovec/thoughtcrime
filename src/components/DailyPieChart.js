@@ -26,7 +26,6 @@ export default class DailyPieChart extends React.Component {
         totalTime += props.sites[i].timeSpent;
       }
       topSites.push({ site: 'Other', timeSpent: totalTime - fiveTotalTime, visits: 0 });
-      console.log(topSites);
       this.state = {
         topSites
       };
@@ -73,8 +72,6 @@ export default class DailyPieChart extends React.Component {
         tooltips: {
           callbacks: {
             label: (tooltipItems, data) => {
-              console.log(data);
-              console.log(tooltipItems);
               const secs = data.datasets[0].data[tooltipItems.index];
               const site = data.labels[tooltipItems.index];
               const timeElapsed = moment.duration(secs, 'seconds').format('hh:mm', { trim: false });

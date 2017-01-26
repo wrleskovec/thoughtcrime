@@ -12,7 +12,6 @@ const fuseOptions = {
 };
 
 function Filtering(state, action) {
-  console.log('Filtering Reducer Runs');
   switch (action.type) {
     case 'SITE_SEARCH': {
       if (action.filter === '') {

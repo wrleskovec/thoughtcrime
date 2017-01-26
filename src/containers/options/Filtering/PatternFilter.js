@@ -15,8 +15,6 @@ const style = {
 class PatternFilter extends React.Component {
   constructor(props) {
     super(props);
-    console.log('constructing pattern filter');
-    console.log(props.patterns);
     this.state = {
       cards: props.patterns || []
     };
@@ -50,7 +48,6 @@ class PatternFilter extends React.Component {
     });
   }
   handleAdvSelect(id, selected) {
-    console.log(selected);
     const index = this.state.cards.findIndex(i => i.id === id);
     this.setState({
       cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
@@ -64,7 +61,6 @@ class PatternFilter extends React.Component {
         action: card.action,
         regex: card.regex
       }));
-    console.log(newCards);
     this.setState({
       cards: newCards
     });

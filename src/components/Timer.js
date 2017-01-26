@@ -5,7 +5,6 @@ import 'moment-duration-format';
 export default class Timer extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     const limitSeconds = props.currentLimit ? props.currentLimit - props.seconds : undefined;
     this.state = {
       seconds: props.seconds || 0,
@@ -16,7 +15,6 @@ export default class Timer extends React.Component {
   }
   incrementTimer() {
     const { seconds } = this.state;
-    console.log(this.state);
     this.setState({
       seconds: seconds + 1,
     });

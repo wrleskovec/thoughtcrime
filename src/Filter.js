@@ -47,7 +47,6 @@ class Filter {
   messageHandler(request, sender, sendResponse) {
     if (request.focus && this.isValidProtocol(sender.tab.url)) {
       if (request.focus === 'focus') {
-        console.log('focus request');
         this.urlCheck(sender.tab.url, sender.tab.id);
       } else if (request.focus === 'blur') {
         const senderSite = wurl('domain', sender.tab.url);
@@ -59,7 +58,6 @@ class Filter {
       }
     }
     if (request.timer === 'popup') {
-      console.log(request);
       if (this.limitCD) {
         BL.getSchedule()
           .then((schedule) => {
@@ -67,7 +65,6 @@ class Filter {
               seconds: Math.round(this.getDuration(moment()) / 1000),
               currentLimit: Math.round(schedule.setting.currentTime / 1000),
             };
-            console.log(response);
             sendResponse(response);
           });
         return true;
@@ -76,7 +73,6 @@ class Filter {
         seconds: Math.round(this.getDuration(moment()) / 1000),
         currentLimit: undefined,
       };
-      console.log(response);
       sendResponse(response);
     }
     return false;
@@ -101,7 +97,6 @@ class Filter {
     this.startTime = moment();
     clearTimeout(this.limitCD);
     this.limitCD = undefined;
-    console.log(`Current Site: ${this.currentSite}`);
   }
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
@@ -110,7 +105,6 @@ class Filter {
         .then(() => BL.addDayRecord(moment().format('DD-MM-YYYY')))
         .then(() => BL.getSchedule())
         .then((schedule) => {
-          console.log('resetting schedule');
           schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
           return BL.saveChangesSchedule(schedule);
         });
@@ -130,7 +124,6 @@ class Filter {
     return moment.duration(now.diff(this.startTime));
   }
   saveRecords() {
-    console.log('saveRecords called: something must be working');
     const timeElapsed = this.getDuration(moment());
     const seconds = Math.round(timeElapsed / 1000);
     return BL.reconcileRecords(this.currentSite, seconds, 1)
@@ -139,7 +132,6 @@ class Filter {
           return BL.getSchedule()
             .then((schedule) => {
               schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
-              console.log(`currentTime: ${schedule.setting.currentTime}`);
               return BL.saveChangesSchedule(schedule);
             });
         }
@@ -195,7 +187,6 @@ class Filter {
   }
   setLimitCD(tabId, schedule) {
     const currentTime = schedule.setting.currentTime;
-    console.log(`limitCD started: ${currentTime}`);
     if (currentTime > 0) {
       this.limitCD = setTimeout(() => {
         this.loadFilteredPage(tabId, BLOCKED_PAGE);
@@ -219,7 +210,6 @@ class Filter {
 
   webRequestHandler(details) {
     this.urlCheck(details.url, details.tabId);
-    console.log('navbar request');
     return {};
   }
   urlMatch(site, url, tabId) {
@@ -255,9 +245,7 @@ class Filter {
         }));
   }
   urlCheck(url, tabId) {
-    console.log(url);
     const site = wurl('domain', url);
-    console.log(`WebReq: ${tabId} ${site} current: ${this.currentTab} ${this.currentSite} `);
     if (this.isValidProtocol(url)) {
       if (this.currentSite && this.currentSite !== site) {
         this.queue.add(() => this.saveRecords()

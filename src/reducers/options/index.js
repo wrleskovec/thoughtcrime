@@ -1,4 +1,3 @@
-import { compose } from 'redux';
 import update from 'react/lib/update';
 import BL from '../../blockList.js';
 import { notify } from '../../helpers.js';
@@ -24,6 +23,12 @@ function optionsReducer(state, action) {
         sites: { $set: action.sites },
         Filtering: { searchedSites: { $set: action.sites } }
       });
+    case 'NAVIGATE_OPTIONS':
+      return update(state, {
+        selectedPage: { $set: action.selectedPage },
+        selectedCategory: { $set: action.selectedCategory },
+        navOptions: { $set: action.options }
+      });
     default:
       return state;
   }
@@ -37,6 +42,9 @@ const reducerFuncs = [
 ];
 
 export default function rootReducer(state = {
+  selectedPage: 'Dash',
+  selectedCategory: 'Dash',
+  navOptions: {},
   sites: [],
   dailySites: [],
   patterns: [],
@@ -53,6 +61,5 @@ export default function rootReducer(state = {
   for (let j = 0; j < reducerFuncs.length; j += 1) {
     newState = reducerFuncs[j](newState, action);
   }
-  console.log(newState);
   return newState;
 }

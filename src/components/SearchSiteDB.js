@@ -9,7 +9,6 @@ export default class SearchSiteDB extends React.Component {
   constructor(props) {
     super(props);
     const { sites, sortBy, order, openModal } = this.props;
-    console.log(sites);
 
     let records;
     if (sites && sites.length > 0) {
@@ -52,7 +51,6 @@ export default class SearchSiteDB extends React.Component {
   onHeaderClick(header) {
     const { sortSites } = this.props;
     return e => {
-      console.log(header);
       sortSites(header);
     };
   }

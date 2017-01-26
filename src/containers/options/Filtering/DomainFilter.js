@@ -12,7 +12,6 @@ class Filtering extends React.Component {
     super(props);
   }
   componentDidMount() {
-    console.log('React is bullshit');
     this.props.fetchSites();
   }
 
@@ -20,9 +19,7 @@ class Filtering extends React.Component {
     const { modalObj, searchedSites, sortBy, order } = this.props;
     const { sortSites, searchSites, openModal, deleteSite, saveChangesModal } = this.props;
     const loaded = searchedSites[0] != null;
-    console.log(modalObj);
     const modalClicked = modalObj !== null;
-    console.log(modalClicked);
     return (
       <div className="col-md-10">
         <div className="panel panel-default">

@@ -4,7 +4,6 @@ import BL from '../blockList.js';
 
 function* addFilter(action) {
   try {
-    console.log('OMG OMG OGM');
     const message = yield call([BL, BL.addFilter], action.filter, action.action, action.filterType);
     yield put({ type: 'ADD_SITE_SUCCEEDED', message });
   } catch (e) {

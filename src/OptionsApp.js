@@ -19,7 +19,6 @@ BL.init().then(() => {
   sagaMiddleware.run(optionsSagas);
   store.dispatch(fetchDailySites());
   store.dispatch(fetchPatterns());
-  console.log(store.getState());
   render(
     <Provider store={store}>
       <OptionsApp />
