@@ -13,6 +13,15 @@ class Filtering extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSites();
+    console.log(this.props);
+  }
+  componentWillUpdate(nextProps) {
+    const { sites, navOptions, openModal } = nextProps;
+    if (sites && navOptions && navOptions.site) {
+      const modalObj = sites.find(site => site.site === navOptions.site);
+      openModal(modalObj);
+      $('#myModal').modal('show');
+    }
   }
 
   render() {
@@ -43,6 +52,7 @@ class Filtering extends React.Component {
 export default connect(
   state => (
     {
+      navOptions: state.navOptions,
       sites: state.sites,
       searchedSites: state.Filtering.searchedSites,
       modalObj: state.Filtering.modalObj,

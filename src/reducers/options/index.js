@@ -44,7 +44,7 @@ const reducerFuncs = [
 export default function rootReducer(state = {
   selectedPage: 'Dash',
   selectedCategory: 'Dash',
-  navOptions: {},
+  navOptions: null,
   sites: [],
   dailySites: [],
   patterns: [],

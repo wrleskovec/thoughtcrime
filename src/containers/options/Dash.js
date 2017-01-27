@@ -29,7 +29,7 @@ class Dash extends React.Component {
                 <h3 className="panel-title">Time Spent Today</h3>
               </div>
               <div className="panel-body">
-                <DailyPieChart sites={this.props.dailySites} n={5} />
+                <DailyPieChart n={5} />
               </div>
             </div>
           </div>

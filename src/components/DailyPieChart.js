@@ -1,29 +1,25 @@
 // import { VictoryPie, VictoryTheme, VictoryContainer } from 'victory';
 import React from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import 'moment-duration-format';
 import Chart from 'chart.js';
+import { navigateOptions } from '~/actions/options.js';
 
-// const pieStyle = {
-//   parent: {
-//     paddingLeft: '50px',
-//     paddingRight: '50px'
-//   }
-// };
-
-export default class DailyPieChart extends React.Component {
+class DailyPieChart extends React.Component {
   constructor(props) {
     super(props);
-    if (props.sites) {
+    const { dailySites, n } = props;
+    if (dailySites) {
       let totalTime = 0;
       let fiveTotalTime = 0;
-      const numOfSites = (props.sites.length > props.n) ? props.n : props.sites.length;
-      const topSites = this.sortProps(props.sites).slice(0, numOfSites);
+      const numOfSites = (dailySites.length > n) ? n : dailySites.length;
+      const topSites = this.sortProps(dailySites).slice(0, numOfSites);
       for (let j = 0; j < numOfSites; j += 1) {
         fiveTotalTime += topSites[j].timeSpent;
       }
-      for (let i = 0; i < props.sites.length; i += 1) {
-        totalTime += props.sites[i].timeSpent;
+      for (let i = 0; i < dailySites.length; i += 1) {
+        totalTime += dailySites[i].timeSpent;
       }
       topSites.push({ site: 'Other', timeSpent: totalTime - fiveTotalTime, visits: 0 });
       this.state = {
@@ -34,11 +30,14 @@ export default class DailyPieChart extends React.Component {
         topSites: []
       };
     }
+    this.handleChartClick = this.handleChartClick.bind(this);
+    this.dailyPieChart = null;
   }
   componentDidMount() {
     const { topSites } = this.state;
+    console.log(topSites);
     const ctx = document.getElementById('dailyPieChart');
-    const dailyPieChart = new Chart(ctx, {
+    this.dailyPieChart = new Chart(ctx, {
       type: 'pie',
       data: {
         labels: topSites.map(record => record.site),
@@ -69,6 +68,7 @@ export default class DailyPieChart extends React.Component {
       animation: { animateScale: true },
       options: {
         maintainAspectRatio: false,
+        onClick: this.handleChartClick,
         tooltips: {
           callbacks: {
             label: (tooltipItems, data) => {
@@ -93,8 +93,16 @@ export default class DailyPieChart extends React.Component {
       return 0;
     });
   }
+  handleChartClick(e) {
+    const { navigateOptions } = this.props;
+    const site = this.dailyPieChart.getElementsAtEvent(e)[0]._model.label;
+    if (site !== 'Other') {
+      navigateOptions('Filtering', 'Filter by Domain', { site });
+    }
+  }
 
   render() {
+    console.log('rendering daily PieCharg');
     return (
       <div>
         <canvas id="dailyPieChart" />
@@ -102,3 +110,16 @@ export default class DailyPieChart extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => (
+    {
+      dailySites: state.dailySites
+    }
+  ),
+  dispatch => (
+    {
+      navigateOptions: (category, page, opts) => dispatch(navigateOptions(category, page, opts))
+    }
+  )
+)(DailyPieChart);

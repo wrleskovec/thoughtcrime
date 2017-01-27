@@ -1,9 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { fetchDailySites } from '~/actions/options.js';
 import DailyPieChart from '~/components/DailyPieChart';
 
-class DailyStatistics extends React.Component {
+export default class DailyStatistics extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -20,7 +18,7 @@ class DailyStatistics extends React.Component {
                 </h3>
               </div>
               <div className="panel-body">
-                <DailyPieChart sites={this.props.dailySites} />
+                <DailyPieChart n={7} />
               </div>
             </div>
           </div>
@@ -34,7 +32,6 @@ class DailyStatistics extends React.Component {
                 </h3>
               </div>
               <div className="panel-body">
-                <DailyPieChart sites={this.props.dailySites} n={8} />
               </div>
             </div>
           </div>
@@ -44,17 +41,3 @@ class DailyStatistics extends React.Component {
     );
   }
 }
-
-export default connect(
-  state => (
-    {
-      dailySites: state.dailySites,
-      message: state.message
-    }
-  ),
-  dispatch => (
-    {
-      fetchDailySites: () => dispatch(fetchDailySites())
-    }
-  )
-)(DailyStatistics);

@@ -55,7 +55,7 @@ export function fetchPatterns() {
     type: 'FETCH_PATTERNS'
   };
 }
-export function navigateOptions(selectedCategory, selectedPage, options = {}) {
+export function navigateOptions(selectedCategory, selectedPage, options = null) {
   return {
     type: 'NAVIGATE_OPTIONS',
     selectedCategory,
