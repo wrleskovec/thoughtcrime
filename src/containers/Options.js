@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import logo from '../img/thoughtcrime.svg';
 import menuOptions from './options/OptionsMenu';
-import { navigateOptions } from '~/actions/options';
+import { navigateOptions, saveChangesModal, deleteSite } from '~/actions/options';
+import EditModal from '~/components/EditModal';
 
 class OptionsApp extends React.Component {
   constructor(props) {
@@ -18,13 +19,14 @@ class OptionsApp extends React.Component {
   }
 
   render() {
-    const { selectedPage, selectedCategory } = this.props;
+    const { selectedPage, selectedCategory, modalObj, deleteSite, saveChangesModal } = this.props;
     const Content = menuOptions.options[selectedPage];
     console.log(this.props);
     console.log(Content);
     return (
       <div id="OptionsApp">
         <div className="container-fluid">
+          <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
           <div className="row">
             <div className="col-md-2">
               <img
@@ -90,12 +92,15 @@ export default connect(
     {
       selectedPage: state.selectedPage,
       selectedCategory: state.selectedCategory,
-      navOptions: state.navOptions
+      navOptions: state.navOptions,
+      modalObj: state.Filtering.modalObj
     }
   ),
   dispatch => (
     {
-      navigateOptions: (category, page) => dispatch(navigateOptions(category, page))
+      navigateOptions: (category, page) => dispatch(navigateOptions(category, page)),
+      saveChangesModal: site => dispatch(saveChangesModal(site)),
+      deleteSite: site => dispatch(deleteSite(site)),
     }
   )
 )(OptionsApp);

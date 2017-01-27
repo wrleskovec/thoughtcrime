@@ -5,7 +5,6 @@ import { openModal, searchSites, sortSites, deleteSite, saveChangesModal }
 import { fetchSites, } from '~/actions/common.js';
 import SearchSiteDB from '~/components/SearchSiteDB.js';
 import SearchRecordsBox from '~/components/SearchRecordsBox';
-import EditModal from '~/components/EditModal';
 
 class Filtering extends React.Component {
   constructor(props) {
@@ -26,13 +25,11 @@ class Filtering extends React.Component {
 
   render() {
     const { modalObj, searchedSites, sortBy, order } = this.props;
-    const { sortSites, searchSites, openModal, deleteSite, saveChangesModal } = this.props;
-    const loaded = searchedSites[0] != null;
-    const modalClicked = modalObj !== null;
+    const { sortSites, searchSites, openModal } = this.props;
+    const loaded = searchedSites[0] !== undefined;
     return (
       <div className="col-md-10">
         <div className="panel panel-default">
-          <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
           <div className="panel-heading">Lookup Record</div>
           <div className="panel-body">
             <SearchRecordsBox searchSites={searchSites} />
@@ -55,7 +52,6 @@ export default connect(
       navOptions: state.navOptions,
       sites: state.sites,
       searchedSites: state.Filtering.searchedSites,
-      modalObj: state.Filtering.modalObj,
       sortBy: state.Filtering.sortBy,
       order: state.Filtering.order
     }
