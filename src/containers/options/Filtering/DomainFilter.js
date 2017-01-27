@@ -19,7 +19,6 @@ class Filtering extends React.Component {
     if (sites && navOptions && navOptions.site) {
       const modalObj = sites.find(site => site.site === navOptions.site);
       openModal(modalObj);
-      $('#myModal').modal('show');
     }
   }
 

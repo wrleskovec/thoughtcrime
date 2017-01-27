@@ -11,6 +11,7 @@ export function deleteSite(site) {
   };
 }
 export function openModal(modalObj) {
+  $('#myModal').modal('show');
   return {
     type: 'OPEN_MODAL',
     modalObj
@@ -53,6 +54,12 @@ export function fetchSchedule() {
 export function fetchPatterns() {
   return {
     type: 'FETCH_PATTERNS'
+  };
+}
+export function fetchModalRecord(site) {
+  return {
+    type: 'FETCH_MODAL_RECORD',
+    site
   };
 }
 export function navigateOptions(selectedCategory, selectedPage, options = null) {

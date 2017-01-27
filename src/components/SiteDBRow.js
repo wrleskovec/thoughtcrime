@@ -21,8 +21,7 @@ export default function SiteDBRow(props) {
       <td className="dataCell">{advAction}</td>
       <td className="editModal">
         <button
-          type="button" className="btn btn-default"
-          data-toggle="modal" data-target="#myModal" onClick={onClickEdit(record)}
+          type="button" className="btn btn-default" onClick={onClickEdit(record)}
         >
           <span className="glyphicon glyphicon-pencil"></span>
         </button>

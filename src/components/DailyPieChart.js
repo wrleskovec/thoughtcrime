@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import 'moment-duration-format';
 import Chart from 'chart.js';
-import { navigateOptions } from '~/actions/options.js';
+import { fetchModalRecord } from '~/actions/options.js';
 
 class DailyPieChart extends React.Component {
   constructor(props) {
@@ -98,20 +98,20 @@ class DailyPieChart extends React.Component {
     });
   }
   handleLegendClick(e, legendItem) {
-    const { navigateOptions } = this.props;
+    const { fetchModalRecord } = this.props;
     const site = legendItem.text;
     if (site && site !== 'Other') {
-      navigateOptions('Filtering', 'Filter by Domain', { site });
+      fetchModalRecord(site);
     }
   }
   handleChartClick(e) {
-    const { navigateOptions } = this.props;
+    const { fetchModalRecord } = this.props;
     const el = this.dailyPieChart.getElementsAtEvent(e)[0];
     console.log(el);
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
-        navigateOptions('Filtering', 'Filter by Domain', { site });
+        fetchModalRecord(site);
       }
     }
   }
@@ -134,7 +134,7 @@ export default connect(
   ),
   dispatch => (
     {
-      navigateOptions: (category, page, opts) => dispatch(navigateOptions(category, page, opts))
+      fetchModalRecord: site => dispatch(fetchModalRecord(site))
     }
   )
 )(DailyPieChart);
