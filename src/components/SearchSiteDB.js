@@ -32,7 +32,7 @@ export default class SearchSiteDB extends React.Component {
       } else {
         records = [];
       }
-      this.setState({ records });
+      this.setState({ records, pageN: 0 });
     }
   }
   onPageClick(e) {
