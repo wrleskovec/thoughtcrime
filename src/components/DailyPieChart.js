@@ -31,6 +31,7 @@ class DailyPieChart extends React.Component {
       };
     }
     this.handleChartClick = this.handleChartClick.bind(this);
+    this.handleLegendClick = this.handleLegendClick.bind(this);
     this.dailyPieChart = null;
   }
   componentDidMount() {
@@ -69,6 +70,9 @@ class DailyPieChart extends React.Component {
       options: {
         maintainAspectRatio: false,
         onClick: this.handleChartClick,
+        legend: {
+          onClick: this.handleLegendClick
+        },
         tooltips: {
           callbacks: {
             label: (tooltipItems, data) => {
@@ -93,11 +97,22 @@ class DailyPieChart extends React.Component {
       return 0;
     });
   }
+  handleLegendClick(e, legendItem) {
+    const { navigateOptions } = this.props;
+    const site = legendItem.text;
+    if (site && site !== 'Other') {
+      navigateOptions('Filtering', 'Filter by Domain', { site });
+    }
+  }
   handleChartClick(e) {
     const { navigateOptions } = this.props;
-    const site = this.dailyPieChart.getElementsAtEvent(e)[0]._model.label;
-    if (site !== 'Other') {
-      navigateOptions('Filtering', 'Filter by Domain', { site });
+    const el = this.dailyPieChart.getElementsAtEvent(e)[0];
+    console.log(el);
+    if (el && el._model) {
+      const site = el._model.label;
+      if (site !== 'Other') {
+        navigateOptions('Filtering', 'Filter by Domain', { site });
+      }
     }
   }
 
