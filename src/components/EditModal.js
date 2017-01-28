@@ -35,6 +35,7 @@ export default class EditModal extends React.Component {
   }
   componentWillMount() {
     this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
+    console.log(this);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.site) {

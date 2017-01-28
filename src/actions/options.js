@@ -11,7 +11,6 @@ export function deleteSite(site) {
   };
 }
 export function openModal(modalObj) {
-  $('#myModal').modal('show');
   return {
     type: 'OPEN_MODAL',
     modalObj

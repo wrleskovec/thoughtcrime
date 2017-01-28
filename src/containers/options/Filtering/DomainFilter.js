@@ -14,13 +14,6 @@ class Filtering extends React.Component {
     this.props.fetchSites();
     console.log(this.props);
   }
-  componentWillUpdate(nextProps) {
-    const { sites, navOptions, openModal } = nextProps;
-    if (sites && navOptions && navOptions.site) {
-      const modalObj = sites.find(site => site.site === navOptions.site);
-      openModal(modalObj);
-    }
-  }
 
   render() {
     const { modalObj, searchedSites, sortBy, order } = this.props;

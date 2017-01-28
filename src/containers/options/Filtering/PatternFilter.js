@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import ActionRow from '~/components/ActionRow.js';
 import { saveChangesRegex } from '~/actions/options';
 import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { HTML5BackendWrap } from '~/helpers';
 import _ from 'lodash';
 
 const style = {
   width: 800
 };
 
-@DragDropContext(HTML5Backend)
+@DragDropContext(HTML5BackendWrap())
 class PatternFilter extends React.Component {
   constructor(props) {
     super(props);

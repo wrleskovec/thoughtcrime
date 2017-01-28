@@ -6,6 +6,7 @@ export default function SiteDBRow(props) {
   // utilize id that corresponds to index of element in state
   const { id, record, openModal, offset } = props;
   const onClickEdit = record => e => {
+    $('#myModal').modal('show');
     openModal(record);
   };
   const advAction = (record.advAction.length === 0) ? 'N/A' : '...';
