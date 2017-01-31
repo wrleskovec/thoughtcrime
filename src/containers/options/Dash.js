@@ -12,6 +12,7 @@ class Dash extends React.Component {
   }
 
   render() {
+    const { addFilter, dailySites } = this.props;
     return (
       <div>
         <div className="row">
@@ -21,7 +22,7 @@ class Dash extends React.Component {
                 <h3 className="panel-title">Add Pattern</h3>
               </div>
               <div className="panel-body">
-                <InputBar addFilter={this.props.addFilter} />
+                <InputBar addFilter={addFilter} />
               </div>
             </div>
             <div className="panel panel-default">
@@ -29,7 +30,7 @@ class Dash extends React.Component {
                 <h3 className="panel-title">Time Spent Today</h3>
               </div>
               <div className="panel-body">
-                <DailyPieChart n={5} />
+                <DailyPieChart n={5} dailySites={dailySites} />
               </div>
             </div>
           </div>
@@ -39,10 +40,10 @@ class Dash extends React.Component {
                 <h3 className="panel-title">Daily Statistics</h3>
               </div>
               <div className="panel-body">
-                <TopTen sites={this.props.dailySites} maxEntry={10} />
+                <TopTen sites={dailySites} maxEntry={10} />
               </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
 

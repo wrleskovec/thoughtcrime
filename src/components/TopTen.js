@@ -40,7 +40,7 @@ export default class SiteTable extends React.Component {
     const itemCount = (this.state.sites.length < maxEntry) ? this.state.sites.length : maxEntry;
     const topTen = sites.slice(0, itemCount);
     return (
-      <div id="searchSiteDB">
+      <div id="TopTenTable">
         <table className="table table-striped table-bordered">
           <thead className="thead-inverse">
             <tr>
