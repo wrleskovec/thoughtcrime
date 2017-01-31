@@ -5,6 +5,7 @@ import InputBar from '~/components/InputBar.js';
 import DailyPieChart from '~/components/DailyPieChart';
 
 import { addFilter } from '~/actions/common.js';
+import { fetchModalRecord } from '~/actions/options';
 
 class Dash extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Dash extends React.Component {
   }
 
   render() {
-    const { addFilter, dailySites } = this.props;
+    const { addFilter, dailySites, fetchModalRecord } = this.props;
     return (
       <div>
         <div className="row">
@@ -30,7 +31,7 @@ class Dash extends React.Component {
                 <h3 className="panel-title">Time Spent Today</h3>
               </div>
               <div className="panel-body">
-                <DailyPieChart n={5} dailySites={dailySites} />
+                <DailyPieChart n={5} dailySites={dailySites} fetchModalRecord={fetchModalRecord} />
               </div>
             </div>
           </div>
@@ -59,6 +60,7 @@ export default connect(
   ),
   dispatch => (
     {
+      fetchModalRecord: site => dispatch(fetchModalRecord(site)),
       addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type))
     }
   )

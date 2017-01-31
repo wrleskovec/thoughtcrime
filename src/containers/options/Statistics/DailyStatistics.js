@@ -1,16 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import DailyPieChart from '~/components/DailyPieChart';
-import DailySitesDB from '~/components/DailySitesDB';
-import { fetchModalRecord, fetchDailySiteRecords } from '~/actions/options.js';
+import SearchSiteDB from '~/components/SearchSiteDB';
+import {
+  openModal, fetchDailySiteRecords, sortSites, fetchModalRecord
+} from '~/actions/options.js';
 
 class DailyStatistics extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  componentWillMount() {
+    const { fetchDailySiteRecords } = this.props;
+    fetchDailySiteRecords();
+  }
   render() {
-    const { fetchModalRecord, dailySiteRecords } = this.props;
+    const { openModal, dailySiteRecords, order, sortBy, sortSites } = this.props;
     return (
       <div id="DailyStatistics">
         <div className="row">
@@ -38,7 +43,9 @@ class DailyStatistics extends React.Component {
                 </h3>
               </div>
               <div className="panel-body">
-                <DailySitesDB dailySites={dailySiteRecords} />
+                <SearchSiteDB
+                  sites={dailySiteRecords} sortSites={sortSites} sortBy={sortBy} order={order}
+                />
               </div>
             </div>
           </div>
@@ -51,13 +58,17 @@ class DailyStatistics extends React.Component {
 export default connect(
   state => (
     {
-      dailySiteRecords: state.Statistics.dailySiteRecords
+      dailySiteRecords: state.Statistics.dailySiteRecords,
+      sortBy: state.Filtering.sortBy,
+      order: state.Filtering.order
     }
   ),
   dispatch => (
     {
       fetchDailySiteRecords: () => dispatch(fetchDailySiteRecords()),
-      fetchModalRecord: site => dispatch(fetchModalRecord(site))
+      openModal: record => dispatch(openModal(record)),
+      fetchModalRecord: site => dispatch(fetchModalRecord(site)),
+      sortSites: sortBy => dispatch(sortSites(sortBy)),
     }
   )
 )(DailyStatistics);
