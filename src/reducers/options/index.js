@@ -4,6 +4,7 @@ import { notify } from '../../helpers.js';
 import Dash from './Dash.js';
 import Filtering from './Filtering.js';
 import Settings from './Settings.js';
+import Statistics from './Statistics';
 
 function optionsReducer(state, action) {
   switch (action.type) {
@@ -38,7 +39,8 @@ const reducerFuncs = [
   optionsReducer,
   Dash,
   Filtering,
-  Settings
+  Settings,
+  Statistics
 ];
 
 export default function rootReducer(state = {
@@ -55,6 +57,9 @@ export default function rootReducer(state = {
     modalObj: null,
     sortBy: 'action',
     order: 'DESCENDING',
+  },
+  Statistics: {
+    dailySiteRecords: []
   }
 }, action) {
   let newState = state;

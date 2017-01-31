@@ -1,4 +1,3 @@
-// import { VictoryPie, VictoryTheme, VictoryContainer } from 'victory';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';

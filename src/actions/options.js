@@ -61,11 +61,18 @@ export function fetchModalRecord(site) {
     site
   };
 }
+// maybe get rid of this
 export function navigateOptions(selectedCategory, selectedPage, options = null) {
   return {
     type: 'NAVIGATE_OPTIONS',
     selectedCategory,
     selectedPage,
     options
+  };
+}
+// fetches additional site data such as action && advAction
+export function fetchDailySiteRecords() {
+  return {
+    type: 'FETCH_DAILY_SITE_RECORDS'
   };
 }

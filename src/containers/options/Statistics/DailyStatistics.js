@@ -1,5 +1,6 @@
 import React from 'react';
 import DailyPieChart from '~/components/DailyPieChart';
+import DailySitesDB from '~/components/DailySitesDB';
 
 export default class DailyStatistics extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class DailyStatistics extends React.Component {
                 </h3>
               </div>
               <div className="panel-body">
+                <DailySitesDB />
               </div>
             </div>
           </div>
