@@ -15,7 +15,7 @@ class DailyStatistics extends React.Component {
     fetchDailySiteRecords();
   }
   render() {
-    const { openModal, dailySiteRecords, order, sortBy, sortSites } = this.props;
+    const { openModal, dailySiteRecords, order, sortBy, sortSites, fetchModalRecord } = this.props;
     return (
       <div id="DailyStatistics">
         <div className="row">
@@ -45,6 +45,7 @@ class DailyStatistics extends React.Component {
               <div className="panel-body">
                 <SearchSiteDB
                   sites={dailySiteRecords} sortSites={sortSites} sortBy={sortBy} order={order}
+                  openModal={openModal}
                 />
               </div>
             </div>

@@ -12,7 +12,6 @@ class Filtering extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSites();
-    console.log(this.props);
   }
 
   render() {

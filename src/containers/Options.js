@@ -21,8 +21,6 @@ class OptionsApp extends React.Component {
   render() {
     const { selectedPage, selectedCategory, modalObj, deleteSite, saveChangesModal } = this.props;
     const Content = menuOptions.options[selectedPage];
-    console.log(this.props);
-    console.log(Content);
     return (
       <div id="OptionsApp">
         <div className="container-fluid">

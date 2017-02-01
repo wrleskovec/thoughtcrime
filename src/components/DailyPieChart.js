@@ -3,6 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import 'moment-duration-format';
 import Chart from 'chart.js';
+import _ from 'lodash';
 
 export default class DailyPieChart extends React.Component {
   constructor(props) {
@@ -29,13 +30,12 @@ export default class DailyPieChart extends React.Component {
       };
     }
     this.handleChartClick = this.handleChartClick.bind(this);
-    this.handleLegendClick = this.handleLegendClick.bind(this);
+    this.handleLegendClick = _.debounce(this.handleLegendClick.bind(this), 50);
     this.dailyPieChart = null;
   }
 
   componentDidMount() {
     const { topSites } = this.state;
-    console.log(topSites);
     const ctx = document.getElementById('dailyPieChart');
     this.dailyPieChart = new Chart(ctx, {
       type: 'pie',
@@ -108,7 +108,6 @@ export default class DailyPieChart extends React.Component {
   }
   createChart() {
     const { topSites } = this.state;
-    console.log(topSites);
     const ctx = document.getElementById('dailyPieChart');
     this.dailyPieChart = new Chart(ctx, {
       type: 'pie',
@@ -155,7 +154,6 @@ export default class DailyPieChart extends React.Component {
   handleChartClick(e) {
     const { fetchModalRecord } = this.props;
     const el = this.dailyPieChart.getElementsAtEvent(e)[0];
-    console.log(el);
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
