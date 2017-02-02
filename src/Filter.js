@@ -81,7 +81,7 @@ class Filter {
     if (this.currentSite) {
       chrome.tabs.query({ active: true }, (tabs) => {
         if (!tabs || !this.isValidProtocol(tabs[0].url) &&
-        !this.isPopup(tabs[0].url)) {
+        !this.isPopup(tabs[0].url) && this.currentSite) {
           this.queue.add(() => this.saveRecords()
             .then(() => {
               this.startTime = null;
@@ -101,13 +101,12 @@ class Filter {
   setNewDayTimer() {
     const tomorrow = moment().add(1, 'days').startOf('day');
     return setTimeout(() => {
-      this.saveRecords()
-        .then(() => BL.addDayRecord(moment().format('DD-MM-YYYY')))
-        .then(() => BL.getSchedule())
-        .then((schedule) => {
-          schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
-          return BL.saveChangesSchedule(schedule);
-        });
+      if (this.currentSite) {
+        this.saveRecords()
+          .then(() => BL.dayChange(moment().format('DD-MM-YYYY')));
+      } else {
+        BL.dayChange(moment().format('DD-MM-YYYY'));
+      }
     }, tomorrow.diff(moment()));
   }
   isValidProtocol(url) {

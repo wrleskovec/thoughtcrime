@@ -58,18 +58,7 @@ class BlockList {
         .then(day => {
           this.dailyRecord = day;
         })
-        .catch(() => this.addDayRecord(this.date)
-          .then(record => {
-            this.dailyRecord = record;
-            return this.getSchedule()
-            // If schedule exists reset currentTime with stored limit. In process handled in Filter
-              .then((schedule) => {
-                schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
-                return this.saveChangesSchedule(schedule);
-              })
-              .catch(() => this.initNewSchedule());
-          })
-        );
+        .catch(() => this.dayChange(this.date));
     })
     .then(() => (
       this.getRegexPatterns()
@@ -160,6 +149,20 @@ class BlockList {
       sites: []
     })
     .then(r => r[0]);
+  }
+  dayChange(day) {
+    return this.addDayRecord(day)
+      .then(record => {
+        this.dailyRecord = record;
+      })
+      .then(() => this.getSchedule()
+      // If schedule exists reset currentTime with stored limit. In process handled in Filter
+        .then((schedule) => {
+          schedule.setting.currentTime = schedule.setting.dailyLimit * 60000;
+          return this.saveChangesSchedule(schedule);
+        })
+        .catch(() => this.initNewSchedule())
+      );
   }
   addFilter(filter, acl, type) {
     if (type === 'Domain') return this.addSite(filter, acl);
