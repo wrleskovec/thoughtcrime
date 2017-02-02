@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchModalRecord } from '~/actions/options';
 import { fetchSites } from '~/actions/common';
 import TotalBarChart from '~/components/TotalBarChart';
+import RestrictedBarChart from '~/components/RestrictedBarChart';
 
 class TotalStatistics extends React.Component {
   constructor(props) {
@@ -37,10 +38,11 @@ class TotalStatistics extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">
-                  Time Spent Today
+                  All Time Restricted Sites
                 </h3>
               </div>
               <div className="panel-body">
+                <RestrictedBarChart sites={sites} fetchModalRecord={fetchModalRecord} n={8} />
               </div>
             </div>
           </div>

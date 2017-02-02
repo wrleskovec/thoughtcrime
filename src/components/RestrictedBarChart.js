@@ -2,13 +2,13 @@ import React from 'react';
 import Chart from 'chart.js';
 import moment from 'moment';
 
-export default class TotalBarChart extends React.Component {
+export default class RestrictedBarChart extends React.Component {
   constructor(props) {
     super(props);
     const { sites, n } = props;
     this.state = { topSites: this.filterChartData(sites, n) };
     this.handleChartClick = this.handleChartClick.bind(this);
-    this.totalBarChart = null;
+    this.RestrictedBarChart = null;
   }
   componentDidMount() {
     const { topSites } = this.state;
@@ -30,11 +30,15 @@ export default class TotalBarChart extends React.Component {
   }
   filterChartData(sites, n) {
     if (sites && sites[0]) {
-      const numOfSites = (sites.length > n) ? n : sites.length;
-      const topSites = this.sortProps(sites).slice(0, numOfSites);
+      const filteredSites = this.filterProps(sites);
+      const numOfSites = (filteredSites.length > n) ? n : filteredSites.length;
+      const topSites = this.sortProps(filteredSites).slice(0, numOfSites);
       return topSites;
     }
     return [];
+  }
+  filterProps(sites) {
+    return sites.filter(record => record.action !== 'accept');
   }
   sortProps(sites) {
     return sites.sort((a, b) => {
@@ -48,8 +52,8 @@ export default class TotalBarChart extends React.Component {
     });
   }
   createChart(sites) {
-    const ctx = document.getElementById('TotalBarChart');
-    this.totalBarChart = new Chart(ctx, {
+    const ctx = document.getElementById('RestrictedBarChart');
+    this.RestrictedBarChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: sites.map(record => record.site),
@@ -99,7 +103,7 @@ export default class TotalBarChart extends React.Component {
   }
   handleChartClick(e) {
     const { fetchModalRecord } = this.props;
-    const el = this.totalBarChart.getElementsAtEvent(e)[0];
+    const el = this.RestrictedBarChart.getElementsAtEvent(e)[0];
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
@@ -112,7 +116,7 @@ export default class TotalBarChart extends React.Component {
     console.log('its happening!');
     return (
       <div>
-        <canvas id="TotalBarChart" />
+        <canvas id="RestrictedBarChart" />
       </div>
     );
   }
