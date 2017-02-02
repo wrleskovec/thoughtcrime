@@ -58,42 +58,49 @@ export default class RestrictedBarChart extends React.Component {
       data: {
         labels: sites.map(record => record.site),
         datasets: [{
-          data: sites.map(record => record.timeSpent),
+          data: sites.map(record => Math.round(record.timeSpent / 60)),
           backgroundColor: [
-            '#1b9e77',
-            '#d95f02',
-            '#7570b3',
-            '#e7298a',
-            '#66a61e',
-            '#e6ab02',
-            '#a6761d',
-            '#666666'
+            '#ff0000',
+            '#ff0000',
+            '#ff0000',
+            '#ff0000',
+            '#ff0000',
+            '#ff0000',
+            '#ff0000',
+            '#ff0000'
           ],
           hoverBackgroundColor: [
-            '#3bdead',
-            '#fd9444',
-            '#b5b2d7',
-            '#f183bc',
-            '#99de4a',
-            '#fdcf4e',
-            '#dfaa49',
-            '#999'
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d',
+            '#ff4d4d'
           ]
         }]
       },
       animation: { animateScale: true },
       options: {
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         onClick: this.handleChartClick,
         legend: {
           display: false
         },
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Minutes'
+            }
+          }]
+        },
         tooltips: {
           callbacks: {
             label: (tooltipItems, data) => {
-              const secs = data.datasets[0].data[tooltipItems.index];
-              const site = data.labels[tooltipItems.index];
-              const timeElapsed = moment.duration(secs, 'seconds').format('hh:mm', { trim: false });
+              const mins = data.datasets[0].data[tooltipItems.index];
+              const timeElapsed = moment.duration(mins, 'minutes').format('hh:mm', { trim: false });
               return timeElapsed;
             }
           }
@@ -107,7 +114,7 @@ export default class RestrictedBarChart extends React.Component {
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
-        $('#myModal').modal('show');
+        $('#RestrictedBarChart').modal('show');
         fetchModalRecord(site);
       }
     }

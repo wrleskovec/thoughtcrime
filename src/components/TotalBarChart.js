@@ -54,7 +54,7 @@ export default class TotalBarChart extends React.Component {
       data: {
         labels: sites.map(record => record.site),
         datasets: [{
-          data: sites.map(record => record.timeSpent),
+          data: sites.map(record => Math.round(record.timeSpent / 60)),
           backgroundColor: [
             '#1b9e77',
             '#d95f02',
@@ -79,17 +79,24 @@ export default class TotalBarChart extends React.Component {
       },
       animation: { animateScale: true },
       options: {
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         onClick: this.handleChartClick,
         legend: {
           display: false
         },
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Minutes'
+            }
+          }]
+        },
         tooltips: {
           callbacks: {
             label: (tooltipItems, data) => {
-              const secs = data.datasets[0].data[tooltipItems.index];
-              const site = data.labels[tooltipItems.index];
-              const timeElapsed = moment.duration(secs, 'seconds').format('hh:mm', { trim: false });
+              const mins = data.datasets[0].data[tooltipItems.index];
+              const timeElapsed = moment.duration(mins, 'minutes').format('hh:mm', { trim: false });
               return timeElapsed;
             }
           }
