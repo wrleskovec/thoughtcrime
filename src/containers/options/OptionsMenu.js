@@ -3,6 +3,8 @@ import DomainFilter from './Filtering/DomainFilter';
 import PatternFilter from './Filtering/PatternFilter';
 import ScheduleSettings from './Settings/Scheduling';
 import DailyStatistics from './Statistics/DailyStatistics';
+import TotalStatistics from './Statistics/TotalStatistics';
+import TrendAnalysis from './Statistics/TrendAnalysis';
 
 const structure = [
   {
@@ -15,7 +17,7 @@ const structure = [
   },
   {
     title: 'Statistics',
-    items: null
+    items: ['Daily Statistics', 'Total Statistics', 'Trend Analysis']
   },
   {
     title: 'Settings',
@@ -29,6 +31,9 @@ const options = {
   Settings: ScheduleSettings,
   Scheduling: ScheduleSettings,
   Statistics: DailyStatistics,
+  'Daily Statistics': DailyStatistics,
+  'Total Statistics': TotalStatistics,
+  'Trend Analysis': TrendAnalysis,
   'Filter by Domain': DomainFilter,
   'Filter by Pattern': PatternFilter
 };
