@@ -1,12 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchModalRecord } from '~/actions/options';
+import { fetchSites } from '~/actions/common';
+import TotalBarChart from '~/components/TotalBarChart';
 
 class TotalStatistics extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentWillMount() {
+    const { sites, fetchSites } = this.props;
+    if (!sites || !sites[0]) {
+      fetchSites();
+    }
+  }
   render() {
+    const { fetchModalRecord, sites } = this.props;
     return (
       <div id="TotalStatistics">
         <div className="row">
@@ -14,10 +23,11 @@ class TotalStatistics extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">
-                  Time Spent Today
+                  All Time Top Sites
                 </h3>
               </div>
               <div className="panel-body">
+                <TotalBarChart sites={sites} fetchModalRecord={fetchModalRecord} n={8} />
               </div>
             </div>
           </div>
@@ -47,7 +57,8 @@ export default connect(
   ),
   dispatch => (
     {
-      fetchModalRecord: site => dispatch(fetchModalRecord(site))
+      fetchModalRecord: site => dispatch(fetchModalRecord(site)),
+      fetchSites: () => dispatch(fetchSites())
     }
   )
 )(TotalStatistics);

@@ -1,16 +1,15 @@
-
 import React from 'react';
-import moment from 'moment';
-import 'moment-duration-format';
 import Chart from 'chart.js';
+import moment from 'moment';
 
-export default class DailyPieChart extends React.Component {
+export default class TotalBarChart extends React.Component {
   constructor(props) {
     super(props);
-    const { dailySites, n } = props;
-    this.state = { topSites: this.filterChartData(dailySites, n) };
+    const { sites, n } = props;
+    this.state = { topSites: this.filterChartData(sites, n) };
     this.handleChartClick = this.handleChartClick.bind(this);
     this.handleLegendClick = this.handleLegendClick.bind(this);
+    this.totalBarChart = null;
   }
   componentDidMount() {
     const { topSites } = this.state;
@@ -20,8 +19,8 @@ export default class DailyPieChart extends React.Component {
   }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps !== this.props) {
-      const { dailySites, n } = nextProps;
-      this.setState({ topSites: this.filterChartData(dailySites, n) });
+      const { sites, n } = nextProps;
+      this.setState({ topSites: this.filterChartData(sites, n) });
     }
     if (nextState !== this.state) {
       const { topSites } = nextState;
@@ -30,30 +29,33 @@ export default class DailyPieChart extends React.Component {
       this.createChart(topSites);
     }
   }
-  filterChartData(dailySites, n) {
-    if (dailySites && dailySites[0]) {
-      let totalTime = 0;
-      let fiveTotalTime = 0;
-      const numOfSites = (dailySites.length > n) ? n : dailySites.length;
-      const topSites = this.sortProps(dailySites).slice(0, numOfSites);
-      for (let j = 0; j < numOfSites; j += 1) {
-        fiveTotalTime += topSites[j].timeSpent;
-      }
-      for (let i = 0; i < dailySites.length; i += 1) {
-        totalTime += dailySites[i].timeSpent;
-      }
-      topSites.push({ site: 'Other', timeSpent: totalTime - fiveTotalTime, visits: 0 });
+  filterChartData(sites, n) {
+    if (sites && sites[0]) {
+      const numOfSites = (sites.length > n) ? n : sites.length;
+      const topSites = this.sortProps(sites).slice(0, numOfSites);
       return topSites;
     }
     return [];
   }
+  sortProps(sites) {
+    return sites.sort((a, b) => {
+      if (a.timeSpent < b.timeSpent) {
+        return 1;
+      }
+      if (a.timeSpent > b.timeSpent) {
+        return -1;
+      }
+      return 0;
+    });
+  }
   createChart(sites) {
-    const ctx = document.getElementById('dailyPieChart');
-    this.dailyPieChart = new Chart(ctx, {
-      type: 'pie',
+    const ctx = document.getElementById('TotalBarChart');
+    this.totalBarChart = new Chart(ctx, {
+      type: 'bar',
       data: {
         labels: sites.map(record => record.site),
         datasets: [{
+          label: 'All Time Top Sites',
           data: sites.map(record => record.timeSpent),
           backgroundColor: [
             '#1b9e77',
@@ -97,17 +99,6 @@ export default class DailyPieChart extends React.Component {
       }
     });
   }
-  sortProps(sites) {
-    return sites.sort((a, b) => {
-      if (a.timeSpent < b.timeSpent) {
-        return 1;
-      }
-      if (a.timeSpent > b.timeSpent) {
-        return -1;
-      }
-      return 0;
-    });
-  }
   handleLegendClick(e, legendItem) {
     const { fetchModalRecord } = this.props;
     const site = legendItem.text;
@@ -118,7 +109,7 @@ export default class DailyPieChart extends React.Component {
   }
   handleChartClick(e) {
     const { fetchModalRecord } = this.props;
-    const el = this.dailyPieChart.getElementsAtEvent(e)[0];
+    const el = this.totalBarChart.getElementsAtEvent(e)[0];
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
@@ -127,11 +118,11 @@ export default class DailyPieChart extends React.Component {
       }
     }
   }
-
   render() {
+    console.log('its happening!');
     return (
       <div>
-        <canvas id="dailyPieChart" />
+        <canvas id="TotalBarChart" />
       </div>
     );
   }
