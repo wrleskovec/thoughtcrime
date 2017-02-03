@@ -114,7 +114,7 @@ export default class RestrictedBarChart extends React.Component {
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
-        $('#RestrictedBarChart').modal('show');
+        $('#myModal').modal('show');
         fetchModalRecord(site);
       }
     }

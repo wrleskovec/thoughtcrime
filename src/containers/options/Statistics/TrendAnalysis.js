@@ -13,6 +13,7 @@ class TrendAnalysis extends React.Component {
       dropDownSites: [],
       error: ''
     };
+    this.handleAddSite = this.handleAddSite.bind(this);
   }
   filterChartData(sites, n) {
     if (sites && sites[0]) {
@@ -52,7 +53,7 @@ class TrendAnalysis extends React.Component {
     const { selectedSites } = this.state;
     return (
       <div id="TotalStatistics">
-        <TrendAnalysisOptions selectedSites={selectedSites} />
+        <TrendAnalysisOptions selectedSites={selectedSites} addSite={this.handleAddSite} />
         <div className="row" height="400px">
           <div className="col-md-10">
             <div className="panel panel-default">
