@@ -1,4 +1,4 @@
-import { notify } from '../../helpers';
+import notify from '~/helpers/notify';
 
 function Dash(state, action) {
   switch (action.type) {

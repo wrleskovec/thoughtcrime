@@ -1,6 +1,6 @@
 import update from 'react/lib/update';
 import BL from '../../blockList.js';
-import { notify } from '../../helpers.js';
+import notify from '~/helpers/notify.js';
 import Dash from './Dash.js';
 import Filtering from './Filtering.js';
 import Settings from './Settings.js';

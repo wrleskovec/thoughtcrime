@@ -33,7 +33,7 @@ class TotalStatistics extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row" height="400px">
+        <div className="row">
           <div className="col-md-10">
             <div className="panel panel-default">
               <div className="panel-heading">

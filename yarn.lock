@@ -2930,7 +2930,7 @@ moment-duration-format@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-1.3.0.tgz#541771b5f87a049cc65540475d3ad966737d6908"
 
-moment@^2.10.6, moment@^2.15.1:
+moment@^2.10.6, moment@^2.13.0, moment@^2.15.1:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
 
@@ -3616,6 +3616,15 @@ react-big-calendar@^0.11.1:
     uncontrollable "^3.1.0"
     warning "^2.0.0"
 
+react-datepicker@^0.40.0:
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-0.40.0.tgz#8ad56d6da5fe587343141041941fd8bafc3ae36f"
+  dependencies:
+    classnames "^2.2.5"
+    moment "^2.13.0"
+    react-onclickoutside "^5.7.1"
+    tether "^1.3.2"
+
 react-dnd-html5-backend@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.1.2.tgz#bcff5866629c335b310b1062fe6537af35073c66"
@@ -3638,6 +3647,10 @@ react-dom@^15.2.0:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+
+react-onclickoutside@^5.7.1:
+  version "5.8.4"
+  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-5.8.4.tgz#a2c673a8d1b104a550e565574b95419feb12cc3f"
 
 react-overlays@^0.6.0:
   version "0.6.10"
@@ -4226,6 +4239,10 @@ tar@~2.2.1:
     block-stream "*"
     fstream "^1.0.2"
     inherits "2"
+
+tether@^1.3.2:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/tether/-/tether-1.4.0.tgz#0f9fa171f75bf58485d8149e94799d7ae74d1c1a"
 
 text-table@~0.2.0:
   version "0.2.0"

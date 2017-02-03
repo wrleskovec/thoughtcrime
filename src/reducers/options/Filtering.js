@@ -1,15 +1,6 @@
 import update from 'react/lib/update';
-import Fuse from 'fuse.js';
-import { notify } from '../../helpers.js';
-
-const fuseOptions = {
-  shouldSort: true,
-  threshold: 0.1,
-  location: 0,
-  distance: 1000,
-  maxPatternLength: 32,
-  keys: ['site']
-};
+import notify from '~/helpers/notify';
+import searchSites from '~/helpers/searchSites';
 
 function Filtering(state, action) {
   switch (action.type) {
@@ -19,8 +10,7 @@ function Filtering(state, action) {
           Filtering: { searchedSites: { $set: state.sites } }
         });
       }
-      const fuse = new Fuse(state.sites, fuseOptions);
-      const results = fuse.search(action.filter);
+      const results = searchSites(state.sites, action.filter);
       return update(state, {
         Filtering: { searchedSites: { $set: results } }
       });

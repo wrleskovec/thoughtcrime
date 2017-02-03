@@ -1,4 +1,4 @@
-export function notify(message) {
+export default function notify(message) {
   chrome.notifications.create({
     type: 'basic',
     title: 'ThoughtCrime',
