@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchModalRecord } from '~/actions/options';
-import TrendAnalysisOptions from '~/components/TrendAnalysisOptions';
-import searchSites from '~/helpers/searchSites';
+import TrendAnalysisOptions from '~/components/TrendAnalysis/TrendAnalysisOptions';
 
 class TrendAnalysis extends React.Component {
   constructor(props) {

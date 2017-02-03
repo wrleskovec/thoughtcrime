@@ -23,8 +23,6 @@ export default class RestrictedBarChart extends React.Component {
     }
     if (nextState !== this.state) {
       const { topSites } = nextState;
-      console.log('State change detected');
-      console.log(this.state);
       this.createChart(topSites);
     }
   }
@@ -120,7 +118,6 @@ export default class RestrictedBarChart extends React.Component {
     }
   }
   render() {
-    console.log('its happening!');
     return (
       <div>
         <canvas id="RestrictedBarChart" />

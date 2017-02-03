@@ -77,19 +77,22 @@ class Filter {
     }
     return false;
   }
+  // using oop style was a mistake for catching race conditions on this.currentSite property
   handleBlur() {
     if (this.currentSite) {
       chrome.tabs.query({ active: true }, (tabs) => {
-        if (!tabs || !this.isValidProtocol(tabs[0].url) &&
-        !this.isPopup(tabs[0].url) && this.currentSite) {
-          this.queue.add(() => this.saveRecords()
-            .then(() => {
-              this.startTime = null;
-              this.currentSite = null;
-              this.currentTab = null;
-            })
-          );
-        }
+        this.queue.add(() => {
+          if (!tabs || !this.isValidProtocol(tabs[0].url) &&
+          !this.isPopup(tabs[0].url) && this.currentSite) {
+            return this.saveRecords()
+              .then(() => {
+                this.startTime = null;
+                this.currentSite = null;
+                this.currentTab = null;
+              });
+          }
+          return undefined;
+        });
       });
     }
   }
@@ -123,20 +126,23 @@ class Filter {
     return moment.duration(now.diff(this.startTime));
   }
   saveRecords() {
-    const timeElapsed = this.getDuration(moment());
-    const seconds = Math.round(timeElapsed / 1000);
-    return BL.reconcileRecords(this.currentSite, seconds, 1)
-      .then(() => {
-        if (this.limitCD) {
-          return BL.getSchedule()
-            .then((schedule) => {
-              schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
-              return BL.saveChangesSchedule(schedule);
-            });
-        }
-        return undefined;
-      })
-      .then(() => this.handleNewDomainFocus());
+    if (this.currentSite) {
+      const timeElapsed = this.getDuration(moment());
+      const seconds = Math.round(timeElapsed / 1000);
+      return BL.reconcileRecords(this.currentSite, seconds, 1)
+        .then(() => {
+          if (this.limitCD) {
+            return BL.getSchedule()
+              .then((schedule) => {
+                schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
+                return BL.saveChangesSchedule(schedule);
+              });
+          }
+          return undefined;
+        })
+        .then(() => this.handleNewDomainFocus());
+    }
+    return this.handleNewDomainFocus();
   }
 
   loadFilteredPage(tabId, url) {
