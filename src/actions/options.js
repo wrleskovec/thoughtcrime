@@ -76,3 +76,28 @@ export function fetchDailySiteRecords() {
     type: 'FETCH_DAILY_SITE_RECORDS'
   };
 }
+
+export function updateSelectedSites(newSites) {
+  return {
+    type: 'UPDATE_SELECTED_SITES',
+    newSites
+  };
+}
+export function setEndDate(date) {
+  return {
+    type: 'SET_END_DATE',
+    date
+  };
+}
+export function setStartDate(date) {
+  return {
+    type: 'SET_START_DATE',
+    date
+  };
+}
+export function statisticsSearchRecords(filter) {
+  return {
+    type: 'STATISTICS_SEARCH_RECORDS',
+    filter
+  };
+}

@@ -1,30 +1,78 @@
 import React from 'react';
 import DatePicker from '~/components/TrendAnalysis/DatePicker';
 import SearchSiteSelect from '~/components/TrendAnalysis/SearchSiteSelect';
-import moment from 'moment';
+import { connect } from 'react-redux';
+import { updateSelectedSites, setEndDate, setStartDate, statisticsSearchRecords }
+from '~/actions/options';
+import { fetchSites } from '~/actions/common.js';
 
-export default class TrendAnalysisOptions extends React.Component {
+class TrendAnalysisOptions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: moment(Date.now() - 7 * 24 * 3600 * 1000),
-      endDate: moment()
+      error: ''
     };
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
-  handleStartDateChange(date) {
-    this.setState({
-      startDate: date
+  componentWillMount() {
+    const { sites, fetchSites } = this.props;
+    if (!sites || !sites[0]) {
+      fetchSites();
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    const { sites } = nextProps;
+    if (sites && sites[0]) {
+      if (!this.props.sites || !this.props.sites[0]) {
+
+      }
+    }
+  }
+  filterChartData(sites, n) {
+    if (sites && sites[0]) {
+      const numOfSites = (sites.length > n) ? n : sites.length;
+      const topSites = this.sortProps(sites).slice(0, numOfSites);
+      return topSites;
+    }
+    return [];
+  }
+  sortProps(sites) {
+    return sites.sort((a, b) => {
+      if (a.timeSpent < b.timeSpent) {
+        return 1;
+      }
+      if (a.timeSpent > b.timeSpent) {
+        return -1;
+      }
+      return 0;
     });
+  }
+  handleAddSite(selectedSite) {
+    const { sites, n, selectedSites, updateSelectedSites } = this.props;
+    if (selectedSites.length < n) {
+      if (sites.find(site => site === selectedSite)) {
+        const newSelectedSites = selectedSites.slice();
+        newSelectedSites.push(selectedSite);
+        updateSelectedSites(newSelectedSites);
+      } else {
+        this.setState({ error: 'Not a valid site' });
+      }
+    } else {
+      this.setState({ error: `Max ${n} Sites` });
+    }
+  }
+  handleStartDateChange(date) {
+    const { setStartDate } = this.props;
+    setStartDate(date);
   }
   handleEndDateChange(date) {
-    this.setState({
-      endDate: date
-    });
+    const { setEndDate } = this.props;
+    setEndDate(date);
   }
   render() {
-    const { startDate, endDate } = this.state;
+    const { startDate, endDate } = this.props;
+    console.log(this.props);
     return (
       <div id="TrendAnalysisOptions" className="row">
         <div className="col-md-10">
@@ -49,3 +97,20 @@ export default class TrendAnalysisOptions extends React.Component {
     );
   }
 }
+export default connect(
+  state => (
+    {
+      sites: state.sites,
+      ...state.Statistics
+    }
+  ),
+  dispatch => (
+    {
+      setEndDate: date => dispatch(setEndDate(date)),
+      setStartDate: date => dispatch(setStartDate(date)),
+      updateSelectedSites: newSites => dispatch(updateSelectedSites(newSites)),
+      statisticsSearchRecords: filter => dispatch(statisticsSearchRecords(filter)),
+      fetchSites: () => dispatch(fetchSites())
+    }
+  )
+)(TrendAnalysisOptions);

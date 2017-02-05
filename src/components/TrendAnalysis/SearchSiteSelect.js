@@ -1,17 +1,21 @@
 import React from 'react';
+import _ from 'lodash';
 
 export default class SearchSiteSelect extends React.Component {
   constructor(props) {
     super(props);
     this.onFocus = this.onFocus.bind(this);
     this.onSelectSite = this.onSelectSite.bind(this);
+    this.onChange = _.debounce(this.onChange.bind(this), 100);
   }
   onFocus() {
     console.log('focus was called');
     document.querySelector('.list-group').style.display = 'block';
   }
   onChange(e) {
-    const { target } = e;
+    const { handleOnChange } = this.props;
+    const value = e.target.value;
+    handleOnChange(value);
   }
   onSelectSite(e) {
     const { target } = e;

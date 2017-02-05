@@ -5,6 +5,7 @@ import Dash from './Dash.js';
 import Filtering from './Filtering.js';
 import Settings from './Settings.js';
 import Statistics from './Statistics';
+import moment from 'moment';
 
 function optionsReducer(state, action) {
   switch (action.type) {
@@ -59,7 +60,11 @@ export default function rootReducer(state = {
     order: 'DESCENDING',
   },
   Statistics: {
-    dailySiteRecords: []
+    dailySiteRecords: [],
+    startDate: moment(Date.now() - 7 * 24 * 3600 * 1000),
+    endDate: moment(),
+    searchResults: [],
+    selectedSites: []
   }
 }, action) {
   let newState = state;
