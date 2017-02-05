@@ -16,6 +16,7 @@ function* fetchSites() {
 
     yield put({ type: 'SITE_FETCH_SUCCESSFUL', sites });
   } catch (e) {
+    console.log(e);
     yield put({ type: 'SITE_FETCH_UNSUCCESSFUL', e });
   }
 }

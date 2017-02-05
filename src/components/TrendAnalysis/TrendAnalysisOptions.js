@@ -1,6 +1,7 @@
 import React from 'react';
 import DatePicker from '~/components/TrendAnalysis/DatePicker';
 import SearchSiteSelect from '~/components/TrendAnalysis/SearchSiteSelect';
+import SelectedSites from '~/components/TrendAnalysis/SelectedSites';
 import { connect } from 'react-redux';
 import { updateSelectedSites, setEndDate, setStartDate, statisticsSearchRecords }
 from '~/actions/options';
@@ -14,6 +15,7 @@ class TrendAnalysisOptions extends React.Component {
     };
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.removeSite = this.removeSite.bind(this);
   }
   componentWillMount() {
     const { sites, fetchSites } = this.props;
@@ -23,9 +25,11 @@ class TrendAnalysisOptions extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     const { sites } = nextProps;
+    const { n, updateSelectedSites } = this.props;
     if (sites && sites[0]) {
       if (!this.props.sites || !this.props.sites[0]) {
-
+        const truncatedSites = this.filterChartData(this.sortProps(sites), n);
+        updateSelectedSites(truncatedSites);
       }
     }
   }
@@ -47,6 +51,11 @@ class TrendAnalysisOptions extends React.Component {
       }
       return 0;
     });
+  }
+  removeSite(site) {
+    const { selectedSites, updateSelectedSites } = this.props;
+    const newSelectedSites = selectedSites.filter(record => record.site !== site);
+    updateSelectedSites(newSelectedSites);
   }
   handleAddSite(selectedSite) {
     const { sites, n, selectedSites, updateSelectedSites } = this.props;
@@ -71,7 +80,7 @@ class TrendAnalysisOptions extends React.Component {
     setEndDate(date);
   }
   render() {
-    const { startDate, endDate } = this.props;
+    const { startDate, endDate, selectedSites } = this.props;
     console.log(this.props);
     return (
       <div id="TrendAnalysisOptions" className="row">
@@ -89,6 +98,9 @@ class TrendAnalysisOptions extends React.Component {
                   handleStartDateChange={this.handleStartDateChange} startDate={startDate}
                 />
                 <SearchSiteSelect />
+              </div>
+              <div className="row">
+                <SelectedSites selectedSites={selectedSites} removeSite={this.removeSite} />
               </div>
             </div>
           </div>
