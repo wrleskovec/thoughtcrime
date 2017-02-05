@@ -91,7 +91,7 @@ class Filter {
                 this.currentTab = null;
               });
           }
-          return undefined;
+          return Promise();
         });
       });
     }
@@ -138,7 +138,7 @@ class Filter {
                 return BL.saveChangesSchedule(schedule);
               });
           }
-          return undefined;
+          return Promise.resolve();
         })
         .then(() => this.handleNewDomainFocus());
     }
@@ -209,7 +209,7 @@ class Filter {
             return reg.test(url);
           });
         }
-        return undefined;
+        return Promise.resolve();
       });
   }
 
