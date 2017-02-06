@@ -21,11 +21,21 @@ function Statistics(state, action) {
         Statistics: { startDate: { $set: action.date } }
       });
     case 'STATISTICS_SEARCH_RECORDS': {
+      const { selectedSites } = state.Statistics;
       const results = searchSites(state.sites, action.filter);
       const length = results.length > 5 ? 5 : results.length;
-      const truncatedResults = results.slice(0, length);
+      const filteredResults = results.filter(record => {
+        // make sure searched sites are not duplicates of what is already selected
+        for (let j = 0; j < selectedSites.length; j += 1) {
+          if (selectedSites[j].site === record.site) {
+            return false;
+          }
+        }
+        return true;
+      });
+      const truncatedResults = filteredResults.slice(0, length);
       return update(state, {
-        Statistics: { searchedResults: { $set: truncatedResults } }
+        Statistics: { searchResults: { $set: truncatedResults } }
       });
     }
     default:

@@ -5,24 +5,38 @@ export default class SearchSiteSelect extends React.Component {
   constructor(props) {
     super(props);
     this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.onSelectSite = this.onSelectSite.bind(this);
-    this.onChange = _.debounce(this.onChange.bind(this), 100);
+    this.onKeyUp = _.debounce(this.onKeyUp.bind(this), 100);
   }
-  onFocus() {
-    console.log('focus was called');
-    document.querySelector('.list-group').style.display = 'block';
+  onFocus(e) {
+    if (e.target.value.trim() !== '') {
+      const { listGroup } = this.refs;
+      listGroup.style.display = 'block';
+    }
   }
-  onChange(e) {
+  onBlur() {
+    setTimeout(() => {
+      const { listGroup } = this.refs;
+      listGroup.style.display = 'none';
+    }, 100);
+  }
+  onKeyUp() {
     const { handleOnChange } = this.props;
-    const value = e.target.value;
-    handleOnChange(value);
+    const { searchField, listGroup } = this.refs;
+    const value = searchField.value.trim();
+    if (value) {
+      listGroup.style.display = 'block';
+      handleOnChange(value);
+    }
   }
   onSelectSite(e) {
-    const { target } = e;
-    console.log(target.getBoundingClientRect());
+    const { handleAddSite } = this.props;
+    const siteName = e.target.innerHTML.trim();
+    handleAddSite(siteName);
   }
   render() {
-    const sites = ['google.com', 'washingtonpost.com', 'twitter.com'];
+    const { searchResults } = this.props;
     return (
       <div className="col-md-6">
         <div className="dropdown-search">
@@ -30,12 +44,13 @@ export default class SearchSiteSelect extends React.Component {
           <div id="siteSearchDropDown" className="form-group">
             <input
               type="text" className="form-control" onFocus={this.onFocus}
+              onKeyUp={this.onKeyUp} onBlur={this.onBlur} ref="searchField"
             />
           </div>
-          <ul className="list-group">
-            {sites.map(site => (
+          <ul className="list-group" ref="listGroup">
+            {searchResults.map(site => (
               <li className="list-group-item">
-                <a onClick={this.onSelectSite} href="#">{site}</a>
+                <a onClick={this.onSelectSite}>{site.site}</a>
               </li>
             ))}
           </ul>

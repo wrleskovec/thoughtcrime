@@ -13,14 +13,19 @@ class TrendAnalysisOptions extends React.Component {
     this.state = {
       error: ''
     };
+    this.handleAddSite = this.handleAddSite.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
     this.removeSite = this.removeSite.bind(this);
   }
   componentWillMount() {
-    const { sites, fetchSites } = this.props;
+    const { sites, fetchSites, n, updateSelectedSites } = this.props;
     if (!sites || !sites[0]) {
       fetchSites();
+    } else {
+      const truncatedSites = this.filterChartData(this.sortProps(sites), n);
+      updateSelectedSites(truncatedSites);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -58,18 +63,19 @@ class TrendAnalysisOptions extends React.Component {
     updateSelectedSites(newSelectedSites);
   }
   handleAddSite(selectedSite) {
-    const { sites, n, selectedSites, updateSelectedSites } = this.props;
+    const { n, selectedSites, updateSelectedSites, searchResults } = this.props;
     if (selectedSites.length < n) {
-      if (sites.find(site => site === selectedSite)) {
-        const newSelectedSites = selectedSites.slice();
-        newSelectedSites.push(selectedSite);
-        updateSelectedSites(newSelectedSites);
-      } else {
-        this.setState({ error: 'Not a valid site' });
-      }
+      const newSelectedSites = selectedSites.slice();
+      const record = searchResults.find(site => site.site === selectedSite);
+      newSelectedSites.push(record);
+      updateSelectedSites(newSelectedSites);
     } else {
       this.setState({ error: `Max ${n} Sites` });
     }
+  }
+  handleOnChange(value) {
+    const { statisticsSearchRecords } = this.props;
+    statisticsSearchRecords(value);
   }
   handleStartDateChange(date) {
     const { setStartDate } = this.props;
@@ -80,7 +86,7 @@ class TrendAnalysisOptions extends React.Component {
     setEndDate(date);
   }
   render() {
-    const { startDate, endDate, selectedSites } = this.props;
+    const { startDate, endDate, selectedSites, searchResults } = this.props;
     console.log(this.props);
     return (
       <div id="TrendAnalysisOptions" className="row">
@@ -97,7 +103,10 @@ class TrendAnalysisOptions extends React.Component {
                   handleEndDateChange={this.handleEndDateChange} endDate={endDate}
                   handleStartDateChange={this.handleStartDateChange} startDate={startDate}
                 />
-                <SearchSiteSelect />
+                <SearchSiteSelect
+                  handleOnChange={this.handleOnChange} searchResults={searchResults}
+                  handleAddSite={this.handleAddSite}
+                />
               </div>
               <div className="row">
                 <SelectedSites selectedSites={selectedSites} removeSite={this.removeSite} />
