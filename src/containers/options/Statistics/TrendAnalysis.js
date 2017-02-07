@@ -1,5 +1,6 @@
 import React from 'react';
 import TrendAnalysisOptions from '~/components/TrendAnalysis/TrendAnalysisOptions';
+import TrendAnalysisChart from '~/components/TrendAnalysis/TrendAnalysisChart';
 
 export default class TrendAnalysis extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class TrendAnalysis extends React.Component {
                 </h3>
               </div>
               <div className="panel-body">
+                <TrendAnalysisChart />
               </div>
             </div>
           </div>

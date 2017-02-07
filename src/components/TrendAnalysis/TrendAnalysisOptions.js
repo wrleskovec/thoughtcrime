@@ -24,7 +24,7 @@ class TrendAnalysisOptions extends React.Component {
     if (!sites || !sites[0]) {
       fetchSites();
     } else {
-      const truncatedSites = this.filterChartData(this.sortProps(sites), n);
+      const truncatedSites = this.filterChartData(this.sortProps(sites), n).map(site => site.site);
       updateSelectedSites(truncatedSites);
     }
   }
@@ -33,7 +33,8 @@ class TrendAnalysisOptions extends React.Component {
     const { n, updateSelectedSites } = this.props;
     if (sites && sites[0]) {
       if (!this.props.sites || !this.props.sites[0]) {
-        const truncatedSites = this.filterChartData(this.sortProps(sites), n);
+        const truncatedSites = this.filterChartData(this.sortProps(sites), n)
+          .map(site => site.site);
         updateSelectedSites(truncatedSites);
       }
     }
@@ -59,14 +60,14 @@ class TrendAnalysisOptions extends React.Component {
   }
   removeSite(site) {
     const { selectedSites, updateSelectedSites } = this.props;
-    const newSelectedSites = selectedSites.filter(record => record.site !== site);
+    const newSelectedSites = selectedSites.filter(record => record !== site);
     updateSelectedSites(newSelectedSites);
   }
   handleAddSite(selectedSite) {
     const { n, selectedSites, updateSelectedSites, searchResults } = this.props;
     if (selectedSites.length < n) {
       const newSelectedSites = selectedSites.slice();
-      const record = searchResults.find(site => site.site === selectedSite);
+      const record = searchResults.find(site => site === selectedSite);
       newSelectedSites.push(record);
       updateSelectedSites(newSelectedSites);
     } else {

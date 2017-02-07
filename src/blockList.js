@@ -271,6 +271,23 @@ class BlockList {
     return this.dailyRecord.sites;
   }
 
+  fetchTrendData(startDate, endDate, selectedSites) {
+    const dayQueries = [];
+    const numOfDays = endDate.diff(startDate, 'days');
+    for (let j = 0; j < numOfDays; j += 1) {
+      dayQueries.push(
+        this.idb.dailyRecords.get(startDate.add(j, 'days').format('DD-MM-YYYY'))
+      );
+    }
+    return Promise.all(dayQueries).then(dayResults => {
+      const filteredDays = dayResults.filter(result => result !== undefined);
+      return filteredDays.map(day => ({
+        day: day.day,
+        sites: day.sites.filter(site => selectedSites.indexOf(site.site) > -1)
+      }));
+    });
+  }
+
 }
 
 export default new BlockList();

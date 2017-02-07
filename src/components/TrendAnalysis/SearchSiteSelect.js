@@ -51,7 +51,7 @@ export default class SearchSiteSelect extends React.Component {
           <ul className="list-group" ref="listGroup">
             {searchResults.map(site => (
               <li className="list-group-item">
-                <a onClick={this.onSelectSite}>{site.site}</a>
+                <a onClick={this.onSelectSite}>{site}</a>
               </li>
             ))}
           </ul>

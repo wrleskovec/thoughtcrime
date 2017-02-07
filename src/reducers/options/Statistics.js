@@ -27,17 +27,21 @@ function Statistics(state, action) {
       const filteredResults = results.filter(record => {
         // make sure searched sites are not duplicates of what is already selected
         for (let j = 0; j < selectedSites.length; j += 1) {
-          if (selectedSites[j].site === record.site) {
+          if (selectedSites[j] === record.site) {
             return false;
           }
         }
         return true;
       });
-      const truncatedResults = filteredResults.slice(0, length);
+      const truncatedResults = filteredResults.slice(0, length).map(result => result.site);
       return update(state, {
         Statistics: { searchResults: { $set: truncatedResults } }
       });
     }
+    case 'FETCH_TREND_DATA_SUCCESSFUL':
+      return update(state, {
+        Statistics: { trendDatasets: { $set: action.trendDatasets } }
+      });
     default:
       return state;
   }

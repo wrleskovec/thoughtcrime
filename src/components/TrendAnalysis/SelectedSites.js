@@ -13,10 +13,10 @@ export default class SelectedSites extends React.Component {
             <div className="checkbox">
               <label>
                 <input
-                  key={`selectedSite-${site.site}`} defaultChecked type="checkbox"
-                  onChange={() => removeSite(site.site)}
+                  key={`selectedSite-${site}`} defaultChecked type="checkbox"
+                  onChange={() => removeSite(site)}
                 />
-                {site.site}
+                {site}
               </label>
             </div>
 

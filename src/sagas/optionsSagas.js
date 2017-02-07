@@ -1,5 +1,4 @@
 import { fork, call, put, select } from 'redux-saga/effects';
-import moment from 'moment';
 import BL from '~/blockList';
 import { openModal } from '~/actions/options';
 import { takeEvery } from 'redux-saga';
@@ -39,6 +38,9 @@ function* fetchDailySiteRecords() {
 function* fetchTrendData() {
   try {
     const { startDate, endDate, selectedSites } = yield select(state => state.Statistics);
+    console.log(`selectedSites in saga: ${selectedSites}`);
+    const trendDatasets = yield BL.fetchTrendData(startDate, endDate, selectedSites);
+    yield put({ type: 'FETCH_TREND_DATA_SUCCESSFUL', trendDatasets });
   } catch (e) {
     console.log(e);
   }
@@ -48,6 +50,9 @@ function* fetchModalRecordSaga() {
 }
 function* fetchDailySiteRecordsSaga() {
   yield takeEvery('FETCH_DAILY_SITE_RECORDS', fetchDailySiteRecords);
+}
+function* fetchTrendDataSaga() {
+  yield takeEvery('FETCH_TREND_DATA', fetchTrendData);
 }
 export default function* optionsSaga() {
   yield fork(fetchSitesSaga);
@@ -59,4 +64,5 @@ export default function* optionsSaga() {
   yield fork(fetchScheduleSaga);
   yield fork(fetchModalRecordSaga);
   yield fork(fetchDailySiteRecordsSaga);
+  yield fork(fetchTrendDataSaga);
 }
