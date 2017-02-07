@@ -101,3 +101,9 @@ export function statisticsSearchRecords(filter) {
     filter
   };
 }
+
+export function fetchTrendData() {
+  return {
+    type: 'FETCH_TREND_DATA'
+  };
+}

@@ -16,6 +16,7 @@ export default class SearchSiteSelect extends React.Component {
     }
   }
   onBlur() {
+    // onBlur has a race condition with onClick so it needs to be delayed
     setTimeout(() => {
       const { listGroup } = this.refs;
       listGroup.style.display = 'none';

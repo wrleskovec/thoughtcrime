@@ -64,7 +64,8 @@ export default function rootReducer(state = {
     startDate: moment(Date.now() - 7 * 24 * 3600 * 1000),
     endDate: moment(),
     searchResults: [],
-    selectedSites: []
+    selectedSites: [],
+    trendDatasets: []
   }
 }, action) {
   let newState = state;

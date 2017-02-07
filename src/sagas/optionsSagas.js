@@ -1,4 +1,5 @@
 import { fork, call, put, select } from 'redux-saga/effects';
+import moment from 'moment';
 import BL from '~/blockList';
 import { openModal } from '~/actions/options';
 import { takeEvery } from 'redux-saga';
@@ -31,6 +32,13 @@ function* fetchDailySiteRecords() {
       });
     }
     yield put({ type: 'FETCH_DAILY_SITE_RECORDS_SUCCESS', dailySiteRecords });
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* fetchTrendData() {
+  try {
+    const { startDate, endDate, selectedSites } = yield select(state => state.Statistics);
   } catch (e) {
     console.log(e);
   }
