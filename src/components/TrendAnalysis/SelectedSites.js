@@ -8,7 +8,7 @@ export default class SelectedSites extends React.Component {
     const { selectedSites, removeSite } = this.props;
     return (
       <div className="col-md-6">
-        <div className="input-group">
+        <div className="input-group selected-sites">
           {selectedSites.map(site => (
             <div className="checkbox">
               <label>

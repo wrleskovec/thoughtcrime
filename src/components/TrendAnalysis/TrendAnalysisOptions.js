@@ -31,6 +31,7 @@ class TrendAnalysisOptions extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { sites } = nextProps;
     const { n, updateSelectedSites } = this.props;
+    this.setState({ error: '' });
     if (sites && sites[0]) {
       if (!this.props.sites || !this.props.sites[0]) {
         const truncatedSites = this.filterChartData(this.sortProps(sites), n)
@@ -88,7 +89,8 @@ class TrendAnalysisOptions extends React.Component {
   }
   render() {
     const { startDate, endDate, selectedSites, searchResults } = this.props;
-    console.log(this.props);
+    const { error } = this.state;
+    const showError = error ? 'block' : 'none';
     return (
       <div id="TrendAnalysisOptions" className="row">
         <div className="col-md-10">
@@ -111,6 +113,13 @@ class TrendAnalysisOptions extends React.Component {
               </div>
               <div className="row">
                 <SelectedSites selectedSites={selectedSites} removeSite={this.removeSite} />
+                <div className="col-md-4">
+                  <div className="alert alert-danger" role="alert" style={{ display: showError }}>
+                    <span className="glyphicon glyphicon-exclamation-sign"></span>
+                    <span className="sr-only">Error:</span>
+                    {error}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
