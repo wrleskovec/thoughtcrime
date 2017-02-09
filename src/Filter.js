@@ -91,7 +91,7 @@ class Filter {
                 this.currentTab = null;
               });
           }
-          return Promise();
+          return Promise.resolve();
         });
       });
     }
@@ -142,7 +142,7 @@ class Filter {
         })
         .then(() => this.handleNewDomainFocus());
     }
-    return this.handleNewDomainFocus();
+    return Promise.resolve().then(() => this.handleNewDomainFocus());
   }
 
   loadFilteredPage(tabId, url) {

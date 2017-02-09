@@ -14,7 +14,6 @@ class TrendAnalysisChart extends React.Component {
     } else {
       if (selectedSites && selectedSites[0]) {
         fetchTrendData();
-        console.log('FUCKING');
       }
     }
   }
@@ -25,13 +24,39 @@ class TrendAnalysisChart extends React.Component {
     const diffEnd = !_.isEqual(nextProps.endDate, this.props.endDate);
     if (diffSelected || diffStart || diffEnd) {
       fetchTrendData();
-      console.log('FUCKING IT UP');
     }
   }
   createChart() {
     const { trendDatasets } = this.props;
-    console.log('chart rendered');
-    console.log(trendDatasets);
+  }
+  adaptDataSets(datasets, selectedSites) {
+    const labels = datasets.map(day => day.day);
+    const backgroundColor = [
+      '#1b9e77',
+      '#d95f02',
+      '#7570b3',
+      '#e7298a',
+      '#66a61e',
+      '#e6ab02',
+      '#a6761d',
+      '#666666'
+    ];
+    const hoverBackgroundColor = [
+      '#3bdead',
+      '#fd9444',
+      '#b5b2d7',
+      '#f183bc',
+      '#99de4a',
+      '#fdcf4e',
+      '#dfaa49',
+      '#999'
+    ];
+    return {
+      labels,
+      datasets: datasets.map((day, index) => {
+        // label: selectedSites[index]
+      })
+    };
   }
   render() {
     return (
