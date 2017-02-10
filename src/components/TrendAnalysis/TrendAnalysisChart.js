@@ -28,6 +28,7 @@ class TrendAnalysisChart extends React.Component {
   }
   createChart() {
     const { trendDatasets } = this.props;
+    console.log(trendDatasets);
   }
   adaptDataSets(datasets, selectedSites) {
     const labels = datasets.map(day => day.day);
@@ -51,12 +52,6 @@ class TrendAnalysisChart extends React.Component {
       '#dfaa49',
       '#999'
     ];
-    return {
-      labels,
-      datasets: datasets.map((day, index) => {
-        // label: selectedSites[index]
-      })
-    };
   }
   render() {
     return (

@@ -276,15 +276,35 @@ class BlockList {
     const numOfDays = endDate.diff(startDate, 'days');
     for (let j = 0; j < numOfDays; j += 1) {
       dayQueries.push(
-        this.idb.dailyRecords.get(startDate.add(j, 'days').format('DD-MM-YYYY'))
+        this.idb.dailyRecords.get(moment(startDate).add(j, 'days').format('DD-MM-YYYY'))
       );
     }
     return Promise.all(dayQueries).then(dayResults => {
-      const filteredDays = dayResults.filter(result => result !== undefined);
-      return filteredDays.map(day => ({
-        day: day.day,
-        sites: day.sites.filter(site => selectedSites.indexOf(site.site) > -1)
-      }));
+      const filteredDays = dayResults.map((day, index) => {
+        if (day) {
+          return day;
+        }
+        const emptySites = [];
+        for (let j = 0; j < selectedSites.length; j += 1) {
+          emptySites.push({
+            site: selectedSites[j],
+            visits: 0,
+            timeSpent: 0
+          });
+        }
+        return {
+          day: startDate.add(index, 'days').format('DD-MM-YYYY'),
+          sites: emptySites
+        };
+      });
+      const datasets = selectedSites.map(label => {
+        const data = filteredDays.map(day => {
+          const foundSite = day.sites.find(record => record.site === label);
+          return foundSite ? foundSite.timeSpent : 0;
+        });
+        return { data, label };
+      });
+      return { days: filteredDays, datasets };
     });
   }
 

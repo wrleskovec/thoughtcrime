@@ -23,6 +23,7 @@ class Filter {
     // Need to bind since I'm calling it externally
     this.webRequestHandler = this.webRequestHandler.bind(this);
     this.messageHandler = this.messageHandler.bind(this);
+    // sometimes the webRequest stacking goes beyond 50ms but it still gets resolved as expected
     this.urlCheck = _.debounce(this.urlCheck.bind(this), 50, { maxWait: 100 });
   }
   init() {

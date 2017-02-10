@@ -16,10 +16,12 @@ function Statistics(state, action) {
       return update(state, {
         Statistics: { endDate: { $set: action.date } }
       });
-    case 'SET_START_DATE':
+    case 'SET_START_DATE': {
+      console.log(action.date);
       return update(state, {
         Statistics: { startDate: { $set: action.date } }
       });
+    }
     case 'STATISTICS_SEARCH_RECORDS': {
       const { selectedSites } = state.Statistics;
       const results = searchSites(state.sites, action.filter);

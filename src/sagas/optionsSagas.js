@@ -39,7 +39,7 @@ function* fetchTrendData() {
   try {
     const { startDate, endDate, selectedSites } = yield select(state => state.Statistics);
     console.log(`selectedSites in saga: ${selectedSites}`);
-    const trendDatasets = yield BL.fetchTrendData(startDate, endDate, selectedSites);
+    const trendDatasets = yield call([BL, BL.fetchTrendData], startDate, endDate, selectedSites);
     yield put({ type: 'FETCH_TREND_DATA_SUCCESSFUL', trendDatasets });
   } catch (e) {
     console.log(e);
