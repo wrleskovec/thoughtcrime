@@ -293,7 +293,7 @@ class BlockList {
           });
         }
         return {
-          day: startDate.add(index, 'days').format('DD-MM-YYYY'),
+          day: moment(startDate).add(index, 'days').format('DD-MM-YYYY'),
           sites: emptySites
         };
       });
@@ -304,7 +304,8 @@ class BlockList {
         });
         return { data, label };
       });
-      return { days: filteredDays, datasets };
+      const labels = filteredDays.map(day => day.day);
+      return { labels, datasets };
     });
   }
 
