@@ -12,7 +12,7 @@ class TrendAnalysisChart extends React.Component {
   componentWillMount() {
     const { fetchTrendData, trendDatasets, selectedSites } = this.props;
     if (trendDatasets && trendDatasets[0]) {
-      this.createChart();
+      this.createChart(trendDatasets);
     } else {
       if (selectedSites && selectedSites[0]) {
         fetchTrendData();
@@ -33,6 +33,7 @@ class TrendAnalysisChart extends React.Component {
   }
   createChart(trendDatasets) {
     console.log(trendDatasets);
+    if (this.trendChart) this.trendChart.destroy();
     const ctx = document.getElementById('TrendAnalysisChart');
     this.trendChart = new Chart(ctx, {
       type: 'line',
