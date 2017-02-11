@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchModalRecord, fetchTrendData } from '~/actions/options';
 import _ from 'lodash';
 import Chart from 'chart.js';
+import moment from 'moment';
 
 class TrendAnalysisChart extends React.Component {
   constructor(props) {
@@ -42,8 +43,27 @@ class TrendAnalysisChart extends React.Component {
         maintainAspectRatio: true,
         scales: {
           yAxes: [{
-            stacked: true
+            stacked: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Minutes'
+            }
           }]
+        },
+        onClick: this.handleChartClick,
+        legend: {
+          onClick: this.handleLegendClick
+        },
+        tooltips: {
+          callbacks: {
+            label: ({ datasetIndex, index }, data) => {
+              console.log(data);
+              const mins = data.datasets[datasetIndex].data[index];
+              const site = data.datasets[datasetIndex].label;
+              const timeElapsed = moment.duration(mins, 'minutes').format('hh:mm', { trim: false });
+              return `${timeElapsed} - ${site}`;
+            }
+          }
         }
       }
     });
@@ -72,25 +92,25 @@ class TrendAnalysisChart extends React.Component {
     ];
     const datasets = trendDatasets.datasets.map((set, index) => ({
       label: set.label,
-      fill: false,
+      fill: true,
       lineTension: 0.1,
       backgroundColor: backgroundColor[index],
-      borderColor: 'rgba(75,192,192,1)',
+      borderColor: backgroundColor[index],
       borderCapStyle: 'butt',
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBorderColor: backgroundColor[index],
       pointBackgroundColor: '#fff',
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBackgroundColor: hoverBackgroundColor[index],
+      pointHoverBorderColor: hoverBackgroundColor[index],
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40],
-      spanGaps: false,
+      data: set.data,
+      spanGaps: true,
     }));
     return { labels, datasets };
   }

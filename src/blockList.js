@@ -300,7 +300,7 @@ class BlockList {
       const datasets = selectedSites.map(label => {
         const data = filteredDays.map(day => {
           const foundSite = day.sites.find(record => record.site === label);
-          return foundSite ? foundSite.timeSpent : 0;
+          return foundSite ? Math.round(foundSite.timeSpent / 60) : 0;
         });
         return { data, label };
       });

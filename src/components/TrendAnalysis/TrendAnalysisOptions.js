@@ -65,15 +65,24 @@ class TrendAnalysisOptions extends React.Component {
     updateSelectedSites(newSelectedSites);
   }
   handleAddSite(selectedSite) {
-    const { n, selectedSites, updateSelectedSites, searchResults } = this.props;
-    if (selectedSites.length < n) {
+    const { selectedSites, updateSelectedSites, searchResults } = this.props;
+    if (this.validateSite(selectedSite)) {
       const newSelectedSites = selectedSites.slice();
       const record = searchResults.find(site => site === selectedSite);
       newSelectedSites.push(record);
       updateSelectedSites(newSelectedSites);
-    } else {
-      this.setState({ error: `Max ${n} Sites` });
     }
+  }
+  validateSite(selectedSite) {
+    const { n, selectedSites } = this.props;
+    if (selectedSites.length >= n) {
+      this.setState({ error: `Max ${n} Sites` });
+      return false;
+    } else if (selectedSites.indexOf(selectedSite) > -1) {
+      this.setState({ error: 'Already selected.' });
+      return false;
+    }
+    return true;
   }
   handleOnChange(value) {
     const { statisticsSearchRecords } = this.props;
