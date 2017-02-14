@@ -18,7 +18,7 @@ class BlockList {
   init() {
     return db.open({
       server: 'ThoughtCrime',
-      version: 2,
+      version: 3,
       schema: {
         sites: {
           key: {
@@ -33,8 +33,7 @@ class BlockList {
         },
         settings: {
           key: {
-            keyPath: 'config',
-            autoIncrement: true
+            keyPath: 'config'
           },
           indexes: {
             setting: {},
@@ -88,11 +87,6 @@ class BlockList {
       items: []
     })
     .then(r => r[0]);
-  }
-  initSchedule() {
-    return this.idb.settings.add({
-      config: 'schedule'
-    });
   }
   getRegexPatterns() {
     return this.idb.settings.get('patterns');
@@ -195,9 +189,9 @@ class BlockList {
       .catch(e => { throw e; });
   }
   saveChangesSchedule(schedule) {
-    schedule.setting.currentTime = Math.floor(schedule.setting.currentTime);
     return this.idb.settings.update(schedule)
-    .then(r => r[0]);
+    .then(r => r[0])
+    .catch(e => { console.log(e); });
   }
   getSchedule() {
     return this.idb.settings.get('schedule')
@@ -221,7 +215,7 @@ class BlockList {
     for (let i = 0; i < 7; i += 1) {
       const day = [];
       for (let j = 0; j < 96; j += 1) {
-        day.push({ event: 'Default', color: [215, 12, 85] });
+        day.push({ event: 'Default', color: '#d4d8dd' });
       }
       days.push(day);
     }

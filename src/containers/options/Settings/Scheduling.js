@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import WeeklyScheduler from 'react-week-scheduler';
 import 'react-week-scheduler/react-week-scheduler.css';
 import { saveChangesSchedule, fetchSchedule } from '~/actions/options';
 
-const startingDefault = { event: 'Default', color: [215, 12, 85] };
-const blockingEvent = { event: 'Block All', color: [360, 36, 55] };
-const limitingEvent = { event: 'Accept All', color: [50, 55, 50] };
+const startingDefault = { event: 'Default', color: '#d4d8dd' };
+const blockingEvent = { event: 'Block All', color: '#b66363' };
+const limitingEvent = { event: 'Accept All', color: '#c6ae39' };
 const eventList = [startingDefault, blockingEvent, limitingEvent];
 
 class Scheduling extends React.Component {
@@ -37,14 +38,16 @@ class Scheduling extends React.Component {
   }
   handleSaveChanges(e) {
     const { saveChangesSchedule, schedule } = this.props;
-    const { scheduler, dailyLimit } = this.refs;
-    const newSchedule = scheduler.state.days;
+    const { dailyLimitInput } = this.refs;
+    const dailyLimit = parseInt(dailyLimitInput.value, 10);
     // Adjusting currentTime alotted to this day to account for previous usage
     const oldCurrentTime = schedule.setting.currentTime;
     const oldDailyLimit = schedule.setting.dailyLimit;
     const newCurrentTime = dailyLimit * 60000 - (oldDailyLimit * 60000 - oldCurrentTime);
+    const currentItems = this.scheduler.state.days;
     const newRecord = {
-      items: newSchedule,
+      config: 'schedule',
+      items: currentItems,
       setting: { dailyLimit, currentTime: newCurrentTime }
     };
     saveChangesSchedule(newRecord);
@@ -67,7 +70,7 @@ class Scheduling extends React.Component {
               <div className="col-md-12">
                 <div className="input-group daily-limit">
                   <input
-                    type="text" className="form-control" name="dailyLimit" ref="dailyLimit"
+                    type="text" className="form-control" name="dailyLimit" ref="dailyLimitInput"
                     value={dailyLimit} onChange={this.handleChange}
                   />
                 </div>
@@ -91,7 +94,8 @@ class Scheduling extends React.Component {
             <div className="col-md-12">
               <WeeklyScheduler
                 defaultEvent={startingDefault} selectedEvent={blockingEvent} events={eventList}
-                ref="scheduler" currentSchedule={currentSchedule}
+                currentSchedule={currentSchedule}
+                ref={(scheduler) => { this.scheduler = scheduler; }}
               />
             </div>
           </div>
