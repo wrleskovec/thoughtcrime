@@ -9,6 +9,7 @@ export default class InputBar extends React.Component {
     };
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
     this.toggleACL = this.toggleACL.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
   onSubmitPattern(e) {
     e.preventDefault();
