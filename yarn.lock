@@ -3704,9 +3704,9 @@ react-redux@^4.4.5:
     lodash "^4.2.0"
     loose-envify "^1.1.0"
 
-react-week-scheduler@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/react-week-scheduler/-/react-week-scheduler-0.1.11.tgz#754eff0eb839b08b4ae05cdab4867082173dab23"
+react-week-scheduler@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/react-week-scheduler/-/react-week-scheduler-0.1.12.tgz#8620c97ef4d3667633904a9495cef6e15aab9ce9"
   dependencies:
     color "^1.0.3"
     lodash "^4.17.4"

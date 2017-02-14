@@ -2,6 +2,7 @@ import React from 'react';
 import DatePicker from '~/components/TrendAnalysis/DatePicker';
 import SearchSiteSelect from '~/components/TrendAnalysis/SearchSiteSelect';
 import SelectedSites from '~/components/TrendAnalysis/SelectedSites';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { updateSelectedSites, setEndDate, setStartDate, statisticsSearchRecords }
 from '~/actions/options';
@@ -90,11 +91,27 @@ class TrendAnalysisOptions extends React.Component {
   }
   handleStartDateChange(date) {
     const { setStartDate } = this.props;
-    setStartDate(date);
+    if (this.validateStartDate(date)) {
+      setStartDate(date);
+    } else {
+      this.setState({ error: 'Invalid Start Date' });
+    }
   }
   handleEndDateChange(date) {
     const { setEndDate } = this.props;
-    setEndDate(date);
+    if (this.validateEndDate(date)) {
+      setEndDate(date);
+    } else {
+      this.setState({ error: 'Invalid End Date' });
+    }
+  }
+  validateStartDate(startDate) {
+    const { endDate } = this.props;
+    return startDate.isSameOrBefore(endDate);
+  }
+  validateEndDate(endDate) {
+    const { startDate } = this.props;
+    return endDate.isSameOrBefore(moment()) && endDate.isSameOrAfter(startDate);
   }
   render() {
     const { startDate, endDate, selectedSites, searchResults } = this.props;
