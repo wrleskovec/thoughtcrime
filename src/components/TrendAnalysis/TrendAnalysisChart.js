@@ -28,12 +28,11 @@ class TrendAnalysisChart extends React.Component {
     const diffEnd = !_.isEqual(nextProps.endDate, this.props.endDate);
     if (diffSelected || diffStart || diffEnd) {
       fetchTrendData();
-    } else if (trendDatasets && trendDatasets.datasets) {
+    } else if (trendDatasets && !_.isEqual(this.props.trendDatasets, trendDatasets)) {
       this.createChart(trendDatasets);
     }
   }
   createChart(trendDatasets) {
-    console.log(trendDatasets);
     if (this.trendChart) this.trendChart.destroy();
     const ctx = document.getElementById('TrendAnalysisChart');
     this.trendChart = new Chart(ctx, {
@@ -57,7 +56,6 @@ class TrendAnalysisChart extends React.Component {
         tooltips: {
           callbacks: {
             label: ({ datasetIndex, index }, data) => {
-              console.log(data);
               const mins = data.datasets[datasetIndex].data[index];
               const site = data.datasets[datasetIndex].label;
               const timeElapsed = moment.duration(mins, 'minutes').format('hh:mm', { trim: false });

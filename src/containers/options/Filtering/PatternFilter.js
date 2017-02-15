@@ -3,21 +3,13 @@ import update from 'react/lib/update';
 import { connect } from 'react-redux';
 import ActionRow from '~/components/ActionRow.js';
 import { saveChangesRegex } from '~/actions/options';
-import { DragDropContext } from 'react-dnd';
+import DNDWrapper from '~/helpers/DNDWrapper';
 import _ from 'lodash';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 const style = {
   width: 800
 };
-function HTML5BackendWrap() {
-  if (window.__isReactDndBackendSetUp) {
-    HTML5Backend.teardown();
-  }
-  return HTML5Backend;
-}
 
-@DragDropContext(HTML5BackendWrap())
 class PatternFilter extends React.Component {
   constructor(props) {
     super(props);
@@ -135,7 +127,7 @@ class PatternFilter extends React.Component {
   }
 }
 
-export default connect(
+const PatternFilterConnect = connect(
   state => ({
     patterns: state.patterns
   }),
@@ -143,3 +135,11 @@ export default connect(
     saveChangesRegex: items => dispatch(saveChangesRegex(items))
   })
 )(PatternFilter);
+
+export default function PatternFilterContainer(props) {
+  return (
+    <DNDWrapper>
+      <PatternFilterConnect {...props} />
+    </DNDWrapper>
+  );
+}

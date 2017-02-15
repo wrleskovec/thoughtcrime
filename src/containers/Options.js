@@ -4,6 +4,7 @@ import logo from '../img/thoughtcrime.svg';
 import menuOptions from './options/OptionsMenu';
 import { navigateOptions, saveChangesModal, deleteSite } from '~/actions/options';
 import EditModal from '~/components/EditModal';
+import DNDWrapper from '~/helpers/DNDWrapper';
 
 class OptionsApp extends React.Component {
   constructor(props) {
@@ -24,7 +25,13 @@ class OptionsApp extends React.Component {
     return (
       <div id="OptionsApp">
         <div className="container-fluid">
-          <EditModal site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal} />
+          <div id="EditModalContainer">
+            <DNDWrapper>
+              <EditModal
+                site={modalObj} deleteSite={deleteSite} saveChangesModal={saveChangesModal}
+              />
+            </DNDWrapper>
+          </div>
           <div className="row">
             <div className="col-md-2">
               <img

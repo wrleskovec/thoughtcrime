@@ -1,15 +1,13 @@
 import React from 'react';
 import update from 'react/lib/update';
 import ActionRow from './ActionRow.js';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash';
 
 const style = {
   width: 550
 };
 
-@DragDropContext(HTML5Backend)
+// @DragDropContext(HTML5Backend)
 export default class EditModal extends React.Component {
   constructor(props) {
     super(props);
@@ -25,16 +23,13 @@ export default class EditModal extends React.Component {
       };
     }
     this.moveCard = this.moveCard.bind(this);
-    this.handleAdvRegex = this.handleAdvRegex.bind(this);
+    this.handleAdvRegex = _.debounce(this.handleAdvRegex.bind(this), 500);
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
-  }
-  componentWillMount() {
-    this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
   }
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
