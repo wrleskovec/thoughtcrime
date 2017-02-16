@@ -78,6 +78,10 @@ class BlockList {
           this.schedule = schedule;
         })
         .catch(() => this.initNewSchedule())
+    ))
+    .then(() => (
+      this.getBlockedUrl()
+        .catch(() => this.setBlockedUrl('https://github.com/wrleskovec'))
     ));
   }
   initRegexPatterns() {
@@ -102,7 +106,6 @@ class BlockList {
     return this.idb.sites.get(site)
       .then(result => {
         if (result === undefined) {
-          if (site === 'youtube.com') alert('youtube bug');
           return Promise.reject(`${site}: Record not found`);
         }
         return Promise.resolve(result);
@@ -302,7 +305,23 @@ class BlockList {
       return { labels, datasets };
     });
   }
-
+  setBlockedUrl(url) {
+    console.log(url);
+    return this.idb.settings.update({
+      config: 'blockedUrl',
+      setting: { url },
+      items: null
+    });
+  }
+  getBlockedUrl() {
+    return this.idb.settings.get('blockedUrl')
+      .then(result => {
+        if (result === undefined || result.setting.url === '') {
+          return Promise.reject('Not found');
+        }
+        return result;
+      });
+  }
 }
 
 export default new BlockList();

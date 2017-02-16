@@ -7,7 +7,6 @@ const style = {
   width: 550
 };
 
-// @DragDropContext(HTML5Backend)
 export default class EditModal extends React.Component {
   constructor(props) {
     super(props);

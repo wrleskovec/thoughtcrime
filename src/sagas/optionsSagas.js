@@ -45,6 +45,28 @@ function* fetchTrendData() {
     console.log(e);
   }
 }
+function* getBlockedUrl() {
+  try {
+    const config = yield call([BL, BL.getBlockedUrl]);
+    yield put({ type: 'GET_BLOCKED_URL_SUCCESSFUL', url: config.setting.url });
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* setBlockedUrl(action) {
+  try {
+    yield call([BL, BL.setBlockedUrl], action.url);
+    yield put({ type: 'SET_BLOCKED_URL_SUCCESSFUL', url: action.url });
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getBlockedUrlSaga() {
+  yield takeEvery('GET_BLOCKED_URL', getBlockedUrl);
+}
+function* setBlockedUrlSaga() {
+  yield takeEvery('SET_BLOCKED_URL', setBlockedUrl);
+}
 function* fetchModalRecordSaga() {
   yield takeEvery('FETCH_MODAL_RECORD', fetchModalRecord);
 }
@@ -65,4 +87,6 @@ export default function* optionsSaga() {
   yield fork(fetchModalRecordSaga);
   yield fork(fetchDailySiteRecordsSaga);
   yield fork(fetchTrendDataSaga);
+  yield fork(getBlockedUrlSaga);
+  yield fork(setBlockedUrlSaga);
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import WeeklyScheduler from 'react-week-scheduler';
 import 'react-week-scheduler/react-week-scheduler.css';
 import { saveChangesSchedule, fetchSchedule } from '~/actions/options';

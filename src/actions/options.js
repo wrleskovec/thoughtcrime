@@ -107,3 +107,15 @@ export function fetchTrendData() {
     type: 'FETCH_TREND_DATA'
   };
 }
+
+export function getBlockedUrl() {
+  return {
+    type: 'GET_BLOCKED_URL'
+  };
+}
+export function setBlockedUrl(url) {
+  return {
+    type: 'SET_BLOCKED_URL',
+    url
+  };
+}

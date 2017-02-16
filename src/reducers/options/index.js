@@ -52,6 +52,7 @@ export default function rootReducer(state = {
   dailySites: [],
   patterns: [],
   schedule: undefined,
+  blockedUrl: undefined,
   Filtering: {
     searchedSites: [],
     message: '',
