@@ -322,6 +322,23 @@ class BlockList {
         return result;
       });
   }
+  fetchDailyRecords() {
+    return this.idb.dailyRecords.query()
+      .all()
+      .execute();
+  }
+  fetchAllSettings() {
+    return this.idb.settings.query()
+      .all()
+      .execute();
+  }
+  exportDatabase() {
+    const settings = this.fetchAllSettings();
+    const dailyRecords = this.fetchDailyRecords();
+    const sites = this.fetchSites();
+
+    return Promise.all([sites, dailyRecords, settings]);
+  }
 }
 
 export default new BlockList();
