@@ -12,6 +12,7 @@ class MiscSettings extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
     this.exportDatabase = this.exportDatabase.bind(this);
+    this.importDatabase = this.importDatabase.bind(this);
   }
   componentWillMount() {
     const { getBlockedUrl } = this.props;
@@ -33,6 +34,17 @@ class MiscSettings extends React.Component {
       link.href = `data:text/json;charset=utf-8,${jsonObj}`;
       link.click();
     });
+  }
+  importDatabase() {
+    const jsonFile = this.fileInput.files[0];
+    if (jsonFile) {
+      const f = new FileReader();
+      f.onload = e => {
+        const readJson = JSON.parse(e.srcElement.result);
+        console.log(readJson);
+      };
+      f.readAsText(jsonFile);
+    }
   }
   handleSaveChanges() {
     const { setBlockedUrl } = this.props;
@@ -66,7 +78,7 @@ class MiscSettings extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <button
-                  type="button" className="btn btn-primary pull-left"
+                  type="button" className="btn btn-primary pull-right"
                   onClick={this.handleSaveChanges}
                 >
                   Save Changes
@@ -98,6 +110,13 @@ class MiscSettings extends React.Component {
                 >
                   Export Data
                 </button>
+                <label className="btn btn-danger pull-left">
+                  Import Data
+                  <input
+                    type="file" style={{ display: 'none' }} onChange={this.importDatabase}
+                    ref={(fileInput) => { this.fileInput = fileInput; }} accept=".json"
+                  />
+                </label>
               </div>
             </div>
           </div>

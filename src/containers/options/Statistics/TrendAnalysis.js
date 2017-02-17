@@ -16,7 +16,7 @@ export default class TrendAnalysis extends React.Component {
             <div className="panel panel-default">
               <div className="panel-heading">
                 <h3 className="panel-title">
-                  Time Spent Today
+                  Time Spent
                 </h3>
               </div>
               <div className="panel-body">
