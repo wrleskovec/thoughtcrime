@@ -11,14 +11,12 @@ import '~/css/common.styl';
 import '~/css/options.styl';
 import 'bootstrap/dist/js/bootstrap.js';
 import BL from './blockList.js';
-import { fetchDailySites, fetchPatterns } from './actions/options';
 
 BL.init().then(() => {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(reducer, applyMiddleware(sagaMiddleware));
   sagaMiddleware.run(optionsSagas);
-  store.dispatch(fetchDailySites());
-  store.dispatch(fetchPatterns());
+
   render(
     <Provider store={store}>
       <OptionsApp />

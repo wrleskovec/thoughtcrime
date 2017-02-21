@@ -5,13 +5,17 @@ import InputBar from '~/components/InputBar.js';
 import DailyPieChart from '~/components/DailyPieChart';
 
 import { addFilter } from '~/actions/common.js';
-import { fetchModalRecord } from '~/actions/options';
+import { fetchModalRecord, fetchDailySites } from '~/actions/options';
 
 class Dash extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  componentWillMount() {
+    const { fetchDailySites } = this.props;
+    fetchDailySites();
+  }
   render() {
     const { addFilter, dailySites, fetchModalRecord } = this.props;
     return (
@@ -61,7 +65,8 @@ export default connect(
   dispatch => (
     {
       fetchModalRecord: site => dispatch(fetchModalRecord(site)),
-      addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type))
+      addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type)),
+      fetchDailySites: () => dispatch(fetchDailySites())
     }
   )
 )(Dash);

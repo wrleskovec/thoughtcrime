@@ -2,7 +2,7 @@ import React from 'react';
 import update from 'react/lib/update';
 import { connect } from 'react-redux';
 import ActionRow from '~/components/ActionRow.js';
-import { saveChangesRegex } from '~/actions/options';
+import { saveChangesRegex, fetchPatterns } from '~/actions/options';
 import DNDWrapper from '~/helpers/DNDWrapper';
 import _ from 'lodash';
 
@@ -17,14 +17,18 @@ class PatternFilter extends React.Component {
       cards: props.patterns || []
     };
     this.moveCard = this.moveCard.bind(this);
-    this.handleAdvRegex = this.handleAdvRegex.bind(this);
+    this.handleAdvRegex = _.debounce(this.handleAdvRegex.bind(this), 500);
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleAdvDelete = this.handleAdvDelete.bind(this);
     this.handleAdvSelect = this.handleAdvSelect.bind(this);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
   }
   componentWillMount() {
-    this.handleAdvRegex = _.debounce(this.handleAdvRegex, 500);
+    const { fetchPatterns } = this.props;
+    fetchPatterns();
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ cards: nextProps.patterns });
   }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -132,7 +136,8 @@ const PatternFilterConnect = connect(
     patterns: state.patterns
   }),
   dispatch => ({
-    saveChangesRegex: items => dispatch(saveChangesRegex(items))
+    saveChangesRegex: items => dispatch(saveChangesRegex(items)),
+    fetchPatterns: () => dispatch(fetchPatterns())
   })
 )(PatternFilter);
 

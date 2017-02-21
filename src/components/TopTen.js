@@ -12,6 +12,11 @@ export default class SiteTable extends React.Component {
       sites: this.sortProps(props.sites, 'timeSpent', 1)
     };
   }
+  componentWillReceiveProps(nextProps) {
+    const { order, sortBy } = this.state;
+    const { sites } = nextProps;
+    this.setState({ sites: this.sortProps(sites, sortBy, order) });
+  }
   onHeaderClick(column) {
     const order = (column === this.state.sortBy) ? -this.state.order : 1;
     return () => {

@@ -105,7 +105,7 @@ class MiscSettings extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <button
-                  type="button" className="btn btn-success pull-center"
+                  type="button" className="btn btn-success pull-left"
                   onClick={this.exportDatabase}
                 >
                   Export Data

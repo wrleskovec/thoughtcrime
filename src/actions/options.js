@@ -119,3 +119,10 @@ export function setBlockedUrl(url) {
     url
   };
 }
+
+export function importDatabase(db) {
+  return {
+    type: 'IMPORT_DATABASE',
+    db
+  };
+}
