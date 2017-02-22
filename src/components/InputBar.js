@@ -1,11 +1,13 @@
 import React from 'react';
+import wurl from 'wurl';
 
 export default class InputBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       type: 'Domain',
-      action: 'limit'
+      action: 'limit',
+      error: ''
     };
     this.onSubmitPattern = this.onSubmitPattern.bind(this);
     this.toggleACL = this.toggleACL.bind(this);
@@ -15,8 +17,14 @@ export default class InputBar extends React.Component {
     e.preventDefault();
     const { patternInput, select } = this.refs;
     const { type } = this.state;
-    this.props.addFilter(patternInput.value.trim(), select.value, type);
-    this.refs.patternInput.value = '';
+    const value = patternInput.value.trim();
+    if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/.test(value)) {
+      this.props.addFilter(value, select.value, type);
+      this.refs.patternInput.value = '';
+      this.setState({ error: '' });
+    } else {
+      this.setState({ error: 'Invalid Domain. Format: youtube.com' });
+    }
   }
   handleSelect(e) {
     const selected = e.target.value;
@@ -30,9 +38,10 @@ export default class InputBar extends React.Component {
     };
   }
   render() {
-    const { type, action } = this.state;
+    const { type, action, error } = this.state;
     const domainBtn = `btn ${(type === 'Domain') ? 'btn-primary' : 'btn-default'}`;
     const patternBtn = `btn ${(type === 'Pattern') ? 'btn-primary' : 'btn-default'}`;
+    const showError = error ? 'block' : 'none';
     return (
       <div id="InputBar">
         <form onSubmit={this.onSubmitPattern}>
@@ -60,6 +69,11 @@ export default class InputBar extends React.Component {
           </div>
           <input type="submit" className="btn btn-default pull-right" value="Add" />
         </form>
+        <div className="alert alert-danger" role="alert" style={{ display: showError }}>
+          <span className="glyphicon glyphicon-exclamation-sign"></span>
+          <span className="sr-only">Error:</span>
+          {error}
+        </div>
       </div>
     );
   }
