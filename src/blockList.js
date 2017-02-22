@@ -16,40 +16,7 @@ class BlockList {
   }
 
   init() {
-    return db.open({
-      server: 'ThoughtCrime',
-      version: 3,
-      schema: {
-        sites: {
-          key: {
-            keyPath: 'site'
-          },
-          indexes: {
-            action: {},
-            visits: {},
-            timeSpent: {},
-            advAction: []
-          }
-        },
-        settings: {
-          key: {
-            keyPath: 'config'
-          },
-          indexes: {
-            setting: {},
-            items: []
-          },
-        },
-        dailyRecords: {
-          key: {
-            keyPath: 'day'
-          },
-          indexes: {
-            sites: []
-          }
-        }
-      }
-    })
+    return this.dbCreate()
     .then(d => {
       this.idb = d;
       this.date = moment().format('DD-MM-YYYY');
@@ -83,6 +50,42 @@ class BlockList {
       this.getBlockedUrl()
         .catch(() => this.setBlockedUrl('https://github.com/wrleskovec'))
     ));
+  }
+  dbCreate() {
+    return db.open({
+      server: 'ThoughtCrime',
+      version: 3,
+      schema: {
+        sites: {
+          key: {
+            keyPath: 'site'
+          },
+          indexes: {
+            action: {},
+            visits: {},
+            timeSpent: {},
+            advAction: []
+          }
+        },
+        settings: {
+          key: {
+            keyPath: 'config'
+          },
+          indexes: {
+            setting: {},
+            items: []
+          },
+        },
+        dailyRecords: {
+          key: {
+            keyPath: 'day'
+          },
+          indexes: {
+            sites: []
+          }
+        }
+      }
+    });
   }
   initRegexPatterns() {
     return this.idb.settings.add({
@@ -338,6 +341,15 @@ class BlockList {
     const sites = this.fetchSites();
 
     return Promise.all([sites, dailyRecords, settings]);
+  }
+  importDatabase(newDb) {
+    return this.idb.sites.clear()
+      .then(() => this.idb.dailyRecords.clear())
+      .then(() => this.idb.settings.clear())
+      .then(() => this.idb.sites.add(newDb[0]))
+      .then(() => this.idb.dailyRecords.add(newDb[1]))
+      .then(() => this.idb.settings.add(newDb[2]))
+      .catch(e => console.log(e));
   }
 }
 

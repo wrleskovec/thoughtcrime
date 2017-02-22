@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getBlockedUrl, setBlockedUrl } from '~/actions/options';
+import { getBlockedUrl, setBlockedUrl, importDatabase } from '~/actions/options';
 import BL from '~/blockList';
 
 class MiscSettings extends React.Component {
@@ -36,12 +36,14 @@ class MiscSettings extends React.Component {
     });
   }
   importDatabase() {
+    const { importDatabase } = this.props;
     const jsonFile = this.fileInput.files[0];
     if (jsonFile) {
       const f = new FileReader();
       f.onload = e => {
         const readJson = JSON.parse(e.srcElement.result);
         console.log(readJson);
+        importDatabase(readJson);
       };
       f.readAsText(jsonFile);
     }
@@ -95,8 +97,7 @@ class MiscSettings extends React.Component {
           <div className="panel-body">
             <p>
               Here you can import and export ThoughCrime data. When you import previous data you
-              will be overwriting existing data where there are conflicts. So it's similar to a
-               merge.
+              will be overwriting existing data.
             </p>
             <div className="row">
               <div className="col-md-12">
@@ -133,6 +134,7 @@ export default connect(
   }),
   dispatch => ({
     getBlockedUrl: () => dispatch(getBlockedUrl()),
-    setBlockedUrl: url => dispatch(setBlockedUrl(url))
+    setBlockedUrl: url => dispatch(setBlockedUrl(url)),
+    importDatabase: db => dispatch(importDatabase(db))
   })
 )(MiscSettings);

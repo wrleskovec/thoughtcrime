@@ -11,9 +11,7 @@ class TotalStatistics extends React.Component {
   }
   componentWillMount() {
     const { sites, fetchSites } = this.props;
-    if (!sites || !sites[0]) {
-      fetchSites();
-    }
+    fetchSites();
   }
   render() {
     const { fetchModalRecord, sites } = this.props;
