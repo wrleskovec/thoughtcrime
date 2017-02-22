@@ -2,6 +2,7 @@ import { fork, call, put, select } from 'redux-saga/effects';
 import BL from '~/blockList';
 import { openModal } from '~/actions/options';
 import { takeEvery } from 'redux-saga';
+import notify from '~/helpers/notify';
 import { fetchSitesSaga, addFilterSaga, deleteSiteSaga,
 saveChangesModalSaga, saveChangesRegexSaga, fetchScheduleSaga,
 saveChangesScheduleSaga } from './sagasDB.js';
@@ -58,8 +59,13 @@ function* setBlockedUrl(action) {
   yield put({ type: 'SET_BLOCKED_URL_SUCCESSFUL', url: action.url });
 }
 function* importDatabase(action) {
-  yield call([BL, BL.importDatabase], action.db);
-  yield put({ type: 'GET_BLOCKED_URL' });
+  try {
+    yield call([BL, BL.importDatabase], action.db);
+    yield put({ type: 'GET_BLOCKED_URL' });
+    notify('Database successfully imported');
+  } catch (e) {
+    notify(e);
+  }
 }
 function* getBlockedUrlSaga() {
   yield takeEvery('GET_BLOCKED_URL', getBlockedUrl);
