@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import wurl from 'wurl';
-import logo from '../img/tc-32.png';
+import logo from '../img/thoughtcrime.svg';
 import { addFilter } from '../actions/common.js';
 import { getTimer } from '../actions/popup.js';
 import Timer from '../components/Timer.js';
 import InputBar from '../components/InputBar.js';
 const styleHeading = { padding: '0px' };
 const styleTitle = { padding: '10px 15px 10px 15px' };
-const styleLogo = { padding: '3px 15px 4px 5px' };
+const styleLogo = {
+  padding: '5px 5px 4px 5px',
+  height: '32px',
+  width: '32px'
+};
 
 class PopupApp extends React.Component {
   constructor(props) {

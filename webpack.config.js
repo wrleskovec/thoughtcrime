@@ -19,9 +19,14 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery'
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     })
   ],
-  devtool: '#inline-source-map',
+  devtool: '#cheap-module-source-map',
   module: {
     loaders: [
       {
