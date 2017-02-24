@@ -231,7 +231,7 @@ class Filter {
         if (aclMatch) {
           return this.handleAction(site, aclMatch.action, tabId);
         }
-        if (record.action === 'block') {
+        if (record.action === 'block' || record.action === 'limit') {
           return this.handleAction(site, record.action, tabId);
         }
         return this.matchPatterns(url)

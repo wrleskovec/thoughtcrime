@@ -36124,7 +36124,7 @@
 	        if (aclMatch) {
 	          return _this8.handleAction(site, aclMatch.action, tabId);
 	        }
-	        if (record.action === 'block') {
+	        if (record.action === 'block' || record.action === 'limit') {
 	          return _this8.handleAction(site, record.action, tabId);
 	        }
 	        return _this8.matchPatterns(url).then(function (patternMatch) {
