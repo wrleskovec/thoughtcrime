@@ -35940,6 +35940,7 @@
 	        chrome.tabs.query({ active: true }, function (tabs) {
 	          _this3.queue.add(function () {
 	            if (!tabs || !_this3.isValidProtocol(tabs[0].url) && !_this3.isPopup(tabs[0].url) && _this3.currentSite) {
+	              console.log('Blur triggers saveRecords');
 	              return _this3.saveRecords().then(function () {
 	                _this3.startTime = null;
 	                _this3.currentSite = null;
@@ -36031,7 +36032,7 @@
 	    value: function getScheduleEvent(now, schedule) {
 	      var dayOfWeek = now.day();
 	      // moment.js starts with sunday as first day of week
-	      var convertedDay = dayOfWeek === 6 ? 0 : dayOfWeek + 1;
+	      var convertedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 	      var currentHour = now.get('hour');
 	      var currentMinute = now.get('minute');
 	      var currentQuarter = currentHour * 4 + Math.ceil(currentMinute / 15);
@@ -36151,6 +36152,7 @@
 	      if (this.isValidProtocol(url)) {
 	        if (this.currentSite && this.currentSite !== site) {
 	          this.queue.add(function () {
+	            console.log('urlCheck saving records');
 	            return _this9.saveRecords().then(function () {
 	              return _this9.urlMatch(site, url, tabId);
 	            });

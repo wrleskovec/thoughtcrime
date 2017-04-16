@@ -85,6 +85,7 @@ class Filter {
         this.queue.add(() => {
           if (!tabs || !this.isValidProtocol(tabs[0].url) &&
           !this.isPopup(tabs[0].url) && this.currentSite) {
+            console.log('Blur triggers saveRecords');
             return this.saveRecords()
               .then(() => {
                 this.startTime = null;
@@ -152,7 +153,7 @@ class Filter {
   getScheduleEvent(now, schedule) {
     const dayOfWeek = now.day();
     // moment.js starts with sunday as first day of week
-    const convertedDay = (dayOfWeek === 6) ? 0 : dayOfWeek + 1;
+    const convertedDay = (dayOfWeek === 0) ? 6 : dayOfWeek - 1;
     const currentHour = now.get('hour');
     const currentMinute = now.get('minute');
     const currentQuarter = currentHour * 4 + Math.ceil(currentMinute / 15);
@@ -254,8 +255,11 @@ class Filter {
     const site = wurl('domain', url);
     if (this.isValidProtocol(url)) {
       if (this.currentSite && this.currentSite !== site) {
-        this.queue.add(() => this.saveRecords()
-          .then(() => this.urlMatch(site, url, tabId)));
+        this.queue.add(() => {
+          console.log('urlCheck saving records');
+          return this.saveRecords()
+            .then(() => this.urlMatch(site, url, tabId));
+        });
       }
       this.queue.add(() => this.urlMatch(site, url, tabId));
     }
