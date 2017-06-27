@@ -1532,8 +1532,7 @@
 	          action: acl,
 	          advAction: result.advAction
 	        });
-	      }).catch(function (e) {
-	        if (e !== 'Record not found') throw e;
+	      }).catch(function () {
 	        return _this3.idb.sites.add({
 	          site: site,
 	          visits: 0,

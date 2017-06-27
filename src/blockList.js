@@ -179,16 +179,15 @@ class BlockList {
           advAction: result.advAction
         })
       )
-      .catch(e => {
-        if (e !== 'Record not found') throw e;
-        return this.idb.sites.add({
+      .catch(() =>
+        this.idb.sites.add({
           site,
           visits: 0,
           timeSpent: 0,
           action: acl,
           advAction: []
-        });
-      });
+        })
+      );
   }
   saveChangesModal(record) {
     return this.idb.sites.update(record)

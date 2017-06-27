@@ -15,6 +15,7 @@ export default class InputBar extends React.Component {
   }
   onSubmitPattern(e) {
     e.preventDefault();
+    console.log('submitting');
     const { patternInput, select } = this.refs;
     const { type } = this.state;
     const value = patternInput.value.trim();
@@ -28,12 +29,13 @@ export default class InputBar extends React.Component {
   }
   handleSelect(e) {
     const selected = e.target.value;
+    console.log(selected);
     this.setState({
       action: selected
     });
   }
   toggleACL(type) {
-    return e => {
+    return () => {
       this.setState({ type });
     };
   }

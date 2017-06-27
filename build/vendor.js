@@ -25341,8 +25341,7 @@
 	          action: acl,
 	          advAction: result.advAction
 	        });
-	      }).catch(function (e) {
-	        if (e !== 'Record not found') throw e;
+	      }).catch(function () {
 	        return _this3.idb.sites.add({
 	          site: site,
 	          visits: 0,
@@ -42239,6 +42238,7 @@
 	    key: 'onSubmitPattern',
 	    value: function onSubmitPattern(e) {
 	      e.preventDefault();
+	      console.log('submitting');
 	      var _refs = this.refs,
 	          patternInput = _refs.patternInput,
 	          select = _refs.select;
@@ -42257,6 +42257,7 @@
 	    key: 'handleSelect',
 	    value: function handleSelect(e) {
 	      var selected = e.target.value;
+	      console.log(selected);
 	      this.setState({
 	        action: selected
 	      });
@@ -42266,7 +42267,7 @@
 	    value: function toggleACL(type) {
 	      var _this2 = this;
 
-	      return function (e) {
+	      return function () {
 	        _this2.setState({ type: type });
 	      };
 	    }
