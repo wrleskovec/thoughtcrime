@@ -1,5 +1,7 @@
 import ifvisible from 'ifvisible.js';
 
+ifvisible.setIdleDuration(120);
+
 function sendFocus(focus) {
   chrome.runtime.sendMessage({ focus });
 }
@@ -10,3 +12,5 @@ ifvisible.on('focus', () => sendFocus('focus'));
 setTimeout(() => {
   ifvisible.on('blur', () => setTimeout(() => { sendFocus('blur'); }, 55));
 }, 50);
+ifvisible.on('idle', () => sendFocus('blur'));
+ifvisible.on('wakeup', () => sendFocus('focus'));

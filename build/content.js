@@ -53,6 +53,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	_ifvisible2.default.setIdleDuration(120);
+
 	function sendFocus(focus) {
 	  chrome.runtime.sendMessage({ focus: focus });
 	}
@@ -69,6 +71,12 @@
 	    }, 55);
 	  });
 	}, 50);
+	_ifvisible2.default.on('idle', function () {
+	  return sendFocus('blur');
+	});
+	_ifvisible2.default.on('wakeup', function () {
+	  return sendFocus('focus');
+		});
 
 /***/ },
 
