@@ -35968,6 +35968,8 @@
 	        if (_this4.currentSite) {
 	          _this4.saveRecords().then(function () {
 	            return _blockList2.default.dayChange((0, _moment2.default)().format('DD-MM-YYYY'));
+	          }).then(function () {
+	            _this4.newDayTimer = _this4.setNewDayTimer();
 	          });
 	        } else {
 	          _blockList2.default.dayChange((0, _moment2.default)().format('DD-MM-YYYY'));

@@ -108,7 +108,10 @@ class Filter {
     return setTimeout(() => {
       if (this.currentSite) {
         this.saveRecords()
-          .then(() => BL.dayChange(moment().format('DD-MM-YYYY')));
+          .then(() => BL.dayChange(moment().format('DD-MM-YYYY')))
+          .then(() => {
+            this.newDayTimer = this.setNewDayTimer();
+          });
       } else {
         BL.dayChange(moment().format('DD-MM-YYYY'));
       }
