@@ -47,15 +47,20 @@ class Filter {
   }
   messageHandler(request, sender, sendResponse) {
     if (request.focus && this.isValidProtocol(sender.tab.url)) {
+      const senderSite = wurl('domain', sender.tab.url);
       if (request.focus === 'focus') {
+        console.log(`Focus: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+
         this.urlCheck(sender.tab.url, sender.tab.id);
       } else if (request.focus === 'blur') {
-        const senderSite = wurl('domain', sender.tab.url);
-        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentTab}
-         ${this.currentSite} `);
+        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
         if (senderSite && this.currentSite === senderSite) {
           this.handleBlur();
         }
+      } else if (request.focus === 'idle-blur') {
+        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+
+        this.handleIdleBlur();
       }
     }
     if (request.timer === 'popup') {
@@ -97,6 +102,15 @@ class Filter {
         });
       });
     }
+  }
+  handleIdleBlur() {
+    this.queue.add(() => this.saveRecords()
+      .then(() => {
+        this.startTime = null;
+        this.currentSite = null;
+        this.currentTab = null;
+      })
+    );
   }
   handleNewDomainFocus() {
     this.startTime = moment();

@@ -35899,14 +35899,20 @@
 	      var _this2 = this;
 
 	      if (request.focus && this.isValidProtocol(sender.tab.url)) {
+	        var senderSite = (0, _wurl2.default)('domain', sender.tab.url);
 	        if (request.focus === 'focus') {
+	          console.log('Focus: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
+
 	          this.urlCheck(sender.tab.url, sender.tab.id);
 	        } else if (request.focus === 'blur') {
-	          var senderSite = (0, _wurl2.default)('domain', sender.tab.url);
-	          console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentTab + '\n         ' + this.currentSite + ' ');
+	          console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
 	          if (senderSite && this.currentSite === senderSite) {
 	            this.handleBlur();
 	          }
+	        } else if (request.focus === 'idle-blur') {
+	          console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
+
+	          this.handleIdleBlur();
 	        }
 	      }
 	      if (request.timer === 'popup') {
@@ -35952,6 +35958,19 @@
 	      }
 	    }
 	  }, {
+	    key: 'handleIdleBlur',
+	    value: function handleIdleBlur() {
+	      var _this4 = this;
+
+	      this.queue.add(function () {
+	        return _this4.saveRecords().then(function () {
+	          _this4.startTime = null;
+	          _this4.currentSite = null;
+	          _this4.currentTab = null;
+	        });
+	      });
+	    }
+	  }, {
 	    key: 'handleNewDomainFocus',
 	    value: function handleNewDomainFocus() {
 	      this.startTime = (0, _moment2.default)();
@@ -35961,15 +35980,15 @@
 	  }, {
 	    key: 'setNewDayTimer',
 	    value: function setNewDayTimer() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var tomorrow = (0, _moment2.default)().add(1, 'days').startOf('day');
 	      return setTimeout(function () {
-	        if (_this4.currentSite) {
-	          _this4.saveRecords().then(function () {
+	        if (_this5.currentSite) {
+	          _this5.saveRecords().then(function () {
 	            return _blockList2.default.dayChange((0, _moment2.default)().format('DD-MM-YYYY'));
 	          }).then(function () {
-	            _this4.newDayTimer = _this4.setNewDayTimer();
+	            _this5.newDayTimer = _this5.setNewDayTimer();
 	          });
 	        } else {
 	          _blockList2.default.dayChange((0, _moment2.default)().format('DD-MM-YYYY'));
@@ -35996,15 +36015,15 @@
 	  }, {
 	    key: 'saveRecords',
 	    value: function saveRecords() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      if (this.currentSite) {
 	        var _ret = function () {
-	          var timeElapsed = _this5.getDuration((0, _moment2.default)());
+	          var timeElapsed = _this6.getDuration((0, _moment2.default)());
 	          var seconds = Math.round(timeElapsed / 1000);
 	          return {
-	            v: _blockList2.default.reconcileRecords(_this5.currentSite, seconds, 1).then(function () {
-	              if (_this5.limitCD) {
+	            v: _blockList2.default.reconcileRecords(_this6.currentSite, seconds, 1).then(function () {
+	              if (_this6.limitCD) {
 	                return _blockList2.default.getSchedule().then(function (schedule) {
 	                  schedule.setting.currentTime = schedule.setting.currentTime - timeElapsed;
 	                  return _blockList2.default.saveChangesSchedule(schedule);
@@ -36012,7 +36031,7 @@
 	              }
 	              return _promise2.default.resolve();
 	            }).then(function () {
-	              return _this5.handleNewDomainFocus();
+	              return _this6.handleNewDomainFocus();
 	            })
 	          };
 	        }();
@@ -36020,7 +36039,7 @@
 	        if ((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object") return _ret.v;
 	      }
 	      return _promise2.default.resolve().then(function () {
-	        return _this5.handleNewDomainFocus();
+	        return _this6.handleNewDomainFocus();
 	      });
 	    }
 	  }, {
@@ -36042,35 +36061,35 @@
 	  }, {
 	    key: 'handleAction',
 	    value: function handleAction(site, action, tabId) {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      return _blockList2.default.getSchedule().then(function (schedule) {
 	        var now = (0, _moment2.default)();
-	        var event = _this6.getScheduleEvent(now, schedule);
+	        var event = _this7.getScheduleEvent(now, schedule);
 	        switch (event) {
 	          case 'Block All':
 	            {
 	              if (action === 'block') {
-	                _this6.loadFilteredPage(tabId, BLOCKED_PAGE);
+	                _this7.loadFilteredPage(tabId, BLOCKED_PAGE);
 	              } else if (action === 'limit') {
-	                _this6.loadFilteredPage(tabId, BLOCKED_PAGE);
+	                _this7.loadFilteredPage(tabId, BLOCKED_PAGE);
 	              } else {
-	                _this6.handleNewDomainFocus();
+	                _this7.handleNewDomainFocus();
 	              }
 	              break;
 	            }
 	          case 'Accept All':
-	            _this6.handleNewDomainFocus();
+	            _this7.handleNewDomainFocus();
 	            break;
 	          default:
 	            {
 	              if (action === 'block') {
-	                _this6.loadFilteredPage(tabId, BLOCKED_PAGE);
+	                _this7.loadFilteredPage(tabId, BLOCKED_PAGE);
 	              } else if (action === 'limit') {
-	                _this6.handleNewDomainFocus();
-	                _this6.setLimitCD(tabId, schedule);
+	                _this7.handleNewDomainFocus();
+	                _this7.setLimitCD(tabId, schedule);
 	              } else {
-	                _this6.handleNewDomainFocus();
+	                _this7.handleNewDomainFocus();
 	              }
 	              break;
 	            }
@@ -36080,12 +36099,12 @@
 	  }, {
 	    key: 'setLimitCD',
 	    value: function setLimitCD(tabId, schedule) {
-	      var _this7 = this;
+	      var _this8 = this;
 
 	      var currentTime = schedule.setting.currentTime;
 	      if (currentTime > 0) {
 	        this.limitCD = setTimeout(function () {
-	          _this7.loadFilteredPage(tabId, BLOCKED_PAGE);
+	          _this8.loadFilteredPage(tabId, BLOCKED_PAGE);
 	        }, currentTime);
 	      } else {
 	        this.loadFilteredPage(tabId, BLOCKED_PAGE);
@@ -36113,7 +36132,7 @@
 	  }, {
 	    key: 'urlMatch',
 	    value: function urlMatch(site, url, tabId) {
-	      var _this8 = this;
+	      var _this9 = this;
 
 	      this.currentTab = tabId;
 	      this.currentSite = site;
@@ -36124,43 +36143,43 @@
 	          return result;
 	        });
 	        if (aclMatch) {
-	          return _this8.handleAction(site, aclMatch.action, tabId);
+	          return _this9.handleAction(site, aclMatch.action, tabId);
 	        }
 	        if (record.action === 'block' || record.action === 'limit') {
-	          return _this8.handleAction(site, record.action, tabId);
+	          return _this9.handleAction(site, record.action, tabId);
 	        }
-	        return _this8.matchPatterns(url).then(function (patternMatch) {
+	        return _this9.matchPatterns(url).then(function (patternMatch) {
 	          if (patternMatch) {
-	            return _this8.handleAction(site, patternMatch.action, tabId);
+	            return _this9.handleAction(site, patternMatch.action, tabId);
 	          }
-	          return _this8.handleAction(site, record.action, tabId);
+	          return _this9.handleAction(site, record.action, tabId);
 	        });
 	      }).catch(function () {
-	        return _this8.matchPatterns(url).then(function (patternMatch) {
+	        return _this9.matchPatterns(url).then(function (patternMatch) {
 	          if (patternMatch) {
-	            return _this8.handleAction(site, patternMatch.action, tabId);
+	            return _this9.handleAction(site, patternMatch.action, tabId);
 	          }
-	          return _this8.handleNewDomainFocus();
+	          return _this9.handleNewDomainFocus();
 	        });
 	      });
 	    }
 	  }, {
 	    key: 'urlCheck',
 	    value: function urlCheck(url, tabId) {
-	      var _this9 = this;
+	      var _this10 = this;
 
 	      var site = (0, _wurl2.default)('domain', url);
 	      if (this.isValidProtocol(url)) {
 	        if (this.currentSite && this.currentSite !== site) {
 	          this.queue.add(function () {
 	            console.log('urlCheck saving records');
-	            return _this9.saveRecords().then(function () {
-	              return _this9.urlMatch(site, url, tabId);
+	            return _this10.saveRecords().then(function () {
+	              return _this10.urlMatch(site, url, tabId);
 	            });
 	          });
 	        }
 	        this.queue.add(function () {
-	          return _this9.urlMatch(site, url, tabId);
+	          return _this10.urlMatch(site, url, tabId);
 	        });
 	      }
 	    }
