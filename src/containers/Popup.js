@@ -5,7 +5,7 @@ import logo from '../img/thoughtcrime.svg';
 import { addFilter } from '../actions/common.js';
 import { getTimer } from '../actions/popup.js';
 import Timer from '../components/Timer.js';
-import InputBar from '../components/InputBar.js';
+import PopupInputBar from '../components/PopupInputBar.js';
 const styleHeading = { padding: '0px' };
 const styleTitle = { padding: '10px 15px 10px 15px' };
 const styleLogo = {
@@ -18,8 +18,11 @@ class PopupApp extends React.Component {
   constructor(props) {
     super(props);
     this.goToOptions = this.goToOptions.bind(this);
+    this.editDomain = this.editDomain.bind(this);
+    this.handleTypeChange = this.handleTypeChange.bind(this);
     this.state = {
       currentValue: undefined,
+      isDomain: true
     };
   }
   componentWillMount() {
@@ -34,7 +37,19 @@ class PopupApp extends React.Component {
     e.preventDefault();
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
   }
+  editDomain(e) {
+    const { currentValue } = this.state;
+    e.preventDefault();
+  }
+  handleTypeChange(type) {
+    if (type === 'Domain') {
+      this.setState({ isDomain: true });
+    } else {
+      this.setState({ isDomain: false });
+    }
+  }
   render() {
+    console.log('parent render called');
     const { timer } = this.props;
     let timerComponent;
     if (timer) {
@@ -52,12 +67,19 @@ class PopupApp extends React.Component {
         </div>
         <div className="panel-body">
           {this.state.currentValue &&
-            <InputBar
+            <PopupInputBar
               addFilter={this.props.addFilter} currentValue={this.state.currentValue}
+              handleTypeChange={this.handleTypeChange}
             />}
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>
             Options
+          </button>
+          <button
+            type="button" className="btn btn-default pull-right" onClick={this.goToOptions}
+            disabled={!this.state.isDomain}
+          >
+            EditDomain
           </button>
         </div>
       </div>

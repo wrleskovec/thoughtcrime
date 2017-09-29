@@ -2449,7 +2449,173 @@ webpackJsonp([0],[
 
 /***/ },
 /* 446 */,
-/* 447 */,
+/* 447 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+
+	var _jsx2 = __webpack_require__(1);
+
+	var _jsx3 = _interopRequireDefault(_jsx2);
+
+	var _getPrototypeOf = __webpack_require__(428);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(295);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(296);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(432);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(433);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _react = __webpack_require__(58);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _wurl = __webpack_require__(448);
+
+	var _wurl2 = _interopRequireDefault(_wurl);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var InputBar = function (_React$Component) {
+	  (0, _inherits3.default)(InputBar, _React$Component);
+
+	  function InputBar(props) {
+	    (0, _classCallCheck3.default)(this, InputBar);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (InputBar.__proto__ || (0, _getPrototypeOf2.default)(InputBar)).call(this, props));
+
+	    _this.state = {
+	      type: 'Domain',
+	      action: 'limit',
+	      error: ''
+	    };
+	    _this.onSubmitPattern = _this.onSubmitPattern.bind(_this);
+	    _this.toggleACL = _this.toggleACL.bind(_this);
+	    _this.handleSelect = _this.handleSelect.bind(_this);
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(InputBar, [{
+	    key: 'onSubmitPattern',
+	    value: function onSubmitPattern(e) {
+	      e.preventDefault();
+	      console.log('submitting');
+	      var _refs = this.refs,
+	          patternInput = _refs.patternInput,
+	          select = _refs.select;
+	      var type = this.state.type;
+
+	      var value = patternInput.value.trim();
+	      if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/.test(value)) {
+	        this.props.addFilter(value, select.value, type);
+	        this.refs.patternInput.value = '';
+	        this.setState({ error: '' });
+	      } else {
+	        this.setState({ error: 'Invalid Domain. Format: youtube.com' });
+	      }
+	    }
+	  }, {
+	    key: 'handleSelect',
+	    value: function handleSelect(e) {
+	      var selected = e.target.value;
+	      console.log(selected);
+	      this.setState({
+	        action: selected
+	      });
+	    }
+	  }, {
+	    key: 'toggleACL',
+	    value: function toggleACL(type) {
+	      var _this2 = this;
+
+	      return function () {
+	        _this2.setState({ type: type });
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _state = this.state,
+	          type = _state.type,
+	          action = _state.action,
+	          error = _state.error;
+
+	      var domainBtn = 'btn ' + (type === 'Domain' ? 'btn-primary' : 'btn-default');
+	      var patternBtn = 'btn ' + (type === 'Pattern' ? 'btn-primary' : 'btn-default');
+	      var showError = error ? 'block' : 'none';
+	      return (0, _jsx3.default)('div', {
+	        id: 'InputBar'
+	      }, void 0, (0, _jsx3.default)('form', {
+	        onSubmit: this.onSubmitPattern
+	      }, void 0, (0, _jsx3.default)('div', {
+	        className: 'form-group'
+	      }, void 0, _react2.default.createElement('input', {
+	        type: 'text',
+	        className: 'form-control',
+	        name: 'patternInput', ref: 'patternInput', defaultValue: this.props.currentValue || ''
+	      })), (0, _jsx3.default)('div', {
+	        className: 'btn-group',
+	        role: 'group'
+	      }, void 0, (0, _jsx3.default)('button', {
+	        type: 'button',
+	        className: domainBtn,
+	        onClick: this.toggleACL('Domain')
+	      }, void 0, 'Domain'), (0, _jsx3.default)('button', {
+	        type: 'button',
+	        className: patternBtn,
+	        onClick: this.toggleACL('Pattern')
+	      }, void 0, 'Pattern'), _react2.default.createElement(
+	        'select',
+	        {
+	          ref: 'select', value: action, onChange: this.handleSelect, className: 'btn btn-default'
+	        },
+	        (0, _jsx3.default)('option', {
+	          value: 'accept'
+	        }, void 0, 'Accept'),
+	        (0, _jsx3.default)('option', {
+	          value: 'block'
+	        }, void 0, 'Block'),
+	        (0, _jsx3.default)('option', {
+	          value: 'limit'
+	        }, void 0, 'Limit')
+	      )), (0, _jsx3.default)('input', {
+	        type: 'submit',
+	        className: 'btn btn-default pull-right',
+	        value: 'Add'
+	      })), (0, _jsx3.default)('div', {
+	        className: 'alert alert-danger',
+	        role: 'alert',
+	        style: { display: showError }
+	      }, void 0, (0, _jsx3.default)('span', {
+	        className: 'glyphicon glyphicon-exclamation-sign'
+	      }), (0, _jsx3.default)('span', {
+	        className: 'sr-only'
+	      }, void 0, 'Error:'), error));
+	    }
+	  }]);
+	  return InputBar;
+	}(_react2.default.Component);
+
+		exports.default = InputBar;
+
+/***/ },
 /* 448 */,
 /* 449 */
 /***/ function(module, exports, __webpack_require__) {
