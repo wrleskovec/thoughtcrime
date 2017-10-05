@@ -81,6 +81,9 @@ class Filter {
       };
       sendResponse(response);
     }
+    if (request.domain) {
+      console.log('edit domain modal requested');
+    }
     return false;
   }
   // using oop style was a mistake for catching race conditions on this.currentSite property

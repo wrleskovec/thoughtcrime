@@ -3,8 +3,9 @@ export function getTimer() {
     type: 'GET_TIMER'
   };
 }
-export function editDomainModal() {
+export function editDomainModal(domain) {
   return {
-    type: 'EDIT_DOMAIN_MODAL'
+    type: 'EDIT_DOMAIN_MODAL',
+    domain
   };
 }

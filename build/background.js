@@ -50,7 +50,7 @@
 
 	var _blockList2 = _interopRequireDefault(_blockList);
 
-	var _Filter = __webpack_require__(733);
+	var _Filter = __webpack_require__(734);
 
 	var _Filter2 = _interopRequireDefault(_Filter);
 
@@ -35795,7 +35795,8 @@
 /* 730 */,
 /* 731 */,
 /* 732 */,
-/* 733 */
+/* 733 */,
+/* 734 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35830,7 +35831,7 @@
 
 	var _wurl2 = _interopRequireDefault(_wurl);
 
-	var _pQueue = __webpack_require__(734);
+	var _pQueue = __webpack_require__(735);
 
 	var _pQueue2 = _interopRequireDefault(_pQueue);
 
@@ -35931,6 +35932,9 @@
 	          currentLimit: undefined
 	        };
 	        sendResponse(response);
+	      }
+	      if (request.domain) {
+	        console.log('edit domain modal requested');
 	      }
 	      return false;
 	    }
@@ -36190,7 +36194,7 @@
 		exports.default = new Filter();
 
 /***/ },
-/* 734 */
+/* 735 */
 /***/ function(module, exports) {
 
 	'use strict';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import wurl from 'wurl';
 import logo from '../img/thoughtcrime.svg';
 import { addFilter } from '../actions/common.js';
-import { getTimer } from '../actions/popup.js';
+import { getTimer, editDomainModal } from '../actions/popup.js';
 import Timer from '../components/Timer.js';
 import PopupInputBar from '../components/PopupInputBar.js';
 const styleHeading = { padding: '0px' };
@@ -39,7 +39,15 @@ class PopupApp extends React.Component {
   }
   editDomain(e) {
     const { currentValue } = this.state;
+    const { editDomainModal } = this.props;
     e.preventDefault();
+    if (currentValue) {
+      editDomainModal(currentValue);
+    } else {
+      chrome.tabs.getSelected(null, tab => {
+        editDomainModal(wurl('domain', tab.url));
+      });
+    }
   }
   handleTypeChange(type) {
     if (type === 'Domain') {
@@ -76,7 +84,7 @@ class PopupApp extends React.Component {
             Options
           </button>
           <button
-            type="button" className="btn btn-default pull-right" onClick={this.goToOptions}
+            type="button" className="btn btn-default pull-right" onClick={this.editDomain}
             disabled={!this.state.isDomain}
           >
             EditDomain
@@ -97,7 +105,8 @@ export default connect(
   dispatch => (
     {
       addFilter: (filter, action, type) => dispatch(addFilter(filter, action, type)),
-      getTimer: () => dispatch(getTimer())
+      getTimer: () => dispatch(getTimer()),
+      editDomainModal: (domain) => dispatch(editDomainModal(domain))
     }
   )
 )(PopupApp);
