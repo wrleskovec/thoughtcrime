@@ -1,3 +1,4 @@
+
 import moment from 'moment';
 import 'moment-duration-format';
 import wurl from 'wurl';
@@ -15,6 +16,7 @@ class Filter {
     this.currentSite = null;
     this.currentTab = null;
     this.startTime = null;
+    this.currentDomain = null;
     this.newDayTimer = this.setNewDayTimer();
     this.limitCD = undefined;
     // This is to deal with blur async weirdness
@@ -46,44 +48,104 @@ class Filter {
     chrome.tabs.onRemoved.addListener(() => this.handleBlur());
   }
   messageHandler(request, sender, sendResponse) {
-    if (request.focus && this.isValidProtocol(sender.tab.url)) {
-      const senderSite = wurl('domain', sender.tab.url);
-      if (request.focus === 'focus') {
-        console.log(`Focus: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
-
-        this.urlCheck(sender.tab.url, sender.tab.id);
-      } else if (request.focus === 'blur') {
-        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
-        if (senderSite && this.currentSite === senderSite) {
-          this.handleBlur();
+    console.log(request);
+    switch (true) {
+      // Handling focus change messages from content script
+      case (request.hasOwnProperty('focus') && this.isValidProtocol(sender.tab.url)): {
+        const senderSite = wurl('domain', sender.tab.url);
+        switch (request.focus) {
+          case 'focus': {
+            console.log(`Focus: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+            this.urlCheck(sender.tab.url, sender.tab.id);
+            break;
+          }
+          case 'blur': {
+            console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+            if (senderSite && this.currentSite === senderSite) {
+              this.handleBlur();
+            }
+            break;
+          }
+          case 'idle-blur': {
+            console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+            this.handleIdleBlur();
+            break;
+          }
+          default:
+            break;
         }
-      } else if (request.focus === 'idle-blur') {
-        console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
-
-        this.handleIdleBlur();
+        break;
       }
-    }
-    if (request.timer === 'popup') {
-      if (this.limitCD) {
-        BL.getSchedule()
-          .then((schedule) => {
-            const response = {
-              seconds: Math.round(this.getDuration(moment()) / 1000),
-              currentLimit: Math.round(schedule.setting.currentTime / 1000),
-            };
-            sendResponse(response);
-          });
-        return true;
+      // Handle popup timer request
+      case (request.timer === 'popup'): {
+        if (this.limitCD) {
+          BL.getSchedule()
+            .then((schedule) => {
+              const response = {
+                seconds: Math.round(this.getDuration(moment()) / 1000),
+                currentLimit: Math.round(schedule.setting.currentTime / 1000),
+              };
+              sendResponse(response);
+            });
+          return true;
+        }
+        const response = {
+          seconds: Math.round(this.getDuration(moment()) / 1000),
+          currentLimit: undefined,
+        };
+        sendResponse(response);
+        break;
       }
-      const response = {
-        seconds: Math.round(this.getDuration(moment()) / 1000),
-        currentLimit: undefined,
-      };
-      sendResponse(response);
+      // Handle edit domain popup shortcut
+      case (request.hasOwnProperty('domain')): {
+        console.log('edit domain modal requested');
+        console.log(request.domain);
+        this.currentDomain = request.domain;
+        break;
+      }
+      default:
+        break;
     }
-    if (request.domain) {
-      console.log('edit domain modal requested');
-    }
+    // if (request.focus && this.isValidProtocol(sender.tab.url)) {
+    //   const senderSite = wurl('domain', sender.tab.url);
+    //   if (request.focus === 'focus') {
+    //     console.log(`Focus: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+    //
+    //     this.urlCheck(sender.tab.url, sender.tab.id);
+    //   } else if (request.focus === 'blur') {
+    //     console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+    //     if (senderSite && this.currentSite === senderSite) {
+    //       this.handleBlur();
+    //     }
+    //   } else if (request.focus === 'idle-blur') {
+    //     console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+    //
+    //     this.handleIdleBlur();
+    //   }
+    // }
+    // if (request.timer === 'popup') {
+    //   if (this.limitCD) {
+    //     BL.getSchedule()
+    //       .then((schedule) => {
+    //         const response = {
+    //           seconds: Math.round(this.getDuration(moment()) / 1000),
+    //           currentLimit: Math.round(schedule.setting.currentTime / 1000),
+    //         };
+    //         sendResponse(response);
+    //       });
+    //     return true;
+    //   }
+    //   const response = {
+    //     seconds: Math.round(this.getDuration(moment()) / 1000),
+    //     currentLimit: undefined,
+    //   };
+    //   sendResponse(response);
+    // }
+    // if (request.domain) {
+    //   console.log('edit domain modal requested');
+    //   console.log(request.domain);
+    //   this.currentDomain = request.domain;
+    // }
     return false;
   }
   // using oop style was a mistake for catching race conditions on this.currentSite property

@@ -35857,6 +35857,7 @@
 	    this.currentSite = null;
 	    this.currentTab = null;
 	    this.startTime = null;
+	    this.currentDomain = null;
 	    this.newDayTimer = this.setNewDayTimer();
 	    this.limitCD = undefined;
 	    // This is to deal with blur async weirdness
@@ -35899,43 +35900,109 @@
 	    value: function messageHandler(request, sender, sendResponse) {
 	      var _this2 = this;
 
-	      if (request.focus && this.isValidProtocol(sender.tab.url)) {
-	        var senderSite = (0, _wurl2.default)('domain', sender.tab.url);
-	        if (request.focus === 'focus') {
-	          console.log('Focus: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
-
-	          this.urlCheck(sender.tab.url, sender.tab.id);
-	        } else if (request.focus === 'blur') {
-	          console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
-	          if (senderSite && this.currentSite === senderSite) {
-	            this.handleBlur();
+	      console.log(request);
+	      switch (true) {
+	        // Handling focus change messages from content script
+	        case request.hasOwnProperty('focus') && this.isValidProtocol(sender.tab.url):
+	          {
+	            var senderSite = (0, _wurl2.default)('domain', sender.tab.url);
+	            switch (request.focus) {
+	              case 'focus':
+	                {
+	                  console.log('Focus: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
+	                  this.urlCheck(sender.tab.url, sender.tab.id);
+	                  break;
+	                }
+	              case 'blur':
+	                {
+	                  console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
+	                  if (senderSite && this.currentSite === senderSite) {
+	                    this.handleBlur();
+	                  }
+	                  break;
+	                }
+	              case 'idle-blur':
+	                {
+	                  console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
+	                  this.handleIdleBlur();
+	                  break;
+	                }
+	              default:
+	                break;
+	            }
+	            break;
 	          }
-	        } else if (request.focus === 'idle-blur') {
-	          console.log('Blur: ' + sender.tab.id + ' ' + senderSite + ' current: ' + this.currentSite);
-
-	          this.handleIdleBlur();
-	        }
-	      }
-	      if (request.timer === 'popup') {
-	        if (this.limitCD) {
-	          _blockList2.default.getSchedule().then(function (schedule) {
+	        // Handle popup timer request
+	        case request.timer === 'popup':
+	          {
+	            if (this.limitCD) {
+	              _blockList2.default.getSchedule().then(function (schedule) {
+	                var response = {
+	                  seconds: Math.round(_this2.getDuration((0, _moment2.default)()) / 1000),
+	                  currentLimit: Math.round(schedule.setting.currentTime / 1000)
+	                };
+	                sendResponse(response);
+	              });
+	              return true;
+	            }
 	            var response = {
-	              seconds: Math.round(_this2.getDuration((0, _moment2.default)()) / 1000),
-	              currentLimit: Math.round(schedule.setting.currentTime / 1000)
+	              seconds: Math.round(this.getDuration((0, _moment2.default)()) / 1000),
+	              currentLimit: undefined
 	            };
 	            sendResponse(response);
-	          });
-	          return true;
-	        }
-	        var response = {
-	          seconds: Math.round(this.getDuration((0, _moment2.default)()) / 1000),
-	          currentLimit: undefined
-	        };
-	        sendResponse(response);
+	            break;
+	          }
+	        // Handle edit domain popup shortcut
+	        case request.hasOwnProperty('domain'):
+	          {
+	            console.log('edit domain modal requested');
+	            console.log(request.domain);
+	            this.currentDomain = request.domain;
+	            break;
+	          }
+	        default:
+	          break;
 	      }
-	      if (request.domain) {
-	        console.log('edit domain modal requested');
-	      }
+	      // if (request.focus && this.isValidProtocol(sender.tab.url)) {
+	      //   const senderSite = wurl('domain', sender.tab.url);
+	      //   if (request.focus === 'focus') {
+	      //     console.log(`Focus: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+	      //
+	      //     this.urlCheck(sender.tab.url, sender.tab.id);
+	      //   } else if (request.focus === 'blur') {
+	      //     console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+	      //     if (senderSite && this.currentSite === senderSite) {
+	      //       this.handleBlur();
+	      //     }
+	      //   } else if (request.focus === 'idle-blur') {
+	      //     console.log(`Blur: ${sender.tab.id} ${senderSite} current: ${this.currentSite}`);
+	      //
+	      //     this.handleIdleBlur();
+	      //   }
+	      // }
+	      // if (request.timer === 'popup') {
+	      //   if (this.limitCD) {
+	      //     BL.getSchedule()
+	      //       .then((schedule) => {
+	      //         const response = {
+	      //           seconds: Math.round(this.getDuration(moment()) / 1000),
+	      //           currentLimit: Math.round(schedule.setting.currentTime / 1000),
+	      //         };
+	      //         sendResponse(response);
+	      //       });
+	      //     return true;
+	      //   }
+	      //   const response = {
+	      //     seconds: Math.round(this.getDuration(moment()) / 1000),
+	      //     currentLimit: undefined,
+	      //   };
+	      //   sendResponse(response);
+	      // }
+	      // if (request.domain) {
+	      //   console.log('edit domain modal requested');
+	      //   console.log(request.domain);
+	      //   this.currentDomain = request.domain;
+	      // }
 	      return false;
 	    }
 	    // using oop style was a mistake for catching race conditions on this.currentSite property
