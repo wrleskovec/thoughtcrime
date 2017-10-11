@@ -23,7 +23,8 @@ function sendDomainMessage(domain) {
 
 function* editDomain(action) {
   try {
-    yield call(sendDomainMessage, action.domain);
+    const message = yield call(sendDomainMessage, action.domain);
+    console.log(message);
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
   } catch (e) {
     console.error(e);

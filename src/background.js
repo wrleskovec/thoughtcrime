@@ -2,6 +2,8 @@ import BL from './blockList.js';
 import Filter from './Filter.js';
 
 
-BL.init().then(() => {
-  Filter.init();
-});
+BL.init()
+  .then(() => BL.setDomainSetting(''))
+  .then(() => {
+    Filter.init();
+  });

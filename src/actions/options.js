@@ -126,3 +126,9 @@ export function importDatabase(db) {
     db
   };
 }
+
+export function checkDomainPreset() {
+  return {
+    type: 'CHECK_DOMAIN_PRESET'
+  };
+}

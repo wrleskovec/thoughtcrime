@@ -26,10 +26,12 @@ function Filtering(state, action) {
         Filtering: { sortBy: { $set: action.sortBy } }
       });
     }
-    case 'OPEN_MODAL':
+    case 'OPEN_MODAL': {
+      $('#myModal').modal('show');
       return update(state, {
         Filtering: { modalObj: { $set: action.modalObj } }
       });
+    }
     case 'SITE_DELETE_SUCCESSFUL': {
       notify('Record deletion successful');
       const sitesIndex = state.sites.findIndex(site => site.site === action.site);

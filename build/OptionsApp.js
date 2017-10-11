@@ -636,7 +636,7 @@ webpackJsonp([0],[
 /* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -691,9 +691,12 @@ webpackJsonp([0],[
 	        });
 	      }
 	    case 'OPEN_MODAL':
-	      return (0, _update4.default)(state, {
-	        Filtering: { modalObj: { $set: action.modalObj } }
-	      });
+	      {
+	        $('#myModal').modal('show');
+	        return (0, _update4.default)(state, {
+	          Filtering: { modalObj: { $set: action.modalObj } }
+	        });
+	      }
 	    case 'SITE_DELETE_SUCCESSFUL':
 	      {
 	        (0, _notify2.default)('Record deletion successful');
@@ -739,6 +742,7 @@ webpackJsonp([0],[
 	}
 
 	exports.default = Filtering;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
 
 /***/ },
 /* 414 */
@@ -1935,6 +1939,13 @@ webpackJsonp([0],[
 	      };
 	    }
 	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var checkDomainPreset = this.props.checkDomainPreset;
+
+	      checkDomainPreset();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -2027,6 +2038,9 @@ webpackJsonp([0],[
 	    },
 	    deleteSite: function deleteSite(site) {
 	      return dispatch((0, _options.deleteSite)(site));
+	    },
+	    checkDomainPreset: function checkDomainPreset() {
+	      return dispatch((0, _options.checkDomainPreset)());
 	    }
 	  };
 		})(OptionsApp);
@@ -2620,7 +2634,7 @@ webpackJsonp([0],[
 /* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -2787,7 +2801,6 @@ webpackJsonp([0],[
 
 	      var site = legendItem.text;
 	      if (site && site !== 'Other') {
-	        $('#myModal').modal('show');
 	        fetchModalRecord(site);
 	      }
 	    }
@@ -2800,7 +2813,6 @@ webpackJsonp([0],[
 	      if (el && el._model) {
 	        var site = el._model.label;
 	        if (site !== 'Other') {
-	          $('#myModal').modal('show');
 	          fetchModalRecord(site);
 	        }
 	      }
@@ -2817,7 +2829,6 @@ webpackJsonp([0],[
 	}(_react2.default.Component);
 
 		exports.default = DailyPieChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
 
 /***/ },
 /* 450 */,
@@ -14575,6 +14586,7 @@ webpackJsonp([0],[
 	exports.getBlockedUrl = getBlockedUrl;
 	exports.setBlockedUrl = setBlockedUrl;
 	exports.importDatabase = importDatabase;
+	exports.checkDomainPreset = checkDomainPreset;
 	function saveChangesModal(site) {
 	  return {
 	    type: 'SAVE_CHANGES_MODAL',
@@ -14703,6 +14715,12 @@ webpackJsonp([0],[
 	  return {
 	    type: 'IMPORT_DATABASE',
 	    db: db
+	  };
+	}
+
+	function checkDomainPreset() {
+	  return {
+	    type: 'CHECK_DOMAIN_PRESET'
 	  };
 		}
 
@@ -44129,7 +44147,7 @@ webpackJsonp([0],[
 /* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -44294,7 +44312,6 @@ webpackJsonp([0],[
 	      if (el && el._model) {
 	        var site = el._model.label;
 	        if (site !== 'Other') {
-	          $('#myModal').modal('show');
 	          fetchModalRecord(site);
 	        }
 	      }
@@ -44312,13 +44329,12 @@ webpackJsonp([0],[
 	}(_react2.default.Component);
 
 		exports.default = TotalBarChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
 
 /***/ },
 /* 694 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -44489,7 +44505,6 @@ webpackJsonp([0],[
 	      if (el && el._model) {
 	        var site = el._model.label;
 	        if (site !== 'Other') {
-	          $('#myModal').modal('show');
 	          fetchModalRecord(site);
 	        }
 	      }
@@ -44506,7 +44521,6 @@ webpackJsonp([0],[
 	}(_react2.default.Component);
 
 		exports.default = RestrictedBarChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
 
 /***/ },
 /* 695 */
@@ -46074,7 +46088,7 @@ webpackJsonp([0],[
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var _marked = [fetchModalRecord, fetchDailySiteRecords, fetchTrendData, getBlockedUrl, setBlockedUrl, importDatabase, getBlockedUrlSaga, setBlockedUrlSaga, fetchModalRecordSaga, fetchDailySiteRecordsSaga, fetchTrendDataSaga, importDatabaseSaga, optionsSaga].map(_regenerator2.default.mark);
+	var _marked = [fetchModalRecord, fetchDailySiteRecords, fetchTrendData, getBlockedUrl, setBlockedUrl, importDatabase, checkDomainPreset, getBlockedUrlSaga, setBlockedUrlSaga, fetchModalRecordSaga, fetchDailySiteRecordsSaga, fetchTrendDataSaga, importDatabaseSaga, checkDomainPresetSaga, optionsSaga].map(_regenerator2.default.mark);
 
 	function fetchModalRecord(action) {
 	  var record;
@@ -46339,28 +46353,54 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[5], this, [[0, 8]]);
 	}
-	function getBlockedUrlSaga() {
-	  return _regenerator2.default.wrap(function getBlockedUrlSaga$(_context7) {
+	function checkDomainPreset() {
+	  var _ref2, setting;
+
+	  return _regenerator2.default.wrap(function checkDomainPreset$(_context7) {
 	    while (1) {
 	      switch (_context7.prev = _context7.next) {
 	        case 0:
-	          _context7.next = 2;
-	          return (0, _reduxSaga.takeEvery)('GET_BLOCKED_URL', getBlockedUrl);
+	          _context7.prev = 0;
+	          _context7.next = 3;
+	          return (0, _effects.call)([_blockList2.default, _blockList2.default.getDomainSetting]);
 
-	        case 2:
+	        case 3:
+	          _ref2 = _context7.sent;
+	          setting = _ref2.setting;
+
+	          if (!(setting.domain !== '')) {
+	            _context7.next = 9;
+	            break;
+	          }
+
+	          console.log(setting.domain);
+	          _context7.next = 9;
+	          return (0, _effects.put)({ type: 'FETCH_MODAL_RECORD', site: setting.domain });
+
+	        case 9:
+	          _context7.next = 14;
+	          break;
+
+	        case 11:
+	          _context7.prev = 11;
+	          _context7.t0 = _context7['catch'](0);
+
+	          console.log(_context7.t0);
+
+	        case 14:
 	        case 'end':
 	          return _context7.stop();
 	      }
 	    }
-	  }, _marked[6], this);
+	  }, _marked[6], this, [[0, 11]]);
 	}
-	function setBlockedUrlSaga() {
-	  return _regenerator2.default.wrap(function setBlockedUrlSaga$(_context8) {
+	function getBlockedUrlSaga() {
+	  return _regenerator2.default.wrap(function getBlockedUrlSaga$(_context8) {
 	    while (1) {
 	      switch (_context8.prev = _context8.next) {
 	        case 0:
 	          _context8.next = 2;
-	          return (0, _reduxSaga.takeEvery)('SET_BLOCKED_URL', setBlockedUrl);
+	          return (0, _reduxSaga.takeEvery)('GET_BLOCKED_URL', getBlockedUrl);
 
 	        case 2:
 	        case 'end':
@@ -46369,13 +46409,13 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[7], this);
 	}
-	function fetchModalRecordSaga() {
-	  return _regenerator2.default.wrap(function fetchModalRecordSaga$(_context9) {
+	function setBlockedUrlSaga() {
+	  return _regenerator2.default.wrap(function setBlockedUrlSaga$(_context9) {
 	    while (1) {
 	      switch (_context9.prev = _context9.next) {
 	        case 0:
 	          _context9.next = 2;
-	          return (0, _reduxSaga.takeEvery)('FETCH_MODAL_RECORD', fetchModalRecord);
+	          return (0, _reduxSaga.takeEvery)('SET_BLOCKED_URL', setBlockedUrl);
 
 	        case 2:
 	        case 'end':
@@ -46384,13 +46424,13 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[8], this);
 	}
-	function fetchDailySiteRecordsSaga() {
-	  return _regenerator2.default.wrap(function fetchDailySiteRecordsSaga$(_context10) {
+	function fetchModalRecordSaga() {
+	  return _regenerator2.default.wrap(function fetchModalRecordSaga$(_context10) {
 	    while (1) {
 	      switch (_context10.prev = _context10.next) {
 	        case 0:
 	          _context10.next = 2;
-	          return (0, _reduxSaga.takeEvery)('FETCH_DAILY_SITE_RECORDS', fetchDailySiteRecords);
+	          return (0, _reduxSaga.takeEvery)('FETCH_MODAL_RECORD', fetchModalRecord);
 
 	        case 2:
 	        case 'end':
@@ -46399,13 +46439,13 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[9], this);
 	}
-	function fetchTrendDataSaga() {
-	  return _regenerator2.default.wrap(function fetchTrendDataSaga$(_context11) {
+	function fetchDailySiteRecordsSaga() {
+	  return _regenerator2.default.wrap(function fetchDailySiteRecordsSaga$(_context11) {
 	    while (1) {
 	      switch (_context11.prev = _context11.next) {
 	        case 0:
 	          _context11.next = 2;
-	          return (0, _reduxSaga.takeEvery)('FETCH_TREND_DATA', fetchTrendData);
+	          return (0, _reduxSaga.takeEvery)('FETCH_DAILY_SITE_RECORDS', fetchDailySiteRecords);
 
 	        case 2:
 	        case 'end':
@@ -46414,13 +46454,13 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[10], this);
 	}
-	function importDatabaseSaga() {
-	  return _regenerator2.default.wrap(function importDatabaseSaga$(_context12) {
+	function fetchTrendDataSaga() {
+	  return _regenerator2.default.wrap(function fetchTrendDataSaga$(_context12) {
 	    while (1) {
 	      switch (_context12.prev = _context12.next) {
 	        case 0:
 	          _context12.next = 2;
-	          return (0, _reduxSaga.takeEvery)('IMPORT_DATABASE', importDatabase);
+	          return (0, _reduxSaga.takeEvery)('FETCH_TREND_DATA', fetchTrendData);
 
 	        case 2:
 	        case 'end':
@@ -46429,68 +46469,102 @@ webpackJsonp([0],[
 	    }
 	  }, _marked[11], this);
 	}
-	function optionsSaga() {
-	  return _regenerator2.default.wrap(function optionsSaga$(_context13) {
+	function importDatabaseSaga() {
+	  return _regenerator2.default.wrap(function importDatabaseSaga$(_context13) {
 	    while (1) {
 	      switch (_context13.prev = _context13.next) {
 	        case 0:
 	          _context13.next = 2;
-	          return (0, _effects.fork)(_sagasDB.fetchSitesSaga);
+	          return (0, _reduxSaga.takeEvery)('IMPORT_DATABASE', importDatabase);
 
 	        case 2:
-	          _context13.next = 4;
-	          return (0, _effects.fork)(_sagasDB.addFilterSaga);
-
-	        case 4:
-	          _context13.next = 6;
-	          return (0, _effects.fork)(_sagasDB.deleteSiteSaga);
-
-	        case 6:
-	          _context13.next = 8;
-	          return (0, _effects.fork)(_sagasDB.saveChangesModalSaga);
-
-	        case 8:
-	          _context13.next = 10;
-	          return (0, _effects.fork)(_sagasDB.saveChangesRegexSaga);
-
-	        case 10:
-	          _context13.next = 12;
-	          return (0, _effects.fork)(_sagasDB.saveChangesScheduleSaga);
-
-	        case 12:
-	          _context13.next = 14;
-	          return (0, _effects.fork)(_sagasDB.fetchScheduleSaga);
-
-	        case 14:
-	          _context13.next = 16;
-	          return (0, _effects.fork)(fetchModalRecordSaga);
-
-	        case 16:
-	          _context13.next = 18;
-	          return (0, _effects.fork)(fetchDailySiteRecordsSaga);
-
-	        case 18:
-	          _context13.next = 20;
-	          return (0, _effects.fork)(fetchTrendDataSaga);
-
-	        case 20:
-	          _context13.next = 22;
-	          return (0, _effects.fork)(getBlockedUrlSaga);
-
-	        case 22:
-	          _context13.next = 24;
-	          return (0, _effects.fork)(setBlockedUrlSaga);
-
-	        case 24:
-	          _context13.next = 26;
-	          return (0, _effects.fork)(importDatabaseSaga);
-
-	        case 26:
 	        case 'end':
 	          return _context13.stop();
 	      }
 	    }
 	  }, _marked[12], this);
+	}
+	function checkDomainPresetSaga() {
+	  return _regenerator2.default.wrap(function checkDomainPresetSaga$(_context14) {
+	    while (1) {
+	      switch (_context14.prev = _context14.next) {
+	        case 0:
+	          _context14.next = 2;
+	          return (0, _reduxSaga.takeEvery)('CHECK_DOMAIN_PRESET', checkDomainPreset);
+
+	        case 2:
+	        case 'end':
+	          return _context14.stop();
+	      }
+	    }
+	  }, _marked[13], this);
+	}
+	function optionsSaga() {
+	  return _regenerator2.default.wrap(function optionsSaga$(_context15) {
+	    while (1) {
+	      switch (_context15.prev = _context15.next) {
+	        case 0:
+	          _context15.next = 2;
+	          return (0, _effects.fork)(_sagasDB.fetchSitesSaga);
+
+	        case 2:
+	          _context15.next = 4;
+	          return (0, _effects.fork)(_sagasDB.addFilterSaga);
+
+	        case 4:
+	          _context15.next = 6;
+	          return (0, _effects.fork)(_sagasDB.deleteSiteSaga);
+
+	        case 6:
+	          _context15.next = 8;
+	          return (0, _effects.fork)(_sagasDB.saveChangesModalSaga);
+
+	        case 8:
+	          _context15.next = 10;
+	          return (0, _effects.fork)(_sagasDB.saveChangesRegexSaga);
+
+	        case 10:
+	          _context15.next = 12;
+	          return (0, _effects.fork)(_sagasDB.saveChangesScheduleSaga);
+
+	        case 12:
+	          _context15.next = 14;
+	          return (0, _effects.fork)(_sagasDB.fetchScheduleSaga);
+
+	        case 14:
+	          _context15.next = 16;
+	          return (0, _effects.fork)(fetchModalRecordSaga);
+
+	        case 16:
+	          _context15.next = 18;
+	          return (0, _effects.fork)(fetchDailySiteRecordsSaga);
+
+	        case 18:
+	          _context15.next = 20;
+	          return (0, _effects.fork)(fetchTrendDataSaga);
+
+	        case 20:
+	          _context15.next = 22;
+	          return (0, _effects.fork)(getBlockedUrlSaga);
+
+	        case 22:
+	          _context15.next = 24;
+	          return (0, _effects.fork)(setBlockedUrlSaga);
+
+	        case 24:
+	          _context15.next = 26;
+	          return (0, _effects.fork)(importDatabaseSaga);
+
+	        case 26:
+	          _context15.next = 28;
+	          return (0, _effects.fork)(checkDomainPresetSaga);
+
+	        case 28:
+	        case 'end':
+	          return _context15.stop();
+	      }
+	    }
+	  }, _marked[14], this);
 		}
 
 /***/ },

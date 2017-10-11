@@ -640,6 +640,7 @@ webpackJsonp([1],{
 	}
 
 	function editDomain(action) {
+	  var message;
 	  return _regenerator2.default.wrap(function editDomain$(_context) {
 	    while (1) {
 	      switch (_context.prev = _context.next) {
@@ -649,22 +650,25 @@ webpackJsonp([1],{
 	          return (0, _effects.call)(sendDomainMessage, action.domain);
 
 	        case 3:
+	          message = _context.sent;
+
+	          console.log(message);
 	          chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
-	          _context.next = 9;
+	          _context.next = 11;
 	          break;
 
-	        case 6:
-	          _context.prev = 6;
+	        case 8:
+	          _context.prev = 8;
 	          _context.t0 = _context['catch'](0);
 
 	          console.error(_context.t0);
 
-	        case 9:
+	        case 11:
 	        case 'end':
 	          return _context.stop();
 	      }
 	    }
-	  }, _marked[0], this, [[0, 6]]);
+	  }, _marked[0], this, [[0, 8]]);
 	}
 
 	function getTimer() {

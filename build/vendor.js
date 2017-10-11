@@ -25231,6 +25231,20 @@
 	      });
 	    }
 	  }, {
+	    key: 'setDomainSetting',
+	    value: function setDomainSetting(domain) {
+	      return this.idb.settings.update({
+	        config: 'presetDomain',
+	        setting: { domain: domain },
+	        items: []
+	      });
+	    }
+	  }, {
+	    key: 'getDomainSetting',
+	    value: function getDomainSetting() {
+	      return this.idb.settings.get('presetDomain');
+	    }
+	  }, {
 	    key: 'getRegexPatterns',
 	    value: function getRegexPatterns() {
 	      return this.idb.settings.get('patterns');

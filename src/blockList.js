@@ -95,6 +95,16 @@ class BlockList {
     })
     .then(r => r[0]);
   }
+  setDomainSetting(domain) {
+    return this.idb.settings.update({
+      config: 'presetDomain',
+      setting: { domain },
+      items: []
+    });
+  }
+  getDomainSetting() {
+    return this.idb.settings.get('presetDomain');
+  }
   getRegexPatterns() {
     return this.idb.settings.get('patterns');
   }

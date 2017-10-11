@@ -7,7 +7,7 @@ import _ from 'lodash';
 import BL from './blockList.js';
 
 // This is possibly some of the worst code I have ever written and I really need better paradigm
-// for complicated concurrentcy
+// for complicated concurrency
 
 const BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
 
@@ -100,8 +100,16 @@ class Filter {
       case (request.hasOwnProperty('domain')): {
         console.log('edit domain modal requested');
         console.log(request.domain);
-        this.currentDomain = request.domain;
-        break;
+        BL.getRecord(request.domain)
+          .then(() => BL.setDomainSetting(request.domain)
+            .then(() => sendResponse('domain updated'))
+            .catch(() => BL.addSiteRecord(request.domain)
+              .then(() => BL.setDomainSetting(request.domain)
+                .then(() => sendResponse('domain updated'))
+              )
+            )
+          );
+        return true;
       }
       default:
         break;

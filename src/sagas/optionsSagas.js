@@ -67,6 +67,17 @@ function* importDatabase(action) {
     notify(e);
   }
 }
+function* checkDomainPreset() {
+  try {
+    const { setting } = yield call([BL, BL.getDomainSetting]);
+    if (setting.domain !== '') {
+      console.log(setting.domain);
+      yield put({ type: 'FETCH_MODAL_RECORD', site: setting.domain });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* getBlockedUrlSaga() {
   yield takeEvery('GET_BLOCKED_URL', getBlockedUrl);
 }
@@ -85,6 +96,9 @@ function* fetchTrendDataSaga() {
 function* importDatabaseSaga() {
   yield takeEvery('IMPORT_DATABASE', importDatabase);
 }
+function* checkDomainPresetSaga() {
+  yield takeEvery('CHECK_DOMAIN_PRESET', checkDomainPreset);
+}
 export default function* optionsSaga() {
   yield fork(fetchSitesSaga);
   yield fork(addFilterSaga);
@@ -99,4 +113,5 @@ export default function* optionsSaga() {
   yield fork(getBlockedUrlSaga);
   yield fork(setBlockedUrlSaga);
   yield fork(importDatabaseSaga);
+  yield fork(checkDomainPresetSaga);
 }

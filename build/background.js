@@ -57,6 +57,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_blockList2.default.init().then(function () {
+	  return _blockList2.default.setDomainSetting('');
+	}).then(function () {
 	  _Filter2.default.init();
 	});
 
@@ -1420,6 +1422,20 @@
 	      }).then(function (r) {
 	        return r[0];
 	      });
+	    }
+	  }, {
+	    key: 'setDomainSetting',
+	    value: function setDomainSetting(domain) {
+	      return this.idb.settings.update({
+	        config: 'presetDomain',
+	        setting: { domain: domain },
+	        items: []
+	      });
+	    }
+	  }, {
+	    key: 'getDomainSetting',
+	    value: function getDomainSetting() {
+	      return this.idb.settings.get('presetDomain');
 	    }
 	  }, {
 	    key: 'getRegexPatterns',
@@ -35846,7 +35862,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// This is possibly some of the worst code I have ever written and I really need better paradigm
-	// for complicated concurrentcy
+	// for complicated concurrency
 
 	var BLOCKED_PAGE = 'https://www.github.com/wrleskovec';
 
@@ -35957,8 +35973,18 @@
 	          {
 	            console.log('edit domain modal requested');
 	            console.log(request.domain);
-	            this.currentDomain = request.domain;
-	            break;
+	            _blockList2.default.getRecord(request.domain).then(function () {
+	              return _blockList2.default.setDomainSetting(request.domain).then(function () {
+	                return sendResponse('domain updated');
+	              }).catch(function () {
+	                return _blockList2.default.addSiteRecord(request.domain).then(function () {
+	                  return _blockList2.default.setDomainSetting(request.domain).then(function () {
+	                    return sendResponse('domain updated');
+	                  });
+	                });
+	              });
+	            });
+	            return true;
 	          }
 	        default:
 	          break;

@@ -111,7 +111,6 @@ export default class DailyPieChart extends React.Component {
     const { fetchModalRecord } = this.props;
     const site = legendItem.text;
     if (site && site !== 'Other') {
-      $('#myModal').modal('show');
       fetchModalRecord(site);
     }
   }
@@ -121,7 +120,6 @@ export default class DailyPieChart extends React.Component {
     if (el && el._model) {
       const site = el._model.label;
       if (site !== 'Other') {
-        $('#myModal').modal('show');
         fetchModalRecord(site);
       }
     }

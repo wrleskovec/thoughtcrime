@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import logo from '../img/thoughtcrime.svg';
 import menuOptions from './options/OptionsMenu';
-import { navigateOptions, saveChangesModal, deleteSite } from '~/actions/options';
+import { navigateOptions, saveChangesModal, deleteSite, checkDomainPreset }
+  from '~/actions/options';
 import EditModal from '~/components/EditModal';
 import DNDWrapper from '~/helpers/DNDWrapper';
 
@@ -18,7 +19,10 @@ class OptionsApp extends React.Component {
       navigateOptions(category, page);
     };
   }
-
+  componentWillMount() {
+    const { checkDomainPreset } = this.props;
+    checkDomainPreset();
+  }
   render() {
     const { selectedPage, selectedCategory, modalObj, deleteSite, saveChangesModal } = this.props;
     const Content = menuOptions.options[selectedPage];
@@ -106,6 +110,7 @@ export default connect(
       navigateOptions: (category, page) => dispatch(navigateOptions(category, page)),
       saveChangesModal: site => dispatch(saveChangesModal(site)),
       deleteSite: site => dispatch(deleteSite(site)),
+      checkDomainPreset: () => dispatch(checkDomainPreset())
     }
   )
 )(OptionsApp);
