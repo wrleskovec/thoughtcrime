@@ -32776,7 +32776,7 @@ webpackJsonp([0],[
 	        style: (0, _extends3.default)({}, style, { opacity: opacity })
 	      }, void 0, (0, _jsx3.default)('div', {
 	        className: 'regexPattern col-md-9',
-	        onKeyUp: this.handleRegex,
+	        onChange: this.handleRegex,
 	        contentEditable: true
 	      }, void 0, regex), (0, _jsx3.default)('div', {
 	        className: 'editModal'
@@ -45850,7 +45850,6 @@ webpackJsonp([0],[
 	      var cards = this.state.cards;
 
 	      var dragCard = cards[dragIndex];
-
 	      this.setState((0, _update4.default)(this.state, {
 	        cards: {
 	          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]

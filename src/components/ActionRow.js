@@ -114,7 +114,7 @@ export default class ActionRow extends React.Component {
 
     return connectDragSource(connectDropTarget(
       <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
-        <div className="regexPattern col-md-9" onKeyUp={this.handleRegex} contentEditable>
+        <div className="regexPattern col-md-9" onChange={this.handleRegex} contentEditable>
           {regex}
         </div>
         <div className="editModal">
