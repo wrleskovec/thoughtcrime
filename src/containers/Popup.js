@@ -38,11 +38,11 @@ class PopupApp extends React.Component {
     chrome.tabs.create({ url: chrome.extension.getURL('options.html') });
   }
   editDomain(e) {
-    const { currentValue } = this.state;
     const { editDomainModal } = this.props;
+    const value = this.domainInput.value.trim();
     e.preventDefault();
-    if (currentValue) {
-      editDomainModal(currentValue);
+    if (value) {
+      editDomainModal(value);
     } else {
       chrome.tabs.getSelected(null, tab => {
         editDomainModal(wurl('domain', tab.url));
@@ -78,6 +78,7 @@ class PopupApp extends React.Component {
             <PopupInputBar
               addFilter={this.props.addFilter} currentValue={this.state.currentValue}
               handleTypeChange={this.handleTypeChange}
+              ref={(inputBar) => { this.domainInput = inputBar.refs.patternInput; }}
             />}
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>

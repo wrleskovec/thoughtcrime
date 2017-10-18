@@ -1,6 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
+import _ from 'lodash';
 
 
 const style = {
@@ -95,8 +96,10 @@ export default class ActionRow extends React.Component {
   }
 
   handleRegex(e) {
+    console.log('blur triggered');
     const { handleAdvRegex, id } = this.props;
     const value = e.target.textContent.trim();
+    console.log(value);
     handleAdvRegex(id, value);
   }
   handleSelect(e) {
@@ -114,7 +117,7 @@ export default class ActionRow extends React.Component {
 
     return connectDragSource(connectDropTarget(
       <div id={`pattern${id}`} className="row-fluid" style={{ ...style, opacity }}>
-        <div className="regexPattern col-md-9" onChange={this.handleRegex} contentEditable>
+        <div className="regexPattern col-md-9" onBlur={this.handleRegex} contentEditable>
           {regex}
         </div>
         <div className="editModal">

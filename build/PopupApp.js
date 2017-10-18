@@ -206,12 +206,12 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'editDomain',
 	    value: function editDomain(e) {
-	      var currentValue = this.state.currentValue;
 	      var editDomainModal = this.props.editDomainModal;
 
+	      var value = this.domainInput.value.trim();
 	      e.preventDefault();
-	      if (currentValue) {
-	        editDomainModal(currentValue);
+	      if (value) {
+	        editDomainModal(value);
 	      } else {
 	        chrome.tabs.getSelected(null, function (tab) {
 	          editDomainModal((0, _wurl2.default)('domain', tab.url));
@@ -230,6 +230,8 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this3 = this;
+
 	      console.log('parent render called');
 	      var timer = this.props.timer;
 
@@ -256,10 +258,12 @@ webpackJsonp([1],{
 	        style: styleTitle
 	      }, void 0, 'Thought Crime')), (0, _jsx3.default)('div', {
 	        className: 'panel-body'
-	      }, void 0, this.state.currentValue && (0, _jsx3.default)(_PopupInputBar2.default, {
-	        addFilter: this.props.addFilter,
-	        currentValue: this.state.currentValue,
-	        handleTypeChange: this.handleTypeChange
+	      }, void 0, this.state.currentValue && _react2.default.createElement(_PopupInputBar2.default, {
+	        addFilter: this.props.addFilter, currentValue: this.state.currentValue,
+	        handleTypeChange: this.handleTypeChange,
+	        ref: function ref(inputBar) {
+	          _this3.domainInput = inputBar.refs.patternInput;
+	        }
 	      }), timerComponent, (0, _jsx3.default)('button', {
 	        type: 'button',
 	        className: 'btn btn-default pull-right',

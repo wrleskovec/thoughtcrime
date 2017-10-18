@@ -97,12 +97,16 @@ export default class EditModal extends React.Component {
     deleteSite(site.site);
   }
   handleSaveChanges() {
+    console.log('savechanges triggered');
     const { site, saveChangesModal } = this.props;
     const { action, cards } = this.state;
-    saveChangesModal(update(site, {
-      action: { $set: action },
-      advAction: { $set: cards }
-    }));
+    console.log(cards);
+    setTimeout(() => {
+      saveChangesModal(update(site, {
+        action: { $set: action },
+        advAction: { $set: cards }
+      }));
+    }, 500);
   }
   render() {
     const { site } = this.props;

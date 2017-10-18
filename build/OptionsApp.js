@@ -32640,6 +32640,10 @@ webpackJsonp([0],[
 
 	var _reactDnd = __webpack_require__(506);
 
+	var _lodash = __webpack_require__(502);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var style = {
@@ -32731,11 +32735,13 @@ webpackJsonp([0],[
 	  (0, _createClass3.default)(ActionRow, [{
 	    key: 'handleRegex',
 	    value: function handleRegex(e) {
+	      console.log('blur triggered');
 	      var _props = this.props,
 	          handleAdvRegex = _props.handleAdvRegex,
 	          id = _props.id;
 
 	      var value = e.target.textContent.trim();
+	      console.log(value);
 	      handleAdvRegex(id, value);
 	    }
 	  }, {
@@ -32776,7 +32782,7 @@ webpackJsonp([0],[
 	        style: (0, _extends3.default)({}, style, { opacity: opacity })
 	      }, void 0, (0, _jsx3.default)('div', {
 	        className: 'regexPattern col-md-9',
-	        onChange: this.handleRegex,
+	        onBlur: this.handleRegex,
 	        contentEditable: true
 	      }, void 0, regex), (0, _jsx3.default)('div', {
 	        className: 'editModal'
@@ -45927,6 +45933,7 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'handleSaveChanges',
 	    value: function handleSaveChanges() {
+	      console.log('savechanges triggered');
 	      var _props2 = this.props,
 	          site = _props2.site,
 	          saveChangesModal = _props2.saveChangesModal;
@@ -45934,10 +45941,13 @@ webpackJsonp([0],[
 	          action = _state.action,
 	          cards = _state.cards;
 
-	      saveChangesModal((0, _update4.default)(site, {
-	        action: { $set: action },
-	        advAction: { $set: cards }
-	      }));
+	      console.log(cards);
+	      setTimeout(function () {
+	        saveChangesModal((0, _update4.default)(site, {
+	          action: { $set: action },
+	          advAction: { $set: cards }
+	        }));
+	      }, 500);
 	    }
 	  }, {
 	    key: 'render',
