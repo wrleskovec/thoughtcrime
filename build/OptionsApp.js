@@ -32354,10 +32354,6 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _defineProperty2 = __webpack_require__(419);
-
-	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
 	var _getPrototypeOf = __webpack_require__(428);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -32384,9 +32380,9 @@ webpackJsonp([0],[
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _update3 = __webpack_require__(266);
+	var _update = __webpack_require__(266);
 
-	var _update4 = _interopRequireDefault(_update3);
+	var _update2 = _interopRequireDefault(_update);
 
 	var _reactRedux = __webpack_require__(244);
 
@@ -32443,13 +32439,21 @@ webpackJsonp([0],[
 	      this.setState({ cards: nextProps.patterns });
 	    }
 	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      var cards = this.state.cards;
+
+	      if (cards === nextState.cards) return false;
+	      return true;
+	    }
+	  }, {
 	    key: 'moveCard',
 	    value: function moveCard(dragIndex, hoverIndex) {
 	      var cards = this.state.cards;
 
 	      var dragCard = cards[dragIndex];
 
-	      this.setState((0, _update4.default)(this.state, {
+	      this.setState((0, _update2.default)(this.state, {
 	        cards: {
 	          $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
 	        }
@@ -32458,21 +32462,27 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'handleAdvRegex',
 	    value: function handleAdvRegex(id, value) {
-	      var index = this.state.cards.findIndex(function (i) {
-	        return i.id === id;
-	      });
-	      this.setState({
-	        cards: (0, _update4.default)(this.state.cards, (0, _defineProperty3.default)({}, index, { regex: { $set: value } }))
+	      this.setState(function (prevState) {
+	        var cards = prevState.cards;
+
+	        var index = cards.findIndex(function (i) {
+	          return i.id === id;
+	        });
+	        cards[index].regex = value;
+	        return prevState;
 	      });
 	    }
 	  }, {
 	    key: 'handleAdvSelect',
 	    value: function handleAdvSelect(id, selected) {
-	      var index = this.state.cards.findIndex(function (i) {
-	        return i.id === id;
-	      });
-	      this.setState({
-	        cards: (0, _update4.default)(this.state.cards, (0, _defineProperty3.default)({}, index, { action: { $set: selected } }))
+	      this.setState(function (prevState) {
+	        var cards = prevState.cards;
+
+	        var index = cards.findIndex(function (i) {
+	          return i.id === id;
+	        });
+	        cards[index].action = selected;
+	        return prevState;
 	      });
 	    }
 	  }, {
@@ -32499,7 +32509,7 @@ webpackJsonp([0],[
 	      var cards = this.state.cards;
 
 	      this.setState({
-	        cards: (0, _update4.default)(cards, { $push: [{
+	        cards: (0, _update2.default)(cards, { $push: [{
 	            id: cards.length + 1,
 	            action: 'limit',
 	            regex: ''

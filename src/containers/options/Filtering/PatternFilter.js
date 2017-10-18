@@ -30,6 +30,11 @@ class PatternFilter extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({ cards: nextProps.patterns });
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    const { cards } = this.state;
+    if (cards === nextState.cards) return false;
+    return true;
+  }
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
     const dragCard = cards[dragIndex];
@@ -44,15 +49,19 @@ class PatternFilter extends React.Component {
     }));
   }
   handleAdvRegex(id, value) {
-    const index = this.state.cards.findIndex(i => i.id === id);
-    this.setState({
-      cards: update(this.state.cards, { [index]: { regex: { $set: value } } })
+    this.setState((prevState) => {
+      const { cards } = prevState;
+      const index = cards.findIndex(i => i.id === id);
+      cards[index].regex = value;
+      return prevState;
     });
   }
   handleAdvSelect(id, selected) {
-    const index = this.state.cards.findIndex(i => i.id === id);
-    this.setState({
-      cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
+    this.setState((prevState) => {
+      const { cards } = prevState;
+      const index = cards.findIndex(i => i.id === id);
+      cards[index].action = selected;
+      return prevState;
     });
   }
   handleAdvDelete(id) {
