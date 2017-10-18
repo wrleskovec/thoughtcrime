@@ -39,6 +39,11 @@ export default class EditModal extends React.Component {
       });
     }
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    const { cards } = this.state;
+    if (cards === nextState.cards) return false;
+    return true;
+  }
 
   moveCard(dragIndex, hoverIndex) {
     const { cards } = this.state;
@@ -53,16 +58,27 @@ export default class EditModal extends React.Component {
     }));
   }
   handleAdvRegex(id, value) {
-    const index = this.state.cards.findIndex(i => i.id === id);
-    this.setState({
-      cards: update(this.state.cards, { [index]: { regex: { $set: value } } })
+    this.setState((prevState) => {
+      const { cards } = prevState;
+      const index = cards.findIndex(i => i.id === id);
+      cards[index].regex = value;
+      return prevState;
     });
+    // const index = this.state.cards.findIndex(i => i.id === id);
+    // this.setState({
+    //   cards: update(this.state.cards, { [index]: { regex: { $set: value } } })
+    // });
   }
   handleAdvSelect(id, selected) {
-    const index = this.state.cards.findIndex(i => i.id === id);
-    this.setState({
-      cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
+    this.setState((prevState) => {
+      const { cards } = prevState;
+      const index = cards.findIndex(i => i.id === id);
+      cards[index].action = selected;
+      return prevState;
     });
+    // this.setState({
+    //   cards: update(this.state.cards, { [index]: { action: { $set: selected } } })
+    // });
   }
   handleSelect(e) {
     const selected = e.target.value;
@@ -109,6 +125,7 @@ export default class EditModal extends React.Component {
     }, 500);
   }
   render() {
+    console.log('editModal rerender');
     const { site } = this.props;
     const { action, cards } = this.state;
     const siteName = site ? site.site : '';
