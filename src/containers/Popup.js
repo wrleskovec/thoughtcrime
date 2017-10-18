@@ -39,7 +39,7 @@ class PopupApp extends React.Component {
   }
   editDomain(e) {
     const { editDomainModal } = this.props;
-    const value = this.domainInput.value.trim();
+    const value = this.inputBar.refs.patternInput.value.trim();
     e.preventDefault();
     if (value) {
       editDomainModal(value);
@@ -78,7 +78,7 @@ class PopupApp extends React.Component {
             <PopupInputBar
               addFilter={this.props.addFilter} currentValue={this.state.currentValue}
               handleTypeChange={this.handleTypeChange}
-              ref={(inputBar) => { this.domainInput = inputBar.refs.patternInput; }}
+              ref={(inputBar) => { this.inputBar = inputBar; }}
             />}
           {timerComponent}
           <button type="button" className="btn btn-default pull-right" onClick={this.goToOptions}>

@@ -208,7 +208,7 @@ webpackJsonp([1],{
 	    value: function editDomain(e) {
 	      var editDomainModal = this.props.editDomainModal;
 
-	      var value = this.domainInput.value.trim();
+	      var value = this.inputBar.refs.patternInput.value.trim();
 	      e.preventDefault();
 	      if (value) {
 	        editDomainModal(value);
@@ -262,7 +262,7 @@ webpackJsonp([1],{
 	        addFilter: this.props.addFilter, currentValue: this.state.currentValue,
 	        handleTypeChange: this.handleTypeChange,
 	        ref: function ref(inputBar) {
-	          _this3.domainInput = inputBar.refs.patternInput;
+	          _this3.inputBar = inputBar;
 	        }
 	      }), timerComponent, (0, _jsx3.default)('button', {
 	        type: 'button',
