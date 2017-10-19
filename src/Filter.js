@@ -29,15 +29,15 @@ class Filter {
     this.urlCheck = _.debounce(this.urlCheck.bind(this), 50, { maxWait: 100 });
   }
   init() {
-    // chrome.windows.getAll({ populate: true }, (windows) => {
-    //   windows.forEach((win) => {
-    //     win.tabs.forEach((tab) => {
-    //       if (this.isValidProtocol(tab.url)) {
-    //         chrome.tabs.executeScript(tab.id, { file: 'content.js' });
-    //       }
-    //     });
-    //   });
-    // });
+    chrome.windows.getAll({ populate: true }, (windows) => {
+      windows.forEach((win) => {
+        win.tabs.forEach((tab) => {
+          if (this.isValidProtocol(tab.url)) {
+            chrome.tabs.executeScript(tab.id, { file: 'content.js' });
+          }
+        });
+      });
+    });
     // interacting with popup for timer & content.js
     chrome.runtime.onMessage.addListener(this.messageHandler);
 

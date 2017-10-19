@@ -1,10 +1,19 @@
 import ifvisible from 'ifvisible.js';
 
+function sendFocus(focus) {
+  try {
+    chrome.runtime.sendMessage({ focus });
+  } catch (e) {
+    ifvisible.off('focus');
+    ifvisible.off('blur');
+    ifvisible.off('idle');
+    ifvisible.off('wakeup');
+  }
+}
+
+
 ifvisible.setIdleDuration(120);
 
-function sendFocus(focus) {
-  chrome.runtime.sendMessage({ focus });
-}
 sendFocus('focus');
 
 ifvisible.on('focus', () => sendFocus('focus'));
