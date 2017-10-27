@@ -26,7 +26,7 @@ webpackJsonp([0],[
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _Options = __webpack_require__(427);
+	var _Options = __webpack_require__(428);
 
 	var _Options2 = _interopRequireDefault(_Options);
 
@@ -353,11 +353,11 @@ webpackJsonp([0],[
 
 	var _Filtering2 = _interopRequireDefault(_Filtering);
 
-	var _Settings = __webpack_require__(422);
+	var _Settings = __webpack_require__(423);
 
 	var _Settings2 = _interopRequireDefault(_Settings);
 
-	var _Statistics = __webpack_require__(423);
+	var _Statistics = __webpack_require__(424);
 
 	var _Statistics2 = _interopRequireDefault(_Statistics);
 
@@ -642,11 +642,11 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(414);
+	var _extends2 = __webpack_require__(415);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
-	var _defineProperty2 = __webpack_require__(419);
+	var _defineProperty2 = __webpack_require__(420);
 
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
@@ -658,7 +658,7 @@ webpackJsonp([0],[
 
 	var _notify2 = _interopRequireDefault(_notify);
 
-	var _searchSites = __webpack_require__(420);
+	var _searchSites = __webpack_require__(421);
 
 	var _searchSites2 = _interopRequireDefault(_searchSites);
 
@@ -742,17 +742,18 @@ webpackJsonp([0],[
 	}
 
 	exports.default = Filtering;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(414)))
 
 /***/ },
-/* 414 */
+/* 414 */,
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _assign = __webpack_require__(415);
+	var _assign = __webpack_require__(416);
 
 	var _assign2 = _interopRequireDefault(_assign);
 
@@ -773,29 +774,29 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 415 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(416), __esModule: true };
-
-/***/ },
 /* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(417);
-	module.exports = __webpack_require__(10).Object.assign;
+	module.exports = { "default": __webpack_require__(417), __esModule: true };
 
 /***/ },
 /* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.3.1 Object.assign(target, source)
-	var $export = __webpack_require__(9);
-
-	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(418)});
+	__webpack_require__(418);
+	module.exports = __webpack_require__(10).Object.assign;
 
 /***/ },
 /* 418 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(9);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(419)});
+
+/***/ },
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -833,7 +834,7 @@ webpackJsonp([0],[
 	} : $assign;
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -862,7 +863,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -872,7 +873,7 @@ webpackJsonp([0],[
 	});
 	exports.default = searchSites;
 
-	var _fuse = __webpack_require__(421);
+	var _fuse = __webpack_require__(422);
 
 	var _fuse2 = _interopRequireDefault(_fuse);
 
@@ -893,7 +894,7 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 421 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1727,7 +1728,7 @@ webpackJsonp([0],[
 
 
 /***/ },
-/* 422 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1768,7 +1769,7 @@ webpackJsonp([0],[
 	exports.default = Settings;
 
 /***/ },
-/* 423 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1777,7 +1778,7 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _typeof2 = __webpack_require__(424);
+	var _typeof2 = __webpack_require__(425);
 
 	var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -1785,7 +1786,7 @@ webpackJsonp([0],[
 
 	var _update2 = _interopRequireDefault(_update);
 
-	var _searchSites = __webpack_require__(420);
+	var _searchSites = __webpack_require__(421);
 
 	var _searchSites2 = _interopRequireDefault(_searchSites);
 
@@ -1854,10 +1855,10 @@ webpackJsonp([0],[
 	exports.default = Statistics;
 
 /***/ },
-/* 424 */,
 /* 425 */,
 /* 426 */,
-/* 427 */
+/* 427 */,
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1870,7 +1871,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -1882,11 +1883,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -1896,11 +1897,11 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(244);
 
-	var _thoughtcrime = __webpack_require__(441);
+	var _thoughtcrime = __webpack_require__(442);
 
 	var _thoughtcrime2 = _interopRequireDefault(_thoughtcrime);
 
-	var _OptionsMenu = __webpack_require__(442);
+	var _OptionsMenu = __webpack_require__(443);
 
 	var _OptionsMenu2 = _interopRequireDefault(_OptionsMenu);
 
@@ -2046,7 +2047,6 @@ webpackJsonp([0],[
 		})(OptionsApp);
 
 /***/ },
-/* 428 */,
 /* 429 */,
 /* 430 */,
 /* 431 */,
@@ -2060,7 +2060,8 @@ webpackJsonp([0],[
 /* 439 */,
 /* 440 */,
 /* 441 */,
-/* 442 */
+/* 442 */,
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2069,7 +2070,7 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _Dash = __webpack_require__(443);
+	var _Dash = __webpack_require__(444);
 
 	var _Dash2 = _interopRequireDefault(_Dash);
 
@@ -2137,7 +2138,7 @@ webpackJsonp([0],[
 		};
 
 /***/ },
-/* 443 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2150,7 +2151,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -2162,11 +2163,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -2176,15 +2177,15 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(244);
 
-	var _TopTen = __webpack_require__(444);
+	var _TopTen = __webpack_require__(445);
 
 	var _TopTen2 = _interopRequireDefault(_TopTen);
 
-	var _InputBar = __webpack_require__(447);
+	var _InputBar = __webpack_require__(448);
 
 	var _InputBar2 = _interopRequireDefault(_InputBar);
 
-	var _DailyPieChart = __webpack_require__(449);
+	var _DailyPieChart = __webpack_require__(450);
 
 	var _DailyPieChart2 = _interopRequireDefault(_DailyPieChart);
 
@@ -2281,7 +2282,7 @@ webpackJsonp([0],[
 		})(Dash);
 
 /***/ },
-/* 444 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2295,7 +2296,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -2307,11 +2308,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -2319,7 +2320,7 @@ webpackJsonp([0],[
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TopTenRow = __webpack_require__(445);
+	var _TopTenRow = __webpack_require__(446);
 
 	var _TopTenRow2 = _interopRequireDefault(_TopTenRow);
 
@@ -2414,7 +2415,7 @@ webpackJsonp([0],[
 		exports.default = SiteTable;
 
 /***/ },
-/* 445 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2437,7 +2438,7 @@ webpackJsonp([0],[
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	__webpack_require__(446);
+	__webpack_require__(447);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2462,8 +2463,8 @@ webpackJsonp([0],[
 		}
 
 /***/ },
-/* 446 */,
-/* 447 */
+/* 447 */,
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2477,7 +2478,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -2489,11 +2490,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -2501,7 +2502,7 @@ webpackJsonp([0],[
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _wurl = __webpack_require__(448);
+	var _wurl = __webpack_require__(449);
 
 	var _wurl2 = _interopRequireDefault(_wurl);
 
@@ -2630,8 +2631,8 @@ webpackJsonp([0],[
 		exports.default = InputBar;
 
 /***/ },
-/* 448 */,
-/* 449 */
+/* 449 */,
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2645,7 +2646,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -2657,11 +2658,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -2673,7 +2674,7 @@ webpackJsonp([0],[
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	__webpack_require__(446);
+	__webpack_require__(447);
 
 	var _chart = __webpack_require__(451);
 
@@ -2831,7 +2832,6 @@ webpackJsonp([0],[
 		exports.default = DailyPieChart;
 
 /***/ },
-/* 450 */,
 /* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -14738,7 +14738,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -14750,11 +14750,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -14873,7 +14873,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -14885,11 +14885,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -15072,7 +15072,7 @@ webpackJsonp([0],[
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	__webpack_require__(446);
+	__webpack_require__(447);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15115,7 +15115,7 @@ webpackJsonp([0],[
 	    className: 'glyphicon glyphicon-pencil'
 	  }))));
 		}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(414)))
 
 /***/ },
 /* 501 */
@@ -32264,7 +32264,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -32276,11 +32276,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -32354,7 +32354,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -32366,11 +32366,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -32612,7 +32612,7 @@ webpackJsonp([0],[
 	});
 	exports.default = undefined;
 
-	var _extends2 = __webpack_require__(414);
+	var _extends2 = __webpack_require__(415);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -32620,7 +32620,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -32632,11 +32632,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -38531,7 +38531,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -38543,11 +38543,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -40559,7 +40559,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -40571,11 +40571,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -43662,7 +43662,7 @@ webpackJsonp([0],[
 
 	var _stringify2 = _interopRequireDefault(_stringify);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -43674,11 +43674,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -43890,7 +43890,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -43902,11 +43902,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -43916,7 +43916,7 @@ webpackJsonp([0],[
 
 	var _reactRedux = __webpack_require__(244);
 
-	var _DailyPieChart = __webpack_require__(449);
+	var _DailyPieChart = __webpack_require__(450);
 
 	var _DailyPieChart2 = _interopRequireDefault(_DailyPieChart);
 
@@ -44034,7 +44034,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -44046,11 +44046,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -44168,7 +44168,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -44180,11 +44180,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -44355,7 +44355,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -44367,11 +44367,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -44547,7 +44547,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -44559,11 +44559,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -44627,7 +44627,7 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(414);
+	var _extends2 = __webpack_require__(415);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -44635,7 +44635,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -44647,11 +44647,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -45349,7 +45349,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -45361,11 +45361,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -45489,7 +45489,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -45501,11 +45501,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -45562,7 +45562,7 @@ webpackJsonp([0],[
 	  value: true
 	});
 
-	var _extends2 = __webpack_require__(414);
+	var _extends2 = __webpack_require__(415);
 
 	var _extends3 = _interopRequireDefault(_extends2);
 
@@ -45570,7 +45570,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -45582,11 +45582,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -45767,7 +45767,7 @@ webpackJsonp([0],[
 
 	var _jsx3 = _interopRequireDefault(_jsx2);
 
-	var _getPrototypeOf = __webpack_require__(428);
+	var _getPrototypeOf = __webpack_require__(429);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
@@ -45779,11 +45779,11 @@ webpackJsonp([0],[
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(432);
+	var _possibleConstructorReturn2 = __webpack_require__(433);
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _inherits2 = __webpack_require__(433);
+	var _inherits2 = __webpack_require__(434);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
 
@@ -45853,9 +45853,11 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      var cards = this.state.cards;
+	      var _state = this.state,
+	          cards = _state.cards,
+	          action = _state.action;
 
-	      if (cards === nextState.cards) return false;
+	      if (cards === nextState.cards && action === nextState.action) return false;
 	      return true;
 	    }
 	  }, {
@@ -45958,9 +45960,9 @@ webpackJsonp([0],[
 	      var _props2 = this.props,
 	          site = _props2.site,
 	          saveChangesModal = _props2.saveChangesModal;
-	      var _state = this.state,
-	          action = _state.action,
-	          cards = _state.cards;
+	      var _state2 = this.state,
+	          action = _state2.action,
+	          cards = _state2.cards;
 
 	      console.log(cards);
 	      setTimeout(function () {
@@ -45977,9 +45979,9 @@ webpackJsonp([0],[
 
 	      console.log('editModal rerender');
 	      var site = this.props.site;
-	      var _state2 = this.state,
-	          action = _state2.action,
-	          cards = _state2.cards;
+	      var _state3 = this.state,
+	          action = _state3.action,
+	          cards = _state3.cards;
 
 	      var siteName = site ? site.site : '';
 	      return (0, _jsx3.default)('div', {
@@ -49060,7 +49062,7 @@ webpackJsonp([0],[
 
 	}(jQuery);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(450)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(414)))
 
 /***/ }
 ]);

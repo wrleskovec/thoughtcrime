@@ -40,8 +40,8 @@ export default class EditModal extends React.Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
-    const { cards } = this.state;
-    if (cards === nextState.cards) return false;
+    const { cards, action } = this.state;
+    if (cards === nextState.cards && action === nextState.action) return false;
     return true;
   }
 
